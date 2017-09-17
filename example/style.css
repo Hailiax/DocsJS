@@ -47,9 +47,6 @@ iframe{
 p{
 	margin: 0;
 }
-[docsjs-tag="bg"]{
-	background-image: none !important;
-}
 #screenshots{
 	position: relative;
 	width: 100%;

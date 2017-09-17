@@ -6,6 +6,10 @@
 //////////////////////
 
 var DocsJS = {};
+DocsJS.aceTheme = {
+	Hailaxian: 'chrome',
+	Minimal: 'chrome'
+};
 DocsJS.apply = function (func){
 	'use strict';
 	var docs = document.querySelectorAll('[docsjs-tag="'+DocsJS.superparent+'"]');
@@ -41,6 +45,7 @@ DocsJS.init = function(callback){
 		doc.querySelector('[docsjs-tag="column-right"]').style.position = 'fixed';
 		doc.innerHTML += '<div docsjs-tag="bg" docsjs-extra="invert"></div>';
 	});
+	DocsJS.fontsize._init = DocsJS.fontsize._value;
 
 	// Finish initiation
 	var finish = function(){
@@ -337,7 +342,7 @@ DocsJS.refresh = function(callback){
 		
 		doc.querySelector('[docsjs-tag="header"]').innerHTML = '';
 		DocsJS.forEach(doc.querySelectorAll('main>[docsjs-tag="s-c"]'),function(el){
-			try{doc.querySelector('[docsjs-tag="header"]').innerHTML += '<span onclick="DocsJS.jumpTo(\''+el.docsjs.location+'\')">' + el.querySelector('[docsjs-tag="t-l"]').textContent + '</span>';}catch(e){}
+			try{doc.querySelector('[docsjs-tag="header"]').innerHTML += '<span onclick="DocsJS.jumpTo(\''+el.docsjs.location+'\')">' + el.querySelector('[docsjs-tag="t-l"]').textContent + '</span> ';}catch(e){}
 		});
 	});
 
@@ -750,7 +755,8 @@ DocsJS.resized = function(){
 		}
 	} else{
 		DocsJS.apply(function(doc){
-			doc.style.fontSize = DocsJS.fontsize._value*Math.sqrt(DocsJS.window.width()/(DocsJS.width.min+200))+'px';
+			DocsJS.fontsize._scalar = Math.sqrt(DocsJS.window.width()/(DocsJS.width.min+200));
+			doc.style.fontSize = DocsJS.fontsize._value*DocsJS.fontsize._scalar+'px';
 			lc.style.width = rc.style.width = rc.style.marginLeft = '0';
 			DocsJS.forEach(doc.querySelectorAll('main > [docsjs-tag="s-c"]'),function(el){
 				el.style.width = '100%';
@@ -1031,7 +1037,7 @@ DocsJS.bindPrefs = function(){
 				});
 				DocsJS.animate({
 					from: DocsJS.fontsize._value,	duration: DocsJS.animation.duration,	easing: DocsJS.easings.easeOutQuart,
-					to: parseFloat(DocsJS.getStyle(doc,'font-size')),
+					to: DocsJS.fontsize._init,
 					step: function(now){
 						DocsJS.fontsize._value = now;
 						DocsJS.resized();
@@ -1493,7 +1499,7 @@ DocsJS.jumpTo = function(location){
 				dest = immeditateChildren[loc[i]];
 			}
 			dest = dest.querySelector('[docsjs-tag="h-d"]') || dest;
-			var scrollTo = dest.getBoundingClientRect().top - document.body.getBoundingClientRect().top - DocsJS.fontsize._value;
+			var scrollTo = dest.getBoundingClientRect().top - document.body.getBoundingClientRect().top - DocsJS.fontsize._value*DocsJS.fontsize._scalar;
 			if (document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').clientHeight - DocsJS.window.height() < scrollTo){
 				scrollTo = Math.min(scrollTo, document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').clientHeight - DocsJS.window.height());
 			}
@@ -1609,6 +1615,8 @@ DocsJS.fontsize = {
 		} catch(e){}
 	},
 	_value: 22,
+	_scalar: 1,
+	_init: undefined
 };
 DocsJS.window = {
 	width: function(){
@@ -1651,7 +1659,7 @@ DocsJS.ex = {
 	defaultState: 'min'
 },
 DocsJS.cd = {
-	theme: 'chrome',
+	theme: undefined,
 	tabSize: 4,
 	editable: false,
 	options: function(editor, editable){
@@ -1674,6 +1682,7 @@ DocsJS.cd = {
 							return '&#'+i.charCodeAt(0)+';';
 						});
 						el.docsjs.internal = index;
+						DocsJS.cache.aceEditors[el.docsjs.internal].setTheme("ace/theme/"+(DocsJS.cd.theme || DocsJS.aceTheme[DocsJS.theme]));
 						DocsJS.cache.aceEditors[el.docsjs.internal].destroy();
 						el.docsjs.internal = index;
 					} else{
@@ -1682,9 +1691,8 @@ DocsJS.cd = {
 				});
 				DocsJS.forEach(doc.querySelectorAll('[docsjs-tag="c-d"]'),function(el){
 					el.style.fontSize = '0.8em';
-					el.style.height = el.textContent.split('\n').length*1.25 + 'em';
 					var editor = ace.edit(el);
-					editor.setTheme("ace/theme/"+DocsJS.cd.theme);
+					editor.setTheme("ace/theme/"+(DocsJS.cd.theme || DocsJS.aceTheme[DocsJS.theme]));
 					editor.getSession().setMode("ace/mode/"+el.docsjs.lang);
 					editor.getSession().setTabSize(DocsJS.cd.tabSize);
 					if (!(el.docsjs.editable === undefined? DocsJS.cd.editable : JSON.parse(el.docsjs.editable))){
@@ -1702,6 +1710,7 @@ DocsJS.cd = {
 						el.querySelector('textarea').setAttribute('aria-label','Edit code');
 						DocsJS.cd.options(editor, true);
 					}
+					el.style.height = (editor.getSession().getDocument().getLength() * editor.renderer.lineHeight + editor.renderer.scrollBar.getWidth())/DocsJS.fontsize._value/DocsJS.fontsize._scalar*1.25 + 'em';
 					editors.push(editor);
 				});
 				DocsJS.cache.aceEditors = editors;

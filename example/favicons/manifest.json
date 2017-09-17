@@ -1,5 +1,6 @@
 {
     "name": "DocsJS",
+	"short_name": "DocsJS",
     "icons": [
         {
             "src": "/docsjs/favicons/android-chrome-36x36.png?v=8jedNJnRp5",

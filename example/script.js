@@ -36,6 +36,9 @@ function init(){
 	var updateCustomBody = function(){
 		var editor = DocsJS.cd.getEditor(document.getElementById('customizeResultBody'));
 		var newBody = '<div docsjs-tag="DocsJS-This-Baby">\n\t<!-- This is where you write your doc -->\n</div>\n<script>\n\tDocsJS.theme = '+(DocsJS.theme === null? 'null' : '\''+DocsJS.theme+'\'')+';\n';
+		if (DocsJS.cd.theme !== undefined){
+			newBody += '\tDocsJS.cd.theme = \''+DocsJS.cd.theme+'\';\n';
+		}
 		DocsJS.forEach(document.getElementById('jsOptions').querySelectorAll('input,select'),function(el){
 			if (el.value !== ''){
 				switch (el.name){
@@ -107,22 +110,12 @@ function init(){
 						if (el.value !== 'min'){
 							newBody += '\tDocsJS.eg.defaultState = \''+el.value+'\';\n';
 						}
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="e-g"]'),function(e){
-							if (e.docsjs.internalDefault === DocsJS.eg.defaultState){
-								e.previousSibling.onclick();
-							}
-						});
 						DocsJS.eg.defaultState = el.value;
 						break;
 					case 'ex.def':
 						if (el.value !== 'min'){
 							newBody += '\tDocsJS.ex.defaultState = \''+el.value+'\';\n';
 						}
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="e-x"]'),function(e){
-							if (e.docsjs.internalDefault === DocsJS.eg.defaultState){
-								e.previousSibling.onclick();
-							}
-						});
 						DocsJS.ex.defaultState = el.value;
 						break;
 				}
@@ -160,9 +153,6 @@ function init(){
 						});
 						DocsJS.menu.bottom = el.placeholder;
 						break;
-					case 'cd.editable':
-						DocsJS.cd.editable = JSON.parse(el.placeholder);
-						break;
 					case 'eg.name':
 						DocsJS.eg.name = el.placeholder;
 						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="e-g"]'),function(e){
@@ -180,12 +170,6 @@ function init(){
 								e.innerHTML = e.firstChild.outerHTML + el.placeholder;
 							}
 						});
-						break;
-					case 'eg.def':
-						DocsJS.eg.defaultState = el.placeholder;
-						break;
-					case 'ex.def':
-						DocsJS.ex.defaultState = el.placeholder;
 						break;
 				}
 			}
@@ -249,6 +233,16 @@ function init(){
 	sheet = sheet.join('/') + '/themes/Hailaxian.css';
 	xhr.open("GET", sheet, true);
 	xhr.send();
+	
+	// Set up choose ace theme
+	document.getElementById('aceThemeSelect').onchange = function(){
+		if (this.value === ''){
+			DocsJS.cd.theme = undefined;
+		} else{
+			DocsJS.cd.theme = this.value;
+		}
+		updateCustomBody();
+	};
 	
 	// Set custom theme
 	document.getElementById('ApplyCustTheme').onclick = function(){
