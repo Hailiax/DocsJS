@@ -27,35 +27,26 @@ DocsJS.origin = document.getElementsByTagName('script')[document.getElementsByTa
 DocsJS.init = function(callback){
 	'use strict';
 	// Set theme
-	if (DocsJS.theme !== null){
-		var themeSheetSrc = DocsJS.origin.split('/');
-		themeSheetSrc.pop();
-		themeSheetSrc = themeSheetSrc.join('/') + '/themes/'+DocsJS.theme+'.min.css';
-		var themeSheet = document.createElement('link');
-		themeSheet.rel = 'stylesheet';
-		themeSheet.href = themeSheetSrc;
-		themeSheet.id = 'DocsJS-theme-stylesheet-internal';
-		document.getElementsByTagName('head')[0].appendChild(themeSheet);
+	if (document.getElementById('DocsJS-theme') === null){
+		DocsJS.theme = null;
+	} else{
+		DocsJS.theme = document.getElementById('DocsJS-theme').href.split('/');
+		DocsJS.theme = DocsJS.theme[DocsJS.theme.length-1].split('.')[0];
 	}
 	
 	// Add essential compenents
 	try{DocsJS.resized();}catch(e){}
 	DocsJS.apply(function(doc){
-		doc.innerHTML = '<main role="main"><div docsjs-tag="s-c"><button role="button" docsjs-tag="accessibility-button" tabindex="0" onclick="DocsJS.toggleRecommendedAccessibility(this)" onkeydown="DocsJS.accessButtonSpaceClick(this,event)">Accessibility Mode</button><div docsjs-tag="header"></div></div><div docsjs-tag="s-c" style="display:none;"><button role="button" docsjs-tag="accessibility-button" tabindex="0" onclick="DocsJS.toggleExtendedAccessibility()" onkeydown="DocsJS.accessButtonSpaceClick(this,event)">Extended Accessibility Mode</button></div>'+doc.innerHTML+'</main>';
+		doc.innerHTML = '<main role="main"><s-c docsjs-tag="s-c"><button role="button" docsjs-tag="accessibility-button" tabindex="0" onclick="DocsJS.toggleRecommendedAccessibility(this)" onkeydown="DocsJS.accessButtonSpaceClick(this,event)">Accessibility Mode</button><div docsjs-tag="header"></div></s-c><s-c docsjs-tag="s-c" style="display:none;"><button role="button" docsjs-tag="accessibility-button" tabindex="0" onclick="DocsJS.toggleExtendedAccessibility()" onkeydown="DocsJS.accessButtonSpaceClick(this,event)">Extended Accessibility Mode</button></s-c>'+doc.innerHTML+'</main>';
 	});
 	DocsJS.apply(function(doc){
 		doc.outerHTML = doc.outerHTML
 			.slice(0,-6) +
 			'<div docsjs-tag="menu" style="display: none;"></div>' +
-			'<div docsjs-tag="column-left">'+DocsJS.column.choice(-1)+'</div>' +
-			'<div docsjs-tag="column-right" style="left:100%;">'+DocsJS.column.choice(1)+'</div>' +
-			'<div docsjs-extras="learnmore" style="position: relative; width: 100%; height: 1.25em; line-height:1.25em; text-align: center; font-size: 0.75em; opacity: 0.5; text-shadow: -0.04em -0.04em 0.12em #fff,0.04em 0.04em 0.12em #fff,-0.04em 0.04em 0.12em #fff,0.04em -0.04em 0.12em #fff;"><a href="https://hailiax.io/docsjs/" target="_blank" style="text-decoration: none; color: #000; line-height: 1.25em;">– Powered by Docs.JS –</a></div>' +
+			'<div docsjs-tag="column-left" style="position:fixed;">'+DocsJS.column.choice(-1)+'</div>' +
+			'<div docsjs-tag="column-right" style="left:100%;position:fixed;">'+DocsJS.column.choice(1)+'</div>' +
+			'<div docsjs-extras="learnmore" style="position: relative; width: 100%; height: 1.25em; line-height:1.25em; text-align: center; font-size: 0.75em; opacity: 0.5; text-shadow: -0.04em -0.04em 0.12em #fff,0.04em 0.04em 0.12em #fff,-0.04em 0.04em 0.12em #fff,0.04em -0.04em 0.12em #fff;"><a href="https://hailiax.io/docsjs/" target="_blank" style="text-decoration: none; color: #000; line-height: 1.25em;">– Powered by Docs.JS –</a></div><div docsjs-tag="bg" docsjs-extra="invert"></div>' +
 			'</div>';
-	});
-	DocsJS.apply(function(doc){
-		doc.querySelector('[docsjs-tag="column-left"]').style.position = 'fixed';
-		doc.querySelector('[docsjs-tag="column-right"]').style.position = 'fixed';
-		doc.innerHTML += '<div docsjs-tag="bg" docsjs-extra="invert"></div>';
 	});
 	DocsJS.fontsize._init = DocsJS.fontsize._value;
 
@@ -78,61 +69,60 @@ DocsJS.init = function(callback){
 		};
 		DocsJS.addEvent(window,'hashchange',hashChange);
 
-		// Prefire events onready.
-		DocsJS.addEvent(document,'readystatechange',function(){
-			DocsJS.scrolled();
-			DocsJS.resized();
+		DocsJS.scrolled();
+		DocsJS.resized();
 
-			// Check for min and max
-			var duration = DocsJS.animation.duration;
-			DocsJS.animation.duration = 0;
-			DocsJS.apply(function(doc){
-				DocsJS.forEach(doc.querySelectorAll('[docsjs-state="max"]'),function(el){
-					if (el.docsjs.tag === 'e-x' || el.docsjs.tag === 'e-g'){
-						el.setAttribute('docsjs-internal-default','max');
-						DocsJS.rotate(el.previousSibling.querySelector('[docsjs-tag="button-ebefore"]'),90);
-					} else if (el.docsjs.tag === 't-p' || el.docsjs.tag === 'h-d'){
-						el.setAttribute('docsjs-internal-default','max');
-					} else if (el.docsjs.tag === 's-c'){
-						el.setAttribute('docsjs-internal-default','max');
-					}
-				});
-				DocsJS.forEach(doc.querySelectorAll('[docsjs-state="min"]'),function(el){
-					if (el.docsjs.tag === 'e-x' || el.docsjs.tag === 'e-g'){
-						el.setAttribute('docsjs-internal-default','min');
-						el.docsjs.state = 'max';
-						el.previousSibling.onclick();
-					} else if (el.docsjs.tag === 't-p' || el.docsjs.tag === 'h-d'){
-						el.setAttribute('docsjs-internal-default','min');
-						el.docsjs.state = 'max';
-						el.querySelector('[docsjs-tag="t-l"]').onclick({target:{docsjs:{tag:'t-l'}}});
-					} else if (el.docsjs.tag === 's-c'){
-						el.setAttribute('docsjs-internal-default','min');
-						el.docsjs.state = 'max';
-						el.querySelector('[docsjs-tag="button-minimize"]').onclick();
-					}
-				});
+		// Check for min and max
+		var duration = DocsJS.animation.duration;
+		DocsJS.animation.duration = 0;
+		DocsJS.apply(function(doc){
+			DocsJS.forEach(doc.querySelectorAll('[docsjs-state="max"]'),function(el){
+				if (el.docsjs.tag === 'e-x' || el.docsjs.tag === 'e-g'){
+					el.setAttribute('docsjs-internal-default','max');
+					DocsJS.rotate(el.previousSibling.querySelector('[docsjs-tag="button-ebefore"]'),90);
+				} else if (el.docsjs.tag === 't-p' || el.docsjs.tag === 'h-d'){
+					el.setAttribute('docsjs-internal-default','max');
+				} else if (el.docsjs.tag === 's-c'){
+					el.setAttribute('docsjs-internal-default','max');
+				}
 			});
-			DocsJS.animation.duration = duration;
-			
-			// Accessibility styles
-			var accessStyle = document.createElement('style');
-			(document.head || document.getElementsByTagName("head")[0]).appendChild(accessStyle);
-			var accessStyleText = '[docsjs-tag=accessibility-mode-content] h1,[docsjs-tag=accessibility-mode-content] h2,[docsjs-tag=accessibility-mode-content] h3,[docsjs-tag=accessibility-mode-content] h4,[docsjs-tag=accessibility-mode-content] h5,[docsjs-tag=accessibility-mode-content] h6{line-height:2em;font-weight:bold;text-decoration:underline;margin:0}[docsjs-tag=accessibility-mode-wrapper]{position:fixed;width:100%;height:100%;overflow:auto;-webkit-overflow-scrolling:touch;z-index:999999999999;padding:1em;box-sizing:border-box;background:#eaeaea}[docsjs-tag=accessibility-mode-content]{position:relative;width:100%;left:0;right:0;margin-left:auto;margin-right:auto;padding:1em;background-color:'+DocsJS.getStyle(document.querySelector('[docsjs-tag="t-x"]'),'background-color')+';color:'+DocsJS.getStyle(document.querySelector('[docsjs-tag="t-x"]'),'color')+';box-shadow:0 5px 20px 3px rgba(0,0,0,.3);box-sizing:border-box;overflow:hidden;font-size:1.2em}[docsjs-tag=accessibility-mode-content] p[docsjs-tag=textNode]{display:inline;margin-top:0;margin-bottom:0}[docsjs-tag=accessibility-mode-content] h1{font-size:2.5em}[docsjs-tag=accessibility-mode-content] h2{font-size:2em}[docsjs-tag=accessibility-mode-content] h3{font-size:1.6em}[docsjs-tag=accessibility-mode-content] h4{font-size:1.4em}[docsjs-tag=accessibility-mode-content] h5{font-size:1.2em}[docsjs-tag=accessibility-mode-content] h6{font-size:1.2em; font-weight: regular;}';
-			if (typeof accessStyle.styleSheet === 'undefined'){
-				accessStyle.innerHTML = accessStyleText;
-			} else{
-				accessStyle.styleSheet.cssText = accessStyleText;
-			}
-			
-			// Done
-			if (callback === undefined){callback = function(){};}
-			DocsJS.cache.initiated = true;
-			callback();
-			DocsJS.events.ready();
-			window.setTimeout(hashChange,200);
-			window.setTimeout(DocsJS.cd.refresh,200);
+			DocsJS.forEach(doc.querySelectorAll('[docsjs-state="min"]'),function(el){
+				if (el.docsjs.tag === 'e-x' || el.docsjs.tag === 'e-g'){
+					el.setAttribute('docsjs-internal-default','min');
+					el.docsjs.state = 'max';
+					el.previousSibling.onclick();
+				} else if (el.docsjs.tag === 't-p' || el.docsjs.tag === 'h-d'){
+					el.setAttribute('docsjs-internal-default','min');
+					el.docsjs.state = 'max';
+					el.querySelector('[docsjs-tag="t-l"]').onclick({target:{docsjs:{tag:'t-l'}}});
+				} else if (el.docsjs.tag === 's-c'){
+					el.setAttribute('docsjs-internal-default','min');
+					el.docsjs.state = 'max';
+					el.querySelector('[docsjs-tag="button-minimize"]').onclick();
+				}
+			});
 		});
+		DocsJS.animation.duration = duration;
+
+		// Accessibility styles
+		var accessStyle = document.createElement('style');
+		(document.head || document.getElementsByTagName("head")[0]).appendChild(accessStyle);
+		var accessStyleText = '[docsjs-tag=accessibility-mode-content] h1,[docsjs-tag=accessibility-mode-content] h2,[docsjs-tag=accessibility-mode-content] h3,[docsjs-tag=accessibility-mode-content] h4,[docsjs-tag=accessibility-mode-content] h5,[docsjs-tag=accessibility-mode-content] h6{line-height:2em;font-weight:bold;text-decoration:underline;margin:0}[docsjs-tag=accessibility-mode-wrapper]{position:fixed;width:100%;height:100%;overflow:auto;-webkit-overflow-scrolling:touch;z-index:999999999999;padding:1em;box-sizing:border-box;background:#eaeaea}[docsjs-tag=accessibility-mode-content]{position:relative;width:100%;left:0;right:0;margin-left:auto;margin-right:auto;padding:1em;background-color:'+DocsJS.getStyle(document.querySelector('[docsjs-tag="t-x"]'),'background-color')+';color:'+DocsJS.getStyle(document.querySelector('[docsjs-tag="t-x"]'),'color')+';box-shadow:0 5px 20px 3px rgba(0,0,0,.3);box-sizing:border-box;overflow:hidden;font-size:1.2em}[docsjs-tag=accessibility-mode-content] p[docsjs-tag=textNode]{display:inline;margin-top:0;margin-bottom:0}[docsjs-tag=accessibility-mode-content] h1{font-size:2.5em}[docsjs-tag=accessibility-mode-content] h2{font-size:2em}[docsjs-tag=accessibility-mode-content] h3{font-size:1.6em}[docsjs-tag=accessibility-mode-content] h4{font-size:1.4em}[docsjs-tag=accessibility-mode-content] h5{font-size:1.2em}[docsjs-tag=accessibility-mode-content] h6{font-size:1.2em; font-weight: regular;}';
+		if (typeof accessStyle.styleSheet === 'undefined'){
+			accessStyle.innerHTML = accessStyleText;
+		} else{
+			accessStyle.styleSheet.cssText = accessStyleText;
+		}
+
+		// Init cd
+		DocsJS.cd.refresh();
+
+		// Done
+		if (callback === undefined){callback = function(){};}
+		DocsJS.cache.initiated = true;
+		callback();
+		DocsJS.events.ready();
+		window.setTimeout(hashChange,200);
 	};
 	window.setTimeout(function(){
 		DocsJS.refresh(finish);
@@ -145,7 +135,7 @@ DocsJS.refresh = function(callback){
 	'use strict';
 	// Set theme
 	if (DocsJS.cache.initiated){
-		document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme-stylesheet-internal'));
+		document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme'));
 		if (DocsJS.theme !== null){
 			var themeSheetSrc = DocsJS.origin.split('/');
 			themeSheetSrc.pop();
@@ -153,7 +143,7 @@ DocsJS.refresh = function(callback){
 			var themeSheet = document.createElement('link');
 			themeSheet.rel = 'stylesheet';
 			themeSheet.href = themeSheetSrc;
-			themeSheet.id = 'DocsJS-theme-stylesheet-internal';
+			themeSheet.id = 'DocsJS-theme';
 			document.getElementsByTagName('head')[0].appendChild(themeSheet);
 		}
 	}

@@ -10,35 +10,48 @@ function init(){
 	});*/
 	
 	// Set up examples where the user edits code to an iframe
-	if (DocsJS.supports.ace){
-		parse = function(el){
-			var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script src="'+DocsJS.origin+'"></script></head><body>'+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+'<script>DocsJS.init();</script></body></html>';
-			document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = 'data:text/html,'+html;
-		};
-		var bindParse = function(){
-			DocsJS.forEach(document.querySelectorAll('.parse'),function(el){
-				var timeout;
-				DocsJS.addEvent(el, 'keydown', function(){
-					document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = '';
-					clearTimeout(timeout);
-				});
-				DocsJS.addEvent(el, 'keyup', function(){
-					timeout = window.setTimeout(function(){parse(el);},100);
-				});
-				parse(el);
+	parse = function(el){
+		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Hailaxian.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.init();</script></body></html>';
+		document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = 'data:text/html,'+html;
+	};
+	var bindParse = function(){
+		DocsJS.forEach(document.querySelectorAll('.parse'),function(el){
+			var timeout;
+			DocsJS.addEvent(el, 'keydown', function(){
+				document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = '';
+				clearTimeout(timeout);
 			});
-		};
-		DocsJS.events.cdRefreshed = bindParse;
-		bindParse();
-	}
+			DocsJS.addEvent(el, 'keyup', function(){
+				timeout = window.setTimeout(function(){parse(el);},100);
+			});
+			parse(el);
+		});
+	};
+	DocsJS.events.cdRefreshed = bindParse;
+	bindParse();
 	
 	// Update custom body
+	var updateCustomHead = function(){
+		var editor = DocsJS.cd.getEditor(document.getElementById('customizeResultHead'));
+		editor.setValue('<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"></script>\n'+(DocsJS.theme === null?'<style>\n\t'+DocsJS.cd.getEditor(document.getElementById('customTheme')).getValue().replace(/\n/g,'')+'\n</style>':'<link href="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/themes/'+DocsJS.theme+'.min.css" rel="stylesheet" id="DocsJS-theme">'));
+		DocsJS.cd.refresh();
+	};
 	var updateCustomBody = function(){
 		var editor = DocsJS.cd.getEditor(document.getElementById('customizeResultBody'));
-		var newBody = '<div docsjs-tag="DocsJS-This-Baby">\n\t<!-- This is where you write your doc -->\n</div>\n<script>\n\tDocsJS.theme = '+(DocsJS.theme === null? 'null' : '\''+DocsJS.theme+'\'')+';\n';
-		if (DocsJS.cd.theme !== undefined){
-			newBody += '\tDocsJS.cd.theme = \''+DocsJS.cd.theme+'\';\n';
-		}
+		var packages = '';
+		DocsJS.forEach(document.querySelectorAll('input[name="IncludedPackages"]'),function(el){
+			if (el.checked){
+				switch (el.value){
+					case 'ace':
+						packages += '<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"></script>\n';
+						break;
+					case 'mathjax':
+						packages += '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script>\n';
+						break;
+				}
+			}
+		});
+		var newBody = '<div docsjs-tag="DocsJS-This-Baby">\n\t<!-- This is where you write your doc -->\n</div>\n'+packages+'<script>\n';
 		DocsJS.forEach(document.getElementById('jsOptions').querySelectorAll('input,select'),function(el){
 			if (el.value !== ''){
 				switch (el.name){
@@ -175,9 +188,6 @@ function init(){
 			}
 		});
 		newBody += '\tDocsJS.init();\n</script>';
-		if (DocsJS.theme === null){
-			newBody += '\n<style>\n\t'+DocsJS.cd.getEditor(document.getElementById('customTheme')).getValue().replace(/\n/g,'')+'\n</style>';
-		}
 		editor.setValue(newBody);
 		DocsJS.cd.refresh();
 		DocsJS.resized();
@@ -201,8 +211,8 @@ function init(){
 			if (this.readyState === 4 && this.status === 200) {
 				DocsJS.cd.getEditor(document.getElementById('ChooseTheme').querySelector('[docsjs-tag="c-d"]')).setValue(xhr.responseText);
 			}
-			updateCustomBody();
-			try{document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme-stylesheet-internal'));}catch(e){}
+			updateCustomHead();
+			try{document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme'));}catch(e){}
 			if (DocsJS.theme !== null){
 				var themeSheetSrc = DocsJS.origin.split('/');
 				themeSheetSrc.pop();
@@ -210,7 +220,7 @@ function init(){
 				var themeSheet = document.createElement('link');
 				themeSheet.rel = 'stylesheet';
 				themeSheet.href = themeSheetSrc;
-				themeSheet.id = 'DocsJS-theme-stylesheet-internal';
+				themeSheet.id = 'DocsJS-theme';
 				document.getElementsByTagName('head')[0].appendChild(themeSheet);
 			}
 			document.getElementById('ChooseTheme').querySelector('option[value="'+theme+'"]').setAttribute('selected','selected');
@@ -241,44 +251,27 @@ function init(){
 		} else{
 			DocsJS.cd.theme = this.value;
 		}
-		updateCustomBody();
+		updateCustomHead();
 	};
 	
 	// Set custom theme
 	document.getElementById('ApplyCustTheme').onclick = function(){
 		var cT = document.getElementById('customTheme');
 		DocsJS.theme = null;
-		document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme-stylesheet-internal'));
+		document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme'));
 
 		var themeSheet = document.createElement('style');
-		themeSheet.id = 'DocsJS-theme-stylesheet-internal';
+		themeSheet.id = 'DocsJS-theme';
 		themeSheet.innerHTML = DocsJS.cd.getEditor(cT).getValue();
 		document.getElementsByTagName('head')[0].appendChild(themeSheet);
 
-		updateCustomBody();
+		updateCustomHead();
 	};
 	document.getElementById('ResetCustTheme').onclick = chooseTheme;
 	
 	// Set up choose packages
 	DocsJS.forEach(document.querySelectorAll('input[name="IncludedPackages"]'),function(el){
-		el.onchange = function(){
-			var editor = DocsJS.cd.getEditor(document.getElementById('customizeResultHead'));
-			var newHead = '';
-			DocsJS.forEach(this.parentElement.querySelectorAll('input[name="IncludedPackages"]'),function(el){
-				if (el.checked){
-					switch (el.value){
-						case 'ace':
-							newHead += '<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"></script>\n';
-							break;
-						case 'mathjax':
-							newHead += '<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script>\n';
-							break;
-					}
-				}
-			});
-			editor.setValue(newHead+'<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"></script>');
-			DocsJS.cd.refresh();
-		};
+		el.onchange = updateCustomHead;
 	});
 	
 	// Set up shrinking window example

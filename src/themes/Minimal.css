@@ -16,10 +16,16 @@ h1,h2,h3,h4,h5,h6{
 	font-size: inherit;
 	font-weight: inherit;
 }
-div[docsjs-tag="s-c"],div[docsjs-tag="column-left"],div[docsjs-tag="column-right"]{
+s-c,t-p,h-d,t-l,t-x,e-g,e-x,c-d{
+	display: block;
+}
+v-r{
+	display: none;
+}
+s-c,div[docsjs-tag="column-left"],div[docsjs-tag="column-right"]{
 	will-change: contents;
 }
-div[docsjs-tag="s-c"] div[docsjs-tag="s-c"]{
+s-c s-c{
 	will-change: auto;
 }
 
@@ -47,37 +53,37 @@ div[docsjs-tag="bg"]{
 }
 
 /* Main content */
-div[docsjs-tag="s-c"]{
+s-c{
 	position: relative;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	overflow: hidden;
 }
-div[docsjs-tag="s-c"] div[docsjs-tag="s-c"]{
+s-c s-c{
 	border-left: solid 1px #E0E0E0;
 	margin-left: 1em;
 }
-div[docsjs-tag="h-d"],div[docsjs-tag="t-p"]{
+h-d,t-p{
 	position: relative;
 	overflow: hidden;
 }
-div[docsjs-tag="t-p"] > div[docsjs-tag="s-c"]{
+t-p > s-c{
 	border-bottom: solid 1em #FFF;
 	margin-top: 0;
 }
-div[docsjs-tag="t-p"] > div[docsjs-tag="t-p"]{
+t-p > t-p{
 	border-left: solid 1px #E0E0E0;
 	margin-top: 0;
 	margin-left: 1em;
 }
-div[docsjs-tag="t-p"][docsjs-state="min"] > div[docsjs-tag="t-l"], div[docsjs-tag="h-d"][docsjs-state="min"] > div[docsjs-tag="t-l"]{
+t-p[docsjs-state="min"] > t-l, h-d[docsjs-state="min"] > t-l{
 	text-decoration: underline;
 }
-div[docsjs-tag="h-d"],div[docsjs-tag="t-p"]:first-child{
+h-d,t-p:first-child{
 	margin-top: 0;
 }
-div[docsjs-tag="t-l"]{
+t-l{
 	position: relative;
 	font-size: 2.5em;
 	padding-left: 0.4em;
@@ -88,11 +94,11 @@ div[docsjs-tag="t-l"]{
 	font-weight: 700;
 	cursor: pointer;
 }
-div[docsjs-tag="t-p"] div[docsjs-tag="t-l"]{
+t-p t-l{
 	font-size: 1.6em;
 	padding-left: 0.625em;
 }
-div[docsjs-tag="t-x"],div[docsjs-tag="e-g"],div[docsjs-tag="e-x"]{
+t-x,e-g,e-x{
 	padding: 1em;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
@@ -160,7 +166,7 @@ div[docsjs-tag="efiller"]{
 }
 
 /* c-d (Cloud9 Ace) styles */
-div[docsjs-tag="c-d"]{
+c-d{
 	position: relative;
 	width: 100%;
 	padding: 1.25em;
@@ -296,7 +302,7 @@ div[docsjs-tag="etitle"]{
 	padding-top: 0.75em;
 	padding-bottom: 0.4em;
 }
-div[docsjs-tag="column-content"] div[docsjs-tag="e-g"],div[docsjs-tag="column-content"] div[docsjs-tag="e-x"]{
+div[docsjs-tag="column-content"] e-g,div[docsjs-tag="column-content"] e-x{
 	height: auto;
 }
 
