@@ -19,19 +19,16 @@
 
 <script>
 	var loc = window.location.href.split('/');
-	if (loc[loc.length-2] !== 'example'){
-		if (loc[loc.length-1].substring(0,7) === 'example'){
-			loc[loc.length-1] = 'example/' + loc[loc.length-1].slice(7);
+	if (loc[loc.length-2] !== 'docsjs'){
+		if (loc[loc.length-1].substring(0,6) === 'docsjs'){
+			loc[loc.length-1] = 'docsjs/' + loc[loc.length-1].slice(6);
 			window.location = loc.join('/');
 		}
 	}
 </script>
 
-<script src="../src/ace/ace.js"></script>
 <script src="../src/docs.js"></script>
-
-<script src="script.js"></script>
-<link href="style.css" rel="stylesheet">
+<link href="../src/themes/Hailaxian.min.css" rel="stylesheet" id="DocsJS-theme">
 </head>
 
 <body onLoad="init()">
@@ -92,13 +89,14 @@
 			<t-x>
 				Let's get started. First of all, you'll have to add docs.js to your HTML page. I highly, highly recommend using the CDN described below for many reasons including keeping DocsJS up to date.<br><br>
 				First, add this to the head of your doc (IE doesn't like to load scripts in the body),<br>
-				<c-d docsjs-lang="html" style="margin-top: 0.25em; margin-bottom: 0.5em;">&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"&gt;&lt;/script&gt;</c-d>
+				<c-d docsjs-lang="html" style="margin-top: 0.25em; margin-bottom: 0.5em;">&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"&gt;&lt;/script&gt;
+&lt;link href="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/themes/Hailaxian.min.css" rel="stylesheet" id="DocsJS-theme"&gt;</c-d>
 			
 				and this to the body.<br>
 				<c-d docsjs-lang="html" style="margin-top: 0.25em;">&lt;div docsjs-tag="DocsJS-This-Baby"&gt;
 	&lt;!-- This is where you write your doc --&gt;
 &lt;/div&gt;
+&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"&gt;&lt;/script&gt;
 &lt;script&gt;DocsJS.init();&lt;/script&gt;</c-d><br>
 				Now we can get started!
 			</t-x>
@@ -322,7 +320,7 @@
 			<t-x>Wide browser support is important for documentation so DocsJS places huge empahasis on compatability. DocsJS has been tested with <a href="https://www.browserstack.com" target="_blank" rel="noopener"><img src="BrowserStack.jpg" style="display:inline; height: 0.7em;" alt="Browser Stack logo"></a> on browsers all the way back to IE8+ (Windows XP!), FF11+, Chrome15+, Yandex, and more. DocsJS is fully compatabile with all the aforementioned browsers and you can see photo evidence below.</t-x>
 
 			<e-g docsjs-name="Screenshots" id="screenshots">
-				<div><img src="screenshots/desktop/1-snowLeopard.jpeg" alt="screenshot"><p>Snow Leopard</p></div><div><img src="screenshots/desktop/2-firefox11.jpeg" alt="screenshot"><p>Firefox 11</p></div><div><img src="screenshots/desktop/3-chrome15.jpeg" alt="screenshot"><p>Chrome 15</p></div><div><img src="screenshots/desktop/4-ie8.jpeg" alt="screenshot"><p>IE 8</p></div><div><img src="screenshots/desktop/5-ie9.jpeg" alt="screenshot"><p>IE 9</p></div><div><img src="screenshots/desktop/6-ie10.jpeg" alt="screenshot"><p>IE 10</p></div><div><img src="screenshots/desktop/7-ie11.jpeg" alt="screenshot"><p>IE 11</p></div><div><img src="screenshots/desktop/8-edge.jpeg" alt="screenshot"><p>MS Edge</p></div><div><img src="screenshots/desktop/9-yandex14-12.jpeg" alt="screenshot"><p>Yandex 14.12</p></div><div><img src="screenshots/desktop/10-firefox54.jpeg" alt="screenshot"><p>Firefox 54</p></div><div><img src="screenshots/desktop/11-chrome60.jpeg" alt="screenshot"><p>Chrome 60</p></div><div><img src="screenshots/desktop/12-highSierra.jpeg" alt="screenshot"><p>High Sierra</p></div><div><img src="screenshots/phone/1-nokiaLumia520.jpeg" alt="screenshot"><p>Lumia 520</p></div><div><img src="screenshots/phone/2-galaxyS2.jpeg" alt="screenshot"><p>Galaxy S2</p></div><div><img src="screenshots/phone/3-iPhone4.jpeg" alt="screenshot"><p>iPhone 4</p></div><div><img src="screenshots/phone/4-iPhone7.jpeg" alt="screenshot"><p>iPhone 7</p></div>
+				
 			</e-g>
 
 			<t-x style="padding-left:0; padding-right:0;">
@@ -360,8 +358,8 @@
 			<t-x>
 				Choose your DocsJS theme.
 				<select id="themeSelect" style="font-size: 0.8em; width: 100%;" aria-label="Choose Theme">
-					<option value="Hailaxian">Hailaxian by Alexander 'Hailiax' Wing (70kb)</option>
-					<option value="Minimal">Minimal by Alexander 'Hailiax' Wing (5kb)</option>
+					<option value="Hailaxian">Hailaxian by Alexander 'Hailiax' Wing (9kb)</option>
+					<option value="Minimal">Minimal by Alexander 'Hailiax' Wing (6kb)</option>
 				</select>
 			</t-x>
 			<e-x docsjs-name="Edit theme">
@@ -439,15 +437,15 @@
 			<t-l>Result</t-l>
 			<t-x>
 				Add this to the head<br>
-				<c-d docsjs-lang="html" style="margin-top: 0.25em; margin-bottom: 0.5em;" id="customizeResultHead">&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"&gt;&lt;/script&gt;</c-d>
+				<c-d docsjs-lang="html" style="margin-top: 0.25em; margin-bottom: 0.5em;" id="customizeResultHead">&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"&gt;&lt;/script&gt;
+&lt;link href="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/themes/Hailaxian.min.css" rel="stylesheet" id="DocsJS-theme"&gt;</c-d>
 			
 				and this to the body.<br>
 				<c-d docsjs-lang="html" style="margin-top: 0.25em;" id="customizeResultBody">&lt;div docsjs-tag="DocsJS-This-Baby"&gt;
 	&lt;!-- This is where you write your doc --&gt;
 &lt;/div&gt;
+&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-	DocsJS.theme = 'Hailaxian';
 	DocsJS.init();
 &lt;/script&gt;</c-d>
 			</t-x>
@@ -1461,12 +1459,29 @@ for (var i = 0; i &lt; docs.length; i++){
 		</s-c>
 	</s-c>
 </div>
+<script src="../src/ace/ace.js"></script>
 <script>
+	DocsJS.superparent = 'DocsJS-This-Baby';
+	DocsJS.fontsize.set(22);
+	DocsJS.width.max = 1280;
+	DocsJS.width.min = 340;
+	DocsJS.eg.name = 'Example';
+	DocsJS.ex.name = 'More';
+	DocsJS.cd.theme = 'chrome';
+	DocsJS.menu.top = 'Jump to top';
+	DocsJS.menu.bottom = 'Jump to bottom';
+	DocsJS.animation.duration = 300;
+	DocsJS.eg.defaultState = 'min';
+	DocsJS.ex.defaultState = 'min';
+	
 	DocsJS.init();
 </script>
 
 <div class="baseground left" id="baseGround1"></div>
 <div class="baseground right" id="baseGround2"></div>
+
+<script src="script.js"></script>
+<link href="style.css" rel="stylesheet">
 
 </body>
 </html>
