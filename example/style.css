@@ -1,0 +1,94 @@
+/* CSS Document */
+.changelog p{
+	font-size: 1.1em;
+	text-decoration: none;
+	font-weight: 700;
+}
+.changelog ol{
+	margin: 0;
+	padding-left: 1em;
+	padding-top: 0.5em;
+}
+.changelog li{
+	list-style-type: circle;
+	list-style-position: inside;
+}
+.baseground{
+	position: fixed;
+	height: 100%;
+	top: 0;
+	width: 0;
+	left: 0; right: 0; margin-left: 0; margin-right: auto;
+	background-color: #000000;
+}
+.baseground.right{
+	margin-left: auto; margin-right: 0;
+}
+.bold{
+	font-weight: 700;
+	display: inline;
+}
+iframe{
+	position: relative;
+	width: 100%;
+	height: 30em;
+	max-height: 50vh;
+	margin-top: 1em !important;
+	box-shadow: 1px 1px 15px 2px rgba(0,0,0,0.3);
+	border: none;
+}
+[docsjs-tag="accessibility"] iframe{
+	display: none;
+	visibility: hidden;
+}
+[docsjs-tag="accessibility"] .logoImage{
+	background-color: #303030;
+}
+p{
+	margin: 0;
+}
+[docsjs-tag="bg"]{
+	background-image: none !important;
+}
+#screenshots{
+	position: relative;
+	width: 100%;
+	margin-left: -1em;
+}
+#screenshots div{
+	display: inline-block;
+	position: relative;
+	width: 25%;
+	left: 0;
+}
+#screenshots div img{
+	width: 100%;
+}
+#screenshots div p{
+	height: 1.2em;
+	line-height: 1.2em;
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+	word-break: break-all;
+}
+#jsOptions input{
+	border: none;
+	padding: 0;
+	padding-left: 0.1em;
+	padding-right: 0.1em;
+	border-bottom: 1px #E0E0E0 solid;
+	font-size: 1em;
+}
+.customThemeBtn{
+	display: inline-block;
+	cursor: pointer;
+	width: 50%;
+	text-align: center;
+	font-size: 1.5em;
+	line-height: 1.5em;
+	border: 1px #E0E0E0 solid;
+	box-sizing: border-box;
+	margin-top: -1em;
+	margin-bottom: 0.66667em;
+}
