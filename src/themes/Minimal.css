@@ -82,8 +82,9 @@ div[docsjs-tag="t-l"]{
 	font-size: 2.5em;
 	padding-left: 0.4em;
 	padding-right: 3em;
-	padding-top: 0.75em;
-	padding-bottom: 0.4em;
+	padding-top: 0.35em;
+	padding-bottom: 0.1em;
+	line-height: 1.5em;
 	font-weight: 700;
 	cursor: pointer;
 }
@@ -105,7 +106,8 @@ button[docsjs-tag="accessibility-button"]{
 	background-color: rgba(31,36,41,0.95);
 	border: solid #FFF 0.5em;
 	border-bottom: none;
-	line-height: 2em;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
 	font-size: 2em;
 	color: #FFF;
 	cursor: pointer;
@@ -123,6 +125,8 @@ div[docsjs-tag="header"]{
 	margin-top: 0.5em;
 	position: relative;
 	text-align: center;
+	padding-left: 0.8333em;
+	padding-right: 0.8333em;
 	word-spacing: 1em;
 }
 div[docsjs-tag="header"] span{
@@ -197,11 +201,12 @@ div[docsjs-tag="button-minimize"],div[docsjs-tag="button-menu"]{
 	width: 1em;
 	border: solid 0.4em transparent;
 	left: 0; right: 0; margin-left: auto; margin-right: 0;
-	top: 0; bottom: 0; margin-top: 0.11em;
+	top: 0; bottom: 0; margin-top: 0.09em;
 	cursor: pointer;
 }
 div[docsjs-tag="button-minimize"]{
 	font-size: 0.95em;
+	margin-top: 0.3em;
 }
 div[docsjs-tag="button-menu"]{
 	opacity: 0;

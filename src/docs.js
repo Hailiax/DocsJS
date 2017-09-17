@@ -26,6 +26,18 @@ DocsJS.forEach = function(nodes,callback){
 DocsJS.origin = document.getElementsByTagName('script')[document.getElementsByTagName('script').length - 1].src;
 DocsJS.init = function(callback){
 	'use strict';
+	// Set theme
+	if (DocsJS.theme !== null){
+		var themeSheetSrc = DocsJS.origin.split('/');
+		themeSheetSrc.pop();
+		themeSheetSrc = themeSheetSrc.join('/') + '/themes/'+DocsJS.theme+'.min.css';
+		var themeSheet = document.createElement('link');
+		themeSheet.rel = 'stylesheet';
+		themeSheet.href = themeSheetSrc;
+		themeSheet.id = 'DocsJS-theme-stylesheet-internal';
+		document.getElementsByTagName('head')[0].appendChild(themeSheet);
+	}
+	
 	// Add essential compenents
 	try{DocsJS.resized();}catch(e){}
 	DocsJS.apply(function(doc){
@@ -115,12 +127,16 @@ DocsJS.init = function(callback){
 			
 			// Done
 			if (callback === undefined){callback = function(){};}
+			DocsJS.cache.initiated = true;
 			callback();
 			DocsJS.events.ready();
 			window.setTimeout(hashChange,200);
+			window.setTimeout(DocsJS.cd.refresh,200);
 		});
 	};
-	DocsJS.refresh(finish);
+	window.setTimeout(function(){
+		DocsJS.refresh(finish);
+	},0);
 };
 window.html5 = {
   'elements': 's-c h-d t-p t-l t-x e-g e-x c-d main nav'
@@ -128,16 +144,18 @@ window.html5 = {
 DocsJS.refresh = function(callback){
 	'use strict';
 	// Set theme
-	try{document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme-stylesheet-internal'));}catch(e){}
-	if (DocsJS.theme !== null){
-		var themeSheetSrc = DocsJS.origin.split('/');
-		themeSheetSrc.pop();
-		themeSheetSrc = themeSheetSrc.join('/') + '/themes/'+DocsJS.theme+'.min.css';
-		var themeSheet = document.createElement('link');
-		themeSheet.rel = 'stylesheet';
-		themeSheet.href = themeSheetSrc;
-		themeSheet.id = 'DocsJS-theme-stylesheet-internal';
-		document.getElementsByTagName('head')[0].appendChild(themeSheet);
+	if (DocsJS.cache.initiated){
+		document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme-stylesheet-internal'));
+		if (DocsJS.theme !== null){
+			var themeSheetSrc = DocsJS.origin.split('/');
+			themeSheetSrc.pop();
+			themeSheetSrc = themeSheetSrc.join('/') + '/themes/'+DocsJS.theme+'.min.css';
+			var themeSheet = document.createElement('link');
+			themeSheet.rel = 'stylesheet';
+			themeSheet.href = themeSheetSrc;
+			themeSheet.id = 'DocsJS-theme-stylesheet-internal';
+			document.getElementsByTagName('head')[0].appendChild(themeSheet);
+		}
 	}
 
 	// Process varible tags
@@ -541,9 +559,6 @@ DocsJS.refresh = function(callback){
 		});
 	});
 
-	// Pass c-d tags to c9 ace
-	DocsJS.cd.refresh();
-
 	// Watch column drags
 	DocsJS.apply(function(doc){
 		var exposeClose = function(d){
@@ -619,6 +634,11 @@ DocsJS.refresh = function(callback){
 		};
 		DocsJS.addEvent(doc,'touchstart',touchstart,DocsJS.supports.passive? {passive: true} : false);
 	});
+
+	// Pass c-d tags to c9 ace
+	if (DocsJS.cache.initiated){
+		DocsJS.cd.refresh();
+	}
 
 	// Done
 	if (typeof callback === 'function'){
@@ -1858,7 +1878,8 @@ DocsJS.cache = {
 	fastmode: {
 		active: false,
 		durtation: 0
-	}
+	},
+	initiated: false
 };
 DocsJS.supports = {
 	passive: false,
