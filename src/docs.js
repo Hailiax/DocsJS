@@ -264,15 +264,14 @@ DocsJS.refresh = function(callback){
 	// Convert to div soup
 	DocsJS.apply(function(doc){
 		doc.innerHTML = doc.innerHTML
-			.replace(/<s-c/g,'<div docsjs-tag="s-c"')
-			.replace(/<h-d/g,'<div docsjs-tag="h-d"')
-			.replace(/<t-p/g,'<div docsjs-tag="t-p"')
-			.replace(/<t-l/g,'<div docsjs-tag="t-l"')
-			.replace(/<t-x/g,'<div docsjs-tag="t-x"')
-			.replace(/<e-g/g,'<div docsjs-tag="e-g"')
-			.replace(/<e-x/g,'<div docsjs-tag="e-x"')
-			.replace(/<c-d/g,'<div docsjs-tag="c-d"')
-			.replace(new RegExp('</s-c>|</h-d>|</t-p>|</t-l>|</t-x>|</e-g>|</e-x>|</c-d>','g'),'</div>');
+			.replace(/<s-c/g,'<s-c docsjs-tag="s-c"')
+			.replace(/<h-d/g,'<h-d docsjs-tag="h-d"')
+			.replace(/<t-p/g,'<t-p docsjs-tag="t-p"')
+			.replace(/<t-l/g,'<t-l docsjs-tag="t-l"')
+			.replace(/<t-x/g,'<t-x docsjs-tag="t-x"')
+			.replace(/<e-g/g,'<e-g docsjs-tag="e-g"')
+			.replace(/<e-x/g,'<e-x docsjs-tag="e-x"')
+			.replace(/<c-d/g,'<c-d docsjs-tag="c-d"');
 	});
 
 	// Generate accessiblity
