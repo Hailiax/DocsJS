@@ -17,21 +17,14 @@
 <meta name="msapplication-config" content="favicons/browserconfig.xml?v=8jedNJnRp5">
 <meta name="theme-color" content="#2b2b2b">
 
-<script>
-	var loc = window.location.href.split('/');
-	if (loc[loc.length-2] !== 'docsjs'){
-		if (loc[loc.length-1].substring(0,6) === 'docsjs'){
-			loc[loc.length-1] = 'docsjs/' + loc[loc.length-1].slice(6);
-			window.location = loc.join('/');
-		}
-	}
-</script>
+<script src="script.js"></script>
+<link href="style.css" rel="stylesheet">
 
 <script src="../src/docs.js"></script>
 <link href="../src/themes/Hailaxian.min.css" rel="stylesheet" id="DocsJS-theme">
 </head>
 
-<body onLoad="init()">
+<body>
 <div docsjs-tag="DocsJS-This-Baby">
 	<v-r rightArrow>
 		<div style="padding-top: 0.1em; display: inline-block;">
@@ -60,7 +53,7 @@
 				DocsJS is an open source documentation library lets you focus on just writing. Think of it as offloading all the grunt work to us. Want a quick run down of things you don't have to worry about anymore?
 				<ol>
 					<li>Compatibility: tested on IE8+ (Windows XP wow!), FF11+, Chrome15+, and more.</li>
-					<li>Accessibility: complies with and aims to exceed old and new accessibilty standards.</li>
+					<li>Accessibility: complies with and aims to exceed old and new accessibility standards.</li>
 					<li>Navigation: automatically generates the best navigation system I've seen.</li>
 					<li>Responsiveness: works perfectly (and I really mean perfectly) on devices of any size.</li>
 					<li>Time: DocsJS is designed to make writing docs very efficient and easy.</li>
@@ -237,7 +230,7 @@
 		<t-p>
 			<t-l>Bonus tags!</t-l>
 			<t-x>
-				There are two tags that haven't been covered yet: <pre>&lt;c-d&gt;</pre> for syntax-highlighted code and <pre>&lt;v-r&gt;</pre> for HTML varibles.<br><br>
+				There are two tags that haven't been covered yet: <pre>&lt;c-d&gt;</pre> for syntax-highlighted code and <pre>&lt;v-r&gt;</pre> for HTML variables.<br><br>
 				<pre>&lt;c-d&gt;</pre> is pretty simple. First, just pretend it's a <pre>&lt;pre&gt;</pre> tag and add code in whatever language you want. Next, add the attribute <pre>docsjs-lang</pre> and set it to the language you used. If I wrote javascript in a c-d tag, I would make it:
 				<c-d docsjs-lang="html" style="margin-top:0.25em;">&lt;c-d docsjs-lang="javascript"&gt;alert('Hello World!');&lt;/c-d&gt;</c-d>
 			</t-x>
@@ -245,8 +238,8 @@
 			<e-x docsjs-name="Supported languages" style="font-family:'Source Code Pro',monospace; font-size: 0.8em;">abap, abc, actionscript, ada, apache_conf, applescript, asciidoc, assembly_x86, autohotkey, batchfile, behaviour, bro, c9search, c_cpp, cirru, clojure, cobol, coffee, coldfusion, csharp, css, curly, d, dart, diff, django, dockerfile, dot, drools, eiffel, ejs, elixir, elm, erlang, forth, fortran, ftl, gcode, gherkin, gitignore, glsl, gobstones, golang, graphqlschema, groovy, haml, handlebars, haskell, haskell_cabal, haxe, hjson, html, html_elixir, html_ruby, ini, io, jack, jade, java, javascript, json, jsoniq, jsp, jsx, julia, kotlin, latex, less, liquid, lisp, livescript, logiql, lsl, lua, luapage, lucene, makefile, markdown, mask, matlab, maze, mel, mushcode, mysql, nix, nsis, objectivec, ocaml, pascal, perl, pgsql, php, pig, plain_text, powershell, praat, prolog, properties, protobuf, python, r, razor, rdoc, rhtml, rst, ruby, rust, sass, scad, scala, scheme, scss, sh, sjs, smarty, snippets, soy_template, space, sparql, sql, sqlserver, stylus, svg, swift, tcl, tex, text, textile, toml, tsx, turtle, twig, typescript, vala, vbscript, velocity, verilog, vhdl, wollok, xml, xquery, yaml</e-x>
 			
 			<t-x>
-				DocsJS' <pre>&lt;v-r&gt;</pre> tags allow for HTML varibles, which can help tidy your code and prevent excessive copy-pasting. <pre>&lt;v-r&gt;</pre> tags with anything inside will define a varible while an empty <pre>&lt;v-r&gt;</pre> will call a varible.
-				<c-d docsjs-lang="html" style="margin-top:0.25em;">&lt;!-- You can define a varible named "helloWorld" like this: --&gt;
+				DocsJS' <pre>&lt;v-r&gt;</pre> tags allow for HTML variables, which can help tidy your code and prevent excessive copy-pasting. <pre>&lt;v-r&gt;</pre> tags with anything inside will define a variable while an empty <pre>&lt;v-r&gt;</pre> will call a variable.
+				<c-d docsjs-lang="html" style="margin-top:0.25em;">&lt;!-- You can define a variable named "helloWorld" like this: --&gt;
 &lt;v-r helloWorld&gt;
 	&lt;p&gt;Anything you want!&lt;/p&gt;
 &lt;/v-r&gt;
@@ -293,7 +286,7 @@
 		</h-d>
 		<t-p>
 			<t-l>Navigation</t-l>
-			<t-x>DocsJS automatically generates a menu which serves as a useful table of contents and navigation. The names used in the menu come from your <pre>&lt;t-l&gt;</pre> tags and cliking on a name in the menu will scroll the doc to the corresponding section or topic. The menu also contains reading options and scroll to top/bottom buttons.</t-x>
+			<t-x>DocsJS automatically generates a menu which serves as a useful table of contents and navigation. The names used in the menu come from your <pre>&lt;t-l&gt;</pre> tags and clicking on a name in the menu will scroll the doc to the corresponding section or topic. The menu also contains reading options and scroll to top/bottom buttons.</t-x>
 			
 			<e-x>The menu can be opened from the menu button at the top right of each title or by dragging the left sidebar out. These two locations ensure that the user has consistent access to the menu while keeping the layout fluid. Try opening the menu from the title above! The menu bolds the current location and minimizes the sections to match minimized sections and topics in the doc. You can also minimize sections by clicking just to the right of the thin line. (Try clicking between the lines of features and navigation.)<br><br>
 			The menu contains 6 viewing option buttons. The first two decrease or increase the doc's font size. The next two will minimize or maximize everything. The next will invert the doc's colors, and the last will reset everything in the doc to their original state.</e-x>
@@ -307,17 +300,17 @@
 			<t-x>Documentation often contains a menu on the left and examples/code-snippets on the right. This makes the documentation appear cleaner, shorter, and easier to read. However, this doesn't work on mobile devices and its formatting can be difficult. DocsJS' solution: the <pre>&lt;e-g&gt;</pre> (<v-r egArrow></v-r>) and <pre>&lt;e-x&gt;</pre> (<v-r exArrow></v-r>) tags.<br><br>
 			By default, content in these tags are enclosed in an expandable container, preserving a short and clean look. If the reader's screen is large enough, they can move these tags to a sidebar. Dragging out <v-r egArrow></v-r> on a sidebar will move all <pre>&lt;e-g&gt;</pre>s to the sidebar while dragging <v-r exArrow></v-r> will move <pre>&lt;e-x&gt;</pre>s. Sidebars can be adjusted or closed by dragging the edge of the sidebar.</t-x>
 			<e-g>Try moving this example to the right sidebar!</e-g>
-			<e-x docsjs-name="Design">Why two tags? Two reasons: there are two sidebars so the user can drag both e-x and e-g to the sides (the option to drag a tag to the left will appear after opening the right sidebar) and documentation generally contains examples and extra details. Why the shapes <v-r egArrow></v-r> and <v-r exArrow></v-r>? They're both built off of the caret symbol which is naturally associated with open/closeable drawers. The example symbol (<v-r egArrow></v-r>) looks like a backwards E while the more symbol (<v-r exArrow></v-r>) contains dots associated with more details.</e-x>
+			<e-x docsjs-name="Design">Why two tags? Two reasons: there are two sidebars so the user can drag both e-x and e-g to the sides (the option to drag a tag to the left will appear after opening the right sidebar) and documentation generally contains examples and extra details. Why the shapes <v-r egArrow></v-r> and <v-r exArrow></v-r>? They're both built off of the caret symbol which is naturally associated with open/closable drawers. The example symbol (<v-r egArrow></v-r>) looks like a backwards E while the more symbol (<v-r exArrow></v-r>) contains dots associated with more details.</e-x>
 		</t-p>
 		<t-p>
 			<t-l>Animations</t-l>
 			<t-x>Animations don't just make your documentation look better, they have important functions like: drawing attention to important details, suggesting how certain features work, and showing context. DocsJS automatically generates animations where needed to improve the functionality and feel of your doc.</t-x>
 
-			<e-x docsjs-name="Where?">Here are some places you can find animations.<br>Opening a menu will animate the menu open and the button to an X for close. Clicking the circular minimize button will animate the section open/closed and will open/close the circle to match. Clicking a title will minimize the topic or header. Clicking a e-x or e-g will rotate the symbol and animate the content open. Changing viewing options on the menu are animated. jumpTo() or clicking on a menu title will animate the scroll position to the choosen area; the duration of this animation depends on the distance between the current location and destination.</e-x>
+			<e-x docsjs-name="Where?">Here are some places you can find animations.<br>Opening a menu will animate the menu open and the button to an X for close. Clicking the circular minimize button will animate the section open/closed and will open/close the circle to match. Clicking a title will minimize the topic or header. Clicking a e-x or e-g will rotate the symbol and animate the content open. Changing viewing options on the menu are animated. jumpTo() or clicking on a menu title will animate the scroll position to the chosen area; the duration of this animation depends on the distance between the current location and destination.</e-x>
 		</t-p>
 		<t-p>
 			<t-l>Browser support</t-l>
-			<t-x>Wide browser support is important for documentation so DocsJS places huge empahasis on compatability. DocsJS has been tested with <a href="https://www.browserstack.com" target="_blank" rel="noopener"><img src="BrowserStack.jpg" style="display:inline; height: 0.7em;" alt="Browser Stack logo"></a> on browsers all the way back to IE8+ (Windows XP!), FF11+, Chrome15+, Yandex, and more. DocsJS is fully compatabile with all the aforementioned browsers and you can see photo evidence below.</t-x>
+			<t-x>Wide browser support is important for documentation so DocsJS places huge emphasis on compatibility. DocsJS has been tested with <a href="https://www.browserstack.com" target="_blank" rel="noopener"><img src="BrowserStack.jpg" style="display:inline; height: 0.7em;" alt="Browser Stack logo"></a> on browsers all the way back to IE8+ (Windows XP!), FF11+, Chrome15+, Yandex, and more. DocsJS is fully compatible with all the aforementioned browsers and you can see photo evidence below.</t-x>
 
 			<e-g docsjs-name="Screenshots" id="screenshots">
 				
@@ -340,12 +333,12 @@
 				
 				There are some cases where these standards may not be enough. In these cases, the reader should click the "Accessibility Mode" button located at the top of every doc. This button is placed where readers may find "skip nav" buttons on other accessibility-friendly sites. Upon clicking, the doc's font size will be increased by two points for increased readbility, the left sidebar will double in size and display the menu for easy navigation, all <pre>&lt;e-g&gt;</pre> and <pre>&lt;e-x&gt;</pre> tags will be expanded to remove the necessity of clicking, and the right sidebar along with the menu/minimize buttons will be removed as they may be distracting to people with severe focus disabilities (clicking topics, headers, e-x and e-g will also be disabled).<br><br>
 				
-				If this not enough, the reader can then click the next tabbable "Extended Accessibility Mode" button which replaces the previous "Accessibility Mode" button. Upon clicking, all DocsJS elements are removed and the entire doc is replaced by simple HTML document containing <pre>&lt;h1&gt;</pre> - <pre>&lt;h6&gt;</pre> tags to match the structure. This is close to plain text so the reader will have to rely on external software such as screenreaders to interpret the doc.
+				If this not enough, the reader can then click the next tabbable "Extended Accessibility Mode" button which replaces the previous "Accessibility Mode" button. Upon clicking, all DocsJS elements are removed and the entire doc is replaced by simple HTML document containing <pre>&lt;h1&gt;</pre> - <pre>&lt;h6&gt;</pre> tags to match the structure. This is close to plain text so the reader will have to rely on external software such as screen-readers to interpret the doc.
 			</t-x>
 		</t-p>
 		<t-p>
 			<t-l>Customizable</t-l>
-			<t-x>Almost everything, from the buttons to the theme, is easily customizable. You can make some easy customizatons and preview them right on this doc in the section below. If the options below aren't enough, you can check out the <a onClick="DocsJS.jumpTo('API Reference');" href="javascript:void(0);">API Reference</a>.</t-x>
+			<t-x>Almost everything, from the buttons to the theme, is easily customizable. You can make some easy customizations and preview them right on this doc in the section below. If the options below aren't enough, you can check out the <a onClick="DocsJS.jumpTo('API Reference');" href="javascript:void(0);">API Reference</a>.</t-x>
 		</t-p>
 	</s-c>
 	<s-c>
@@ -1474,14 +1467,11 @@ for (var i = 0; i &lt; docs.length; i++){
 	DocsJS.eg.defaultState = 'min';
 	DocsJS.ex.defaultState = 'min';
 	
-	DocsJS.init();
+	DocsJS.init(init);
 </script>
 
 <div class="baseground left" id="baseGround1"></div>
 <div class="baseground right" id="baseGround2"></div>
-
-<script src="script.js"></script>
-<link href="style.css" rel="stylesheet">
 
 </body>
 </html>

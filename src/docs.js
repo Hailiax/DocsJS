@@ -26,16 +26,18 @@ DocsJS.forEach = function(nodes,callback){
 DocsJS.origin = document.getElementsByTagName('script')[document.getElementsByTagName('script').length - 1].src;
 DocsJS.init = function(callback){
 	'use strict';
+	console.log('DocsJS: init started @',Date.now()-DocsJS.cache.initTime);
 	// Set theme
-	if (document.getElementById('DocsJS-theme') === null){
-		DocsJS.theme = null;
-	} else{
+	if (document.getElementById('DocsJS-theme') !== null){
 		DocsJS.theme = document.getElementById('DocsJS-theme').href.split('/');
 		DocsJS.theme = DocsJS.theme[DocsJS.theme.length-1].split('.')[0];
+		if (DocsJS.aceTheme[DocsJS.theme] === undefined){
+			console.error(DocsJS.theme + ' is not a theme used by DocsJS. DocsJS will assume the theme (DocsJS.theme =) "Hailaxian" and will use the Ace c-d theme (DocsJS.cd.theme =) "chrome".');
+			DocsJS.theme = 'Hailaxian';
+		}
 	}
 	
 	// Add essential compenents
-	try{DocsJS.resized();}catch(e){}
 	DocsJS.apply(function(doc){
 		doc.innerHTML = '<main role="main"><s-c docsjs-tag="s-c"><button role="button" docsjs-tag="accessibility-button" tabindex="0" onclick="DocsJS.toggleRecommendedAccessibility(this)" onkeydown="DocsJS.accessButtonSpaceClick(this,event)">Accessibility Mode</button><div docsjs-tag="header"></div></s-c><s-c docsjs-tag="s-c" style="display:none;"><button role="button" docsjs-tag="accessibility-button" tabindex="0" onclick="DocsJS.toggleExtendedAccessibility()" onkeydown="DocsJS.accessButtonSpaceClick(this,event)">Extended Accessibility Mode</button></s-c>'+doc.innerHTML+'</main>';
 	});
@@ -52,78 +54,82 @@ DocsJS.init = function(callback){
 
 	// Finish initiation
 	var finish = function(){
-		// Watch events
-		DocsJS.addEvent(window,'scroll',DocsJS.scrolled);
-		DocsJS.addEvent(window,'resize',function(){
-			DocsJS.apply(function(doc){
-				DocsJS.correctColumnHeight(doc);
-			});
+		console.log('DocsJS: DocsJS.refresh() done @',Date.now()-DocsJS.cache.initTime);
+		window.setTimeout(function(){
+			// Watch events
+			DocsJS.addEvent(window,'scroll',DocsJS.scrolled);
+			DocsJS.addEvent(window,'resize',DocsJS.resized);
+			var hashChange = function(){
+				var location =  decodeURIComponent(window.location.hash.substr(1));
+				window.location.hash = '';
+				if (location !== ''){
+					DocsJS.jumpTo(location);
+				}
+			};
+			DocsJS.addEvent(window,'hashchange',hashChange);
+
+			DocsJS.scrolled();
 			DocsJS.resized();
-		});
-		var hashChange = function(){
-			var location =  decodeURIComponent(window.location.hash.substr(1));
-			window.location.hash = '';
-			if (location !== ''){
-				DocsJS.jumpTo(location);
+
+			// Check for min and max
+			var duration = DocsJS.animation.duration;
+			DocsJS.animation.duration = 0;
+			DocsJS.apply(function(doc){
+				DocsJS.forEach(doc.querySelectorAll('[docsjs-state="max"]'),function(el){
+					if (el.docsjs.tag === 'e-x' || el.docsjs.tag === 'e-g'){
+						el.setAttribute('docsjs-internal-default','max');
+						DocsJS.rotate(el.previousSibling.querySelector('[docsjs-tag="button-ebefore"]'),90);
+					} else if (el.docsjs.tag === 't-p' || el.docsjs.tag === 'h-d'){
+						el.setAttribute('docsjs-internal-default','max');
+					} else if (el.docsjs.tag === 's-c'){
+						el.setAttribute('docsjs-internal-default','max');
+					}
+				});
+				DocsJS.forEach(doc.querySelectorAll('[docsjs-state="min"]'),function(el){
+					if (el.docsjs.tag === 'e-x' || el.docsjs.tag === 'e-g'){
+						el.setAttribute('docsjs-internal-default','min');
+						el.docsjs.state = 'max';
+						el.previousSibling.onclick();
+					} else if (el.docsjs.tag === 't-p' || el.docsjs.tag === 'h-d'){
+						el.setAttribute('docsjs-internal-default','min');
+						el.docsjs.state = 'max';
+						el.querySelector('[docsjs-tag="t-l"]').onclick({target:{docsjs:{tag:'t-l'}}});
+					} else if (el.docsjs.tag === 's-c'){
+						el.setAttribute('docsjs-internal-default','min');
+						el.docsjs.state = 'max';
+						el.querySelector('[docsjs-tag="button-minimize"]').onclick();
+					}
+				});
+			});
+			DocsJS.animation.duration = duration;
+
+			// Accessibility styles
+			var accessStyle = document.createElement('style');
+			(document.head || document.getElementsByTagName("head")[0]).appendChild(accessStyle);
+			var accessStyleText = '[docsjs-tag=accessibility-mode-content] h1,[docsjs-tag=accessibility-mode-content] h2,[docsjs-tag=accessibility-mode-content] h3,[docsjs-tag=accessibility-mode-content] h4,[docsjs-tag=accessibility-mode-content] h5,[docsjs-tag=accessibility-mode-content] h6{line-height:2em;font-weight:bold;text-decoration:underline;margin:0}[docsjs-tag=accessibility-mode-wrapper]{position:fixed;width:100%;height:100%;overflow:auto;-webkit-overflow-scrolling:touch;z-index:999999999999;padding:1em;box-sizing:border-box;background:#eaeaea}[docsjs-tag=accessibility-mode-content]{position:relative;width:100%;left:0;right:0;margin-left:auto;margin-right:auto;padding:1em;background-color:'+DocsJS.getStyle(document.querySelector('[docsjs-tag="t-x"]'),'background-color')+';color:'+DocsJS.getStyle(document.querySelector('[docsjs-tag="t-x"]'),'color')+';box-shadow:0 5px 20px 3px rgba(0,0,0,.3);box-sizing:border-box;overflow:hidden;font-size:1.2em}[docsjs-tag=accessibility-mode-content] p[docsjs-tag=textNode]{display:inline;margin-top:0;margin-bottom:0}[docsjs-tag=accessibility-mode-content] h1{font-size:2.5em}[docsjs-tag=accessibility-mode-content] h2{font-size:2em}[docsjs-tag=accessibility-mode-content] h3{font-size:1.6em}[docsjs-tag=accessibility-mode-content] h4{font-size:1.4em}[docsjs-tag=accessibility-mode-content] h5{font-size:1.2em}[docsjs-tag=accessibility-mode-content] h6{font-size:1.2em; font-weight: regular;}';
+			if (typeof accessStyle.styleSheet === 'undefined'){
+				accessStyle.innerHTML = accessStyleText;
+			} else{
+				accessStyle.styleSheet.cssText = accessStyleText;
 			}
-		};
-		DocsJS.addEvent(window,'hashchange',hashChange);
+			
+			console.log('DocsJS: layout done @',Date.now()-DocsJS.cache.initTime);
+			window.setTimeout(function(){
+				// Init cd
+				DocsJS.cd.refresh();
 
-		DocsJS.scrolled();
-		DocsJS.resized();
-
-		// Check for min and max
-		var duration = DocsJS.animation.duration;
-		DocsJS.animation.duration = 0;
-		DocsJS.apply(function(doc){
-			DocsJS.forEach(doc.querySelectorAll('[docsjs-state="max"]'),function(el){
-				if (el.docsjs.tag === 'e-x' || el.docsjs.tag === 'e-g'){
-					el.setAttribute('docsjs-internal-default','max');
-					DocsJS.rotate(el.previousSibling.querySelector('[docsjs-tag="button-ebefore"]'),90);
-				} else if (el.docsjs.tag === 't-p' || el.docsjs.tag === 'h-d'){
-					el.setAttribute('docsjs-internal-default','max');
-				} else if (el.docsjs.tag === 's-c'){
-					el.setAttribute('docsjs-internal-default','max');
-				}
-			});
-			DocsJS.forEach(doc.querySelectorAll('[docsjs-state="min"]'),function(el){
-				if (el.docsjs.tag === 'e-x' || el.docsjs.tag === 'e-g'){
-					el.setAttribute('docsjs-internal-default','min');
-					el.docsjs.state = 'max';
-					el.previousSibling.onclick();
-				} else if (el.docsjs.tag === 't-p' || el.docsjs.tag === 'h-d'){
-					el.setAttribute('docsjs-internal-default','min');
-					el.docsjs.state = 'max';
-					el.querySelector('[docsjs-tag="t-l"]').onclick({target:{docsjs:{tag:'t-l'}}});
-				} else if (el.docsjs.tag === 's-c'){
-					el.setAttribute('docsjs-internal-default','min');
-					el.docsjs.state = 'max';
-					el.querySelector('[docsjs-tag="button-minimize"]').onclick();
-				}
-			});
-		});
-		DocsJS.animation.duration = duration;
-
-		// Accessibility styles
-		var accessStyle = document.createElement('style');
-		(document.head || document.getElementsByTagName("head")[0]).appendChild(accessStyle);
-		var accessStyleText = '[docsjs-tag=accessibility-mode-content] h1,[docsjs-tag=accessibility-mode-content] h2,[docsjs-tag=accessibility-mode-content] h3,[docsjs-tag=accessibility-mode-content] h4,[docsjs-tag=accessibility-mode-content] h5,[docsjs-tag=accessibility-mode-content] h6{line-height:2em;font-weight:bold;text-decoration:underline;margin:0}[docsjs-tag=accessibility-mode-wrapper]{position:fixed;width:100%;height:100%;overflow:auto;-webkit-overflow-scrolling:touch;z-index:999999999999;padding:1em;box-sizing:border-box;background:#eaeaea}[docsjs-tag=accessibility-mode-content]{position:relative;width:100%;left:0;right:0;margin-left:auto;margin-right:auto;padding:1em;background-color:'+DocsJS.getStyle(document.querySelector('[docsjs-tag="t-x"]'),'background-color')+';color:'+DocsJS.getStyle(document.querySelector('[docsjs-tag="t-x"]'),'color')+';box-shadow:0 5px 20px 3px rgba(0,0,0,.3);box-sizing:border-box;overflow:hidden;font-size:1.2em}[docsjs-tag=accessibility-mode-content] p[docsjs-tag=textNode]{display:inline;margin-top:0;margin-bottom:0}[docsjs-tag=accessibility-mode-content] h1{font-size:2.5em}[docsjs-tag=accessibility-mode-content] h2{font-size:2em}[docsjs-tag=accessibility-mode-content] h3{font-size:1.6em}[docsjs-tag=accessibility-mode-content] h4{font-size:1.4em}[docsjs-tag=accessibility-mode-content] h5{font-size:1.2em}[docsjs-tag=accessibility-mode-content] h6{font-size:1.2em; font-weight: regular;}';
-		if (typeof accessStyle.styleSheet === 'undefined'){
-			accessStyle.innerHTML = accessStyleText;
-		} else{
-			accessStyle.styleSheet.cssText = accessStyleText;
-		}
-
-		// Init cd
-		DocsJS.cd.refresh();
-
-		// Done
-		if (callback === undefined){callback = function(){};}
-		DocsJS.cache.initiated = true;
-		callback();
-		DocsJS.events.ready();
-		window.setTimeout(hashChange,200);
+				// Done
+				if (callback === undefined){callback = function(){};}
+				DocsJS.cache.initiated = true;
+				callback();
+				DocsJS.events.ready();
+				window.setTimeout(hashChange,200);
+				console.log('DocsJS: Ace done @',Date.now()-DocsJS.cache.initTime);
+				console.log('DocsJS: end of init',Date.now());
+			},0);
+		},0);
 	};
+	console.log('DocsJS: Essentials rendered @',Date.now()-DocsJS.cache.initTime);
 	window.setTimeout(function(){
 		DocsJS.refresh(finish);
 	},0);
@@ -267,7 +273,7 @@ DocsJS.refresh = function(callback){
 	// Generate accessiblity
 	DocsJS.apply(function(doc){
 		var access = '';
-		DocsJS.forEach(doc.querySelectorAll('[docsjs-tag="'+DocsJS.superparent+'"]>main>[docsjs-tag="s-c"]'),function(el){
+		DocsJS.forEach(doc.querySelectorAll('[docsjs-tag="'+DocsJS.superparent+'"]>main>s-c'),function(el){
 			var read = function(el, level){
 				if (level > 6){level = 6;}
 				DocsJS.forEach(el.childNodes,function(el){
@@ -348,7 +354,7 @@ DocsJS.refresh = function(callback){
 			'<div docsjs-tag="menu-item"><div docsjs-tag="menu-title" docsjs-state="" docsjs-menu-location="'+DocsJS.menu.bottom+'" onclick="DocsJS._menuClicked(this,'+"'"+DocsJS.menu.bottom+"'"+');" docsjs-menu-destination="'+DocsJS.menu.bottom+'">'+DocsJS.menu.bottom+'</div></div>';
 		
 		doc.querySelector('[docsjs-tag="header"]').innerHTML = '';
-		DocsJS.forEach(doc.querySelectorAll('main>[docsjs-tag="s-c"]'),function(el){
+		DocsJS.forEach(doc.querySelectorAll('main>s-c'),function(el){
 			try{doc.querySelector('[docsjs-tag="header"]').innerHTML += '<span onclick="DocsJS.jumpTo(\''+el.docsjs.location+'\')">' + el.querySelector('[docsjs-tag="t-l"]').textContent + '</span> ';}catch(e){}
 		});
 	});
@@ -590,6 +596,7 @@ DocsJS.refresh = function(callback){
 					DocsJS.removeEvent(doc,'mouseup',mouseup);
 					DocsJS.checkColumns(doc);
 					DocsJS.cache.events.oncolumn = 0;
+					DocsJS.resized();
 					DocsJS.addEvent(doc,'mousedown',mousedown);
 				};
 				DocsJS.addEvent(doc,'mouseup',mouseup);
@@ -616,6 +623,7 @@ DocsJS.refresh = function(callback){
 					DocsJS.removeEvent(doc,'touchend',touchend);
 					DocsJS.checkColumns(doc);
 					DocsJS.cache.events.oncolumn = 0;
+					DocsJS.resized();
 					doc.ontouchstart = touchstart;
 				};
 				DocsJS.addEvent(doc,'touchend',touchend,DocsJS.supports.passive? {passive: true} : false);
@@ -773,17 +781,13 @@ DocsJS.resized = function(){
 			});
 		});
 	}
-	DocsJS.apply(function(doc){
-		DocsJS.forEach(doc.querySelectorAll('[docsjs-internal="extraWidthCorrect"]'),function(el){
-			el.style.width = DocsJS.cache.extraWidth+100+'px';
+	if (DocsJS.cache.initiated && DocsJS.cache.events.oncolumn === 0){
+		DocsJS.scrolled();
+		DocsJS.apply(function(doc){
+			DocsJS.correctColumnHeight(doc);
 		});
-	});
-	DocsJS.scrolled();
-	DocsJS.forEach(DocsJS.cache.aceEditors,function(editor){
-		editor.resize();
-	});
-	var scrollTop = DocsJS.window.scrollTop();
-	scrollTop = DocsJS.window.scrollTop();
+		DocsJS.cd.refresh();
+	}
 };
 DocsJS._menuClicked = function(el, loc){
 	'use strict';
@@ -1615,13 +1619,13 @@ DocsJS.fontsize = {
 	set: function(val){
 		'use strict';
 		DocsJS.fontsize._value = val;
-		try {
+		if (DocsJS.cache.initiated){
 			DocsJS.resized();
 			DocsJS.scrolled();
 			DocsJS.apply(function(doc){
 				DocsJS.correctColumnHeight(doc);
 			});
-		} catch(e){}
+		}
 	},
 	_value: 22,
 	_scalar: 1,
@@ -1646,7 +1650,7 @@ DocsJS.window = {
 ///// Settables //////
 //////////////////////
 
-DocsJS.theme = 'Hailaxian';
+DocsJS.theme = null;
 DocsJS.superparent = 'DocsJS-This-Baby';
 DocsJS.width = {
 	max: 1280,
@@ -1680,7 +1684,7 @@ DocsJS.cd = {
 		'use strict';
 		return DocsJS.cache.aceEditors[el.docsjs.internal];
 	},
-	refresh: function(){
+	refresh: function(callback){
 		'use strict';
 		if (typeof ace !== 'undefined' && DocsJS.supports.ace){
 			DocsJS.apply(function(doc){
@@ -1691,7 +1695,7 @@ DocsJS.cd = {
 							return '&#'+i.charCodeAt(0)+';';
 						});
 						el.docsjs.internal = index;
-						DocsJS.cache.aceEditors[el.docsjs.internal].setTheme("ace/theme/"+(DocsJS.cd.theme || DocsJS.aceTheme[DocsJS.theme]));
+						DocsJS.cache.aceEditors[el.docsjs.internal].setTheme("ace/theme/"+(DocsJS.cd.theme || DocsJS.aceTheme[DocsJS.theme] || 'chrome'));
 						DocsJS.cache.aceEditors[el.docsjs.internal].destroy();
 						el.docsjs.internal = index;
 					} else{
@@ -1725,6 +1729,9 @@ DocsJS.cd = {
 				DocsJS.cache.aceEditors = editors;
 			});
 			DocsJS.events.cdRefreshed();
+			if (typeof callback === 'function'){
+				callback();
+			}
 		}
 	}
 };
@@ -1868,7 +1875,8 @@ DocsJS.cache = {
 		active: false,
 		durtation: 0
 	},
-	initiated: false
+	initiated: false,
+	initTime: Date.now()
 };
 DocsJS.supports = {
 	passive: false,

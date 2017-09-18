@@ -18,8 +18,11 @@ function init(){
 		DocsJS.forEach(document.querySelectorAll('.parse'),function(el){
 			var timeout;
 			DocsJS.addEvent(el, 'keydown', function(){
-				document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = '';
 				clearTimeout(timeout);
+				document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = '';
+				window.setTimeout(function(){
+					timeout = window.setTimeout(function(){parse(el);},100);
+				},0);
 			});
 			DocsJS.addEvent(el, 'keyup', function(){
 				timeout = window.setTimeout(function(){parse(el);},100);
@@ -37,7 +40,6 @@ function init(){
 		DocsJS.cd.refresh();
 	};
 	var updateCustomBody = function(){
-		var editor = DocsJS.cd.getEditor(document.getElementById('customizeResultBody'));
 		var packages = '';
 		DocsJS.forEach(document.querySelectorAll('input[name="IncludedPackages"]'),function(el){
 			if (el.checked){
@@ -52,6 +54,9 @@ function init(){
 			}
 		});
 		var newBody = '<div docsjs-tag="DocsJS-This-Baby">\n\t<!-- This is where you write your doc -->\n</div>\n'+packages+'<script>\n';
+		if (DocsJS.cd.theme !== DocsJS.aceTheme[DocsJS.theme]){
+			newBody += '\tDocsJS.cd.theme = \''+DocsJS.cd.theme+'\';\n';
+		}
 		DocsJS.forEach(document.getElementById('jsOptions').querySelectorAll('input,select'),function(el){
 			if (el.value !== ''){
 				switch (el.name){
@@ -188,7 +193,7 @@ function init(){
 			}
 		});
 		newBody += '\tDocsJS.init();\n</script>';
-		editor.setValue(newBody);
+		DocsJS.cd.getEditor(document.getElementById('customizeResultBody')).setValue(newBody);
 		DocsJS.cd.refresh();
 		DocsJS.resized();
 	};
@@ -251,7 +256,7 @@ function init(){
 		} else{
 			DocsJS.cd.theme = this.value;
 		}
-		updateCustomHead();
+		updateCustomBody();
 	};
 	
 	// Set custom theme
@@ -271,7 +276,7 @@ function init(){
 	
 	// Set up choose packages
 	DocsJS.forEach(document.querySelectorAll('input[name="IncludedPackages"]'),function(el){
-		el.onchange = updateCustomHead;
+		el.onchange = updateCustomBody;
 	});
 	
 	// Set up shrinking window example
@@ -356,8 +361,8 @@ function init(){
 		scaleWindow(parseInt(document.getElementById('windowScalarPercent').innerHTML));
 	};
 	
-	// Load screenshots
-	window.setTimeout(function(){
+	document.getElementById('screenshots').previousSibling.onmouseover = function(){
+		document.getElementById('screenshots').previousSibling.onmouseover = function(){};
 		document.getElementById('screenshots').innerHTML = '<div><img src="example/screenshots/desktop/1-snowLeopard.jpeg" alt="screenshot"><p>Snow Leopard</p></div><div><img src="example/screenshots/desktop/2-firefox11.jpeg" alt="screenshot"><p>Firefox 11</p></div><div><img src="example/screenshots/desktop/3-chrome15.jpeg" alt="screenshot"><p>Chrome 15</p></div><div><img src="example/screenshots/desktop/4-ie8.jpeg" alt="screenshot"><p>IE 8</p></div><div><img src="example/screenshots/desktop/5-ie9.jpeg" alt="screenshot"><p>IE 9</p></div><div><img src="example/screenshots/desktop/6-ie10.jpeg" alt="screenshot"><p>IE 10</p></div><div><img src="example/screenshots/desktop/7-ie11.jpeg" alt="screenshot"><p>IE 11</p></div><div><img src="example/screenshots/desktop/8-edge.jpeg" alt="screenshot"><p>MS Edge</p></div><div><img src="example/screenshots/desktop/9-yandex14-12.jpeg" alt="screenshot"><p>Yandex 14.12</p></div><div><img src="example/screenshots/desktop/10-firefox54.jpeg" alt="screenshot"><p>Firefox 54</p></div><div><img src="example/screenshots/desktop/11-chrome60.jpeg" alt="screenshot"><p>Chrome 60</p></div><div><img src="example/screenshots/desktop/12-highSierra.jpeg" alt="screenshot"><p>High Sierra</p></div><div><img src="example/screenshots/phone/1-nokiaLumia520.jpeg" alt="screenshot"><p>Lumia 520</p></div><div><img src="example/screenshots/phone/2-galaxyS2.jpeg" alt="screenshot"><p>Galaxy S2</p></div><div><img src="example/screenshots/phone/3-iPhone4.jpeg" alt="screenshot"><p>iPhone 4</p></div><div><img src="example/screenshots/phone/4-iPhone7.jpeg" alt="screenshot"><p>iPhone 7</p></div>';
-	},3000);
+	};
 }
