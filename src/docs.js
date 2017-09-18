@@ -1,6 +1,30 @@
 // JavaScript Document
 // Planned for future releases: allow topics and sections to be embedded in e-g/e-x, documentation search, menu as a popup on mobile (make other things popup on mobile), Restore default states on reset, Jump to minimized topic will maximize, Massive improvements for columns (animations, reflows, not dragging ui)
 
+/*
+MIT License
+
+Copyright (c) 2017 Hailiax
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 //////////////////////
 /////// Basics ///////
 //////////////////////
@@ -42,6 +66,7 @@ DocsJS.init = function(callback){
 		doc.innerHTML = '<main role="main"><s-c docsjs-tag="s-c"><button role="button" docsjs-tag="accessibility-button" tabindex="0" onclick="DocsJS.toggleRecommendedAccessibility(this)" onkeydown="DocsJS.accessButtonSpaceClick(this,event)">Accessibility Mode</button><div docsjs-tag="header"></div></s-c><s-c docsjs-tag="s-c" style="display:none;"><button role="button" docsjs-tag="accessibility-button" tabindex="0" onclick="DocsJS.toggleExtendedAccessibility()" onkeydown="DocsJS.accessButtonSpaceClick(this,event)">Extended Accessibility Mode</button></s-c>'+doc.innerHTML+'</main>';
 	});
 	DocsJS.apply(function(doc){
+		doc.style.fontSize = DocsJS.fontsize._value + 'px';
 		doc.outerHTML = doc.outerHTML
 			.slice(0,-6) +
 			'<div docsjs-tag="menu" style="display: none;"></div>' +
@@ -1370,7 +1395,6 @@ DocsJS.column = {
 DocsJS.correctColumnHeight = function(doc){
 	'use strict';
 	var correct = function(side){
-		var scrollHeight = document.documentElement.scrollHeight;
 		DocsJS.forEach(doc.querySelectorAll('[docsjs-tag="efiller"][docsjs-side="'+side+'"],[docsjs-tag="column-'+side+'"] [docsjs-tag="column-filler"]'),function(el){
 			el.style.height = '0px';
 		});
@@ -1415,7 +1439,6 @@ DocsJS.correctColumnHeight = function(doc){
 			checkVisible(centerBox);
 		}
 		doc.querySelector('[docsjs-tag="column-'+side+'"]').lastChild.previousSibling.previousSibling.style.height = doc.getBoundingClientRect().bottom - doc.querySelector('[docsjs-tag="column-'+side+'"]').lastChild.previousSibling.previousSibling.getBoundingClientRect().bottom +  'px';
-		window.scroll(0,DocsJS.window.scrollTop() + scrollHeight - document.documentElement.scrollHeight);
 	};
 	if (DocsJS.column.state[0] !== 'none' && DocsJS.column.state[0] !== 'menu'){
 		correct('left');
