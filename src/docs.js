@@ -678,7 +678,7 @@ DocsJS.scrolled = function(){
 					if (DocsJS.window.scrollTop() === 0){
 						ti.docsjs.state = '';
 						el.querySelectorAll('[docsjs-tag="menu-title"]')[0].docsjs.state = 'youarehere';
-					} else if (DocsJS.window.scrollTop() === document.body.scrollHeight - DocsJS.window.height()){
+					} else if (DocsJS.window.scrollTop() === document.documentElement.scrollHeight - DocsJS.window.height()){
 						ti.docsjs.state = '';
 						el.querySelectorAll('[docsjs-tag="menu-title"]')[el.querySelectorAll('[docsjs-tag="menu-title"]').length-1].docsjs.state = 'youarehere';
 					} else{
@@ -1370,7 +1370,7 @@ DocsJS.column = {
 DocsJS.correctColumnHeight = function(doc){
 	'use strict';
 	var correct = function(side){
-		var scrollTop = DocsJS.window.scrollTop();
+		var scrollHeight = document.documentElement.scrollHeight;
 		DocsJS.forEach(doc.querySelectorAll('[docsjs-tag="efiller"][docsjs-side="'+side+'"],[docsjs-tag="column-'+side+'"] [docsjs-tag="column-filler"]'),function(el){
 			el.style.height = '0px';
 		});
@@ -1415,7 +1415,7 @@ DocsJS.correctColumnHeight = function(doc){
 			checkVisible(centerBox);
 		}
 		doc.querySelector('[docsjs-tag="column-'+side+'"]').lastChild.previousSibling.previousSibling.style.height = doc.getBoundingClientRect().bottom - doc.querySelector('[docsjs-tag="column-'+side+'"]').lastChild.previousSibling.previousSibling.getBoundingClientRect().bottom +  'px';
-		window.scroll(0,scrollTop);
+		window.scroll(0,DocsJS.window.scrollTop() + scrollHeight - document.documentElement.scrollHeight);
 	};
 	if (DocsJS.column.state[0] !== 'none' && DocsJS.column.state[0] !== 'menu'){
 		correct('left');
