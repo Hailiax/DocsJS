@@ -1,5 +1,5 @@
 # DocsJS 1.0.1
-See how to use DocsJS at [hailiax.io/docsjs/](https://hailiax.io/docsjs/)
+See how to use DocsJS at [hailiax.io/docsjs/](https://hailiax.io/docsjs/).<br>
 This is also an example, it's a doc for DocsJS built with DocsJS containing live DocsJS examples. Doception!
 
 ## Basic usage
