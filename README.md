@@ -18,9 +18,9 @@ Add this to your document `<body>`.
 
 ## Full changelog
 ### 1.0.1
-  *Bug fixes.
+*  Bug fixes.
 ### 1.0.0
-  *DocsJS Released!
+*  DocsJS Released!
 
 ## Note
 docs.js is not commented out well and the code could use some cleaning. I'll probably clean up the code in the next update.
