@@ -18,9 +18,9 @@ Add this to your document `<body>`.
 ```
 
 ## Full changelog
-### 1.0.1
+### 1.0.1 // 24 Sep 2017
 *  Bug fixes.
-### 1.0.0
+### 1.0.0 // Initial // 17 Sep 2017
 *  DocsJS Released!
 
 ## Note
