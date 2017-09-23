@@ -1,5 +1,5 @@
 // JavaScript Document
-var windowScalarTimer, fullWidth, parse;
+var windowScalarTimer, fullWidth, parse, scaleWindow;
 if (false){var DocsJS;}
 function init(){
 	'use strict';
@@ -281,7 +281,7 @@ function init(){
 	
 	// Set up shrinking window example
 	var correctSidebarsTimeout;
-	var scaleWindow = function(percent){
+	scaleWindow = function(percent){
 		document.querySelector('[docsjs-tag="column-left"]').style.marginLeft = '0';
 		document.getElementById('windowScalarPlus').style.color = document.getElementById('windowScalarMinus').style.color = "#000";
 		if (percent < 101 && percent/100*fullWidth > 200){
@@ -382,4 +382,42 @@ function init(){
 		document.getElementById('screenshots').previousSibling.onmouseover = function(){};
 		document.getElementById('screenshots').innerHTML = '<div><img src="example/screenshots/desktop/1-snowLeopard.jpeg" alt="screenshot"><p>Snow Leopard</p></div><div><img src="example/screenshots/desktop/2-firefox11.jpeg" alt="screenshot"><p>Firefox 11</p></div><div><img src="example/screenshots/desktop/3-chrome15.jpeg" alt="screenshot"><p>Chrome 15</p></div><div><img src="example/screenshots/desktop/4-ie8.jpeg" alt="screenshot"><p>IE 8</p></div><div><img src="example/screenshots/desktop/5-ie9.jpeg" alt="screenshot"><p>IE 9</p></div><div><img src="example/screenshots/desktop/6-ie10.jpeg" alt="screenshot"><p>IE 10</p></div><div><img src="example/screenshots/desktop/7-ie11.jpeg" alt="screenshot"><p>IE 11</p></div><div><img src="example/screenshots/desktop/8-edge.jpeg" alt="screenshot"><p>MS Edge</p></div><div><img src="example/screenshots/desktop/9-yandex14-12.jpeg" alt="screenshot"><p>Yandex 14.12</p></div><div><img src="example/screenshots/desktop/10-firefox54.jpeg" alt="screenshot"><p>Firefox 54</p></div><div><img src="example/screenshots/desktop/11-chrome60.jpeg" alt="screenshot"><p>Chrome 60</p></div><div><img src="example/screenshots/desktop/12-highSierra.jpeg" alt="screenshot"><p>High Sierra</p></div><div><img src="example/screenshots/phone/1-nokiaLumia520.jpeg" alt="screenshot"><p>Lumia 520</p></div><div><img src="example/screenshots/phone/2-galaxyS2.jpeg" alt="screenshot"><p>Galaxy S2</p></div><div><img src="example/screenshots/phone/3-iPhone4.jpeg" alt="screenshot"><p>iPhone 4</p></div><div><img src="example/screenshots/phone/4-iPhone7.jpeg" alt="screenshot"><p>iPhone 7</p></div>';
 	};
+}
+function shrinkScreen_(){
+	'use strict';
+	fullWidth = DocsJS.window.width();
+	scaleWindow(Math.ceil(40000/DocsJS.window.width()));
+	window.scrollTo(0,0);
+	document.getElementById('SS').innerHTML = 'Revert screen.';
+	document.getElementById('SS').style.backgroundColor = '#fff607';
+	document.getElementById('SS').href = 'javascript:revertScreen_();';
+}
+function revertScreen_(){
+	'use strict';
+	scaleWindow(100);
+	DocsJS.resized();
+	window.scrollTo(0,0);
+	document.getElementById('SS').innerHTML = 'Shrink screen!';
+	document.getElementById('SS').style.backgroundColor = '';
+	document.getElementById('SS').href = 'javascript:shrinkScreen_();';
+}
+function changeTheme_(){
+	'use strict';
+	document.getElementById('ChooseTheme').querySelector('option[value="Hailaxian"]').removeAttribute('selected');
+	document.getElementById('ChooseTheme').querySelector('option[value="Minimal"]').setAttribute('selected','selected');
+	document.getElementById('themeSelect').value = 'Minimal';
+	document.getElementById('ChooseTheme').querySelector('select').onchange();
+	document.getElementById('ST').innerHTML = 'Revert theme.';
+	document.getElementById('ST').style.backgroundColor = '#fff607';
+	document.getElementById('ST').href = 'javascript:revertTheme_();';
+}
+function revertTheme_(){
+	'use strict';
+	document.getElementById('ChooseTheme').querySelector('option[value="Minimal"]').removeAttribute('selected');
+	document.getElementById('ChooseTheme').querySelector('option[value="Hailaxian"]').setAttribute('selected','selected');
+	document.getElementById('themeSelect').value = 'Hailaxian';
+	document.getElementById('ChooseTheme').querySelector('select').onchange();
+	document.getElementById('ST').innerHTML = 'Change theme!';
+	document.getElementById('ST').style.backgroundColor = '';
+	document.getElementById('ST').href = 'javascript:changeTheme_();';
 }
