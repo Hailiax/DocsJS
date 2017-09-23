@@ -280,6 +280,7 @@ function init(){
 	});
 	
 	// Set up shrinking window example
+	var correctSidebarsTimeout;
 	var scaleWindow = function(percent){
 		document.querySelector('[docsjs-tag="column-left"]').style.marginLeft = '0';
 		document.getElementById('windowScalarPlus').style.color = document.getElementById('windowScalarMinus').style.color = "#000";
@@ -290,7 +291,23 @@ function init(){
 			};
 			document.getElementById('windowScalarPercent').innerHTML = percent + '%';
 			document.getElementById('windowScalarPixels').innerHTML = DocsJS.window.width() + 'px Wide';
+			DocsJS.cache.initiated = false;
 			DocsJS.resized();
+			DocsJS.cache.initiated = true;
+			clearInterval(correctSidebarsTimeout);
+			correctSidebarsTimeout = window.setTimeout(function(){
+				DocsJS.resized();
+				document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').style.width = percent + '%';
+				var difference = fullWidth*(100-percent)/200;
+
+				document.querySelector('[docsjs-tag="column-right"]').style.marginLeft = -1*document.querySelector('[docsjs-tag="column-right"]').clientWidth + (document.querySelector('[docsjs-tag="column-right"]').style.position === 'absolute'? difference : -1*difference) + 'px';
+				document.querySelector('[docsjs-tag="column-left"]').style.marginLeft = difference + 'px';
+				DocsJS.forEach(document.querySelectorAll('main > [docsjs-tag="s-c"]'),function(el){
+					el.style.marginLeft = parseInt(el.style.marginLeft) + difference + 'px';
+				});
+				document.getElementsByClassName('baseground')[0].style.width = difference + 'px';
+				document.getElementsByClassName('baseground')[1].style.width = difference + 'px';
+			},1000);
 			document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').style.width = percent + '%';
 			var difference = fullWidth*(100-percent)/200;
 			
