@@ -1,4 +1,4 @@
-# DocsJS V1.0.1
+# DocsJS 1.0.1
 See how to use DocsJS at [hailiax.io/docsjs/](https://hailiax.io/docsjs/)
 
 ## Basic usage
