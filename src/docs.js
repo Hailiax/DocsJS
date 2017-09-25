@@ -748,6 +748,7 @@ DocsJS.resized = function(){
 	});
 	DocsJS.cache.extraWidth = 0;
 	if (DocsJS.window.width() > DocsJS.width.max + 200){
+		DocsJS.fontsize._scalar = 1;
 		DocsJS.apply(function(doc){
 			doc.style.fontSize = DocsJS.fontsize._value+'px';
 			var width = (DocsJS.window.width() - DocsJS.width.max)/2;
@@ -774,6 +775,7 @@ DocsJS.resized = function(){
 			DocsJS.columnOffsets.right = -50;
 		}
 	} else if (DocsJS.window.width() > DocsJS.width.min + 200){
+		DocsJS.fontsize._scalar = 1;
 		if (DocsJS.columnOffsets.left === 0 && DocsJS.columnOffsets.right === 0 && DocsJS.window.width()-DocsJS.width.min < 400){
 			DocsJS.columnOffsets.left = DocsJS.columnOffsets.right = -49.87656421;
 		} else if (DocsJS.window.width()-DocsJS.width.min > 400){
