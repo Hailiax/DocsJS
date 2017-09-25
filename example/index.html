@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="DocsJS: Easiest-ever HTML-only customizable documentation generator. Built so you don't even have to touch javascript."/>
 <title>DocsJS</title>
 
 <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png?v=8jedNJnRp5">
@@ -17,10 +18,29 @@
 <meta name="msapplication-config" content="favicons/browserconfig.xml?v=8jedNJnRp5">
 <meta name="theme-color" content="#2b2b2b">
 
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-96173199-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+  gtag('config', 'UA-96173199-1');
+</script>
+<script>
+	var loc = window.location.href.split('/');
+	if (loc[loc.length-2] !== 'docsjs'){
+		if (loc[loc.length-1].substring(0,6) === 'docsjs'){
+			loc[loc.length-1] = 'docsjs/' + loc[loc.length-1].slice(6);
+			window.location = loc.join('/');
+		}
+	}
+	
+	
+	var screenshotImages = '<div><img src="screenshots/desktop/1-snowLeopard.jpeg" alt="screenshot"><p>Snow Leopard</p></div><div><img src="screenshots/desktop/2-firefox11.jpeg" alt="screenshot"><p>Firefox 11</p></div><div><img src="screenshots/desktop/3-chrome15.jpeg" alt="screenshot"><p>Chrome 15</p></div><div><img src="screenshots/desktop/4-ie8.jpeg" alt="screenshot"><p>IE 8</p></div><div><img src="screenshots/desktop/5-ie9.jpeg" alt="screenshot"><p>IE 9</p></div><div><img src="screenshots/desktop/6-ie10.jpeg" alt="screenshot"><p>IE 10</p></div><div><img src="screenshots/desktop/7-ie11.jpeg" alt="screenshot"><p>IE 11</p></div><div><img src="screenshots/desktop/8-edge.jpeg" alt="screenshot"><p>MS Edge</p></div><div><img src="screenshots/desktop/9-yandex14-12.jpeg" alt="screenshot"><p>Yandex 14.12</p></div><div><img src="screenshots/desktop/10-firefox54.jpeg" alt="screenshot"><p>Firefox 54</p></div><div><img src="screenshots/desktop/11-chrome60.jpeg" alt="screenshot"><p>Chrome 60</p></div><div><img src="screenshots/desktop/12-highSierra.jpeg" alt="screenshot"><p>High Sierra</p></div><div><img src="screenshots/phone/1-nokiaLumia520.jpeg" alt="screenshot"><p>Lumia 520</p></div><div><img src="screenshots/phone/2-galaxyS2.jpeg" alt="screenshot"><p>Galaxy S2</p></div><div><img src="screenshots/phone/3-iPhone4.jpeg" alt="screenshot"><p>iPhone 4</p></div><div><img src="screenshots/phone/4-iPhone7.jpeg" alt="screenshot"><p>iPhone 7</p></div>';
+</script>
 <script src="script.js"></script>
-<link href="style.css" rel="stylesheet">
 
-<script src="../src/docs.js"></script>
+<script src="../src/docs.min.js"></script>
 <link href="../src/themes/Hailaxian.min.css" rel="stylesheet" id="DocsJS-theme">
 </head>
 
@@ -50,19 +70,19 @@
 		<h-d>
 			<t-l>Why DocsJS</t-l>
 			<t-x>
-				DocsJS is an open source documentation library lets you focus on just writing: you won't ever have to touch javascript. Want a quick run down of things you don't have to worry about anymore?
-				<ol>
-					<li>Compatibility: tested on IE8+ (Windows XP wow!), FF11+, Chrome15+, and more.</li>
+				Woo! I just finished my super-cool project. Now I just gotta document it so people can actually use it... *Googles documentation generator* Hmm, there doesn't seem to be anything simple. Should I make my own? What do I do about browser compatability, accessibility, menus? This will take me just as long as my project itself!<br><br>
+				Enter DocsJS. DocsJS is an open source documentation library lets you focus on just writing in HTML: you won't ever have to touch javascript, command line, etc. Want a quick run down of things you don't have to worry about with DocsJS?
+				<ol style="margin-bottom: 0;">
+					<li>Compatibility: works on IE8+ (Windows XP wow!), FF11+, Chrome15+, and more.</li>
 					<li>Accessibility: complies with and aims to exceed old and new accessibility standards.</li>
-					<li>Navigation: automatically generates amazing navigation. <a href="javascript:DocsJS.jumpTo('Got 5 minutes?');">Jump to next topic.</a></li>
+					<li>Navigation: automatically generates menus, navbar, links, etc. <a href="javascript:DocsJS.scroll('Got 5 minutes?');" id="JN">Jump to next topic.</a></li>
 					<li>Responsiveness: works perfectly on devices of any size. <a href="javascript:shrinkScreen_();" id="SS">Shrink screen!</a></li>
 					<li>Time: DocsJS is designed to make writing docs quick and easy.</li>
-					<li>Uniqueness: Every aspect of DocsJS is easily customizable. <a href="javascript:changeTheme_();" id="ST">Change theme!</a></li>
+					<li>Aesthetics: DocsJS is modern and easily customizable. <a href="javascript:changeTheme_();" id="ST">Change theme!</a></li>
 				</ol>
-				Also, if DocsJS gets popular, I'm sure we'll all appreciate the more consistent, beautiful, and accessible documentation. (So please share DocsJS)
 			</t-x>
 			<e-x docsjs-name="Changelog" class="changelog">
-				<p>1.0.1 // Initial // 24 Sep 2017</p>
+				<p>1.0.2 // Initial // 24 Sep 2017</p>
 				<ol>
 					<li>DocsJS publicly released!</li>
 				</ol>
@@ -80,7 +100,7 @@
 		<h-d>
 			<t-l>Got 5 minutes?</t-l>
 			<t-x>
-				Let's get started. First of all, you'll have to add docs.js to your HTML page. I highly, highly recommend using the CDN described below for many reasons including keeping DocsJS up to date.<br><br>
+				Let's get started. First of all, you'll have to add docs.js to your HTML page. I highly, highly recommend using the jsdelivr CDN described below.<br><br>
 				First, add this to the head of your doc (IE doesn't like to load scripts in the body),<br>
 				<c-d docsjs-lang="html" style="margin-top: 0.25em; margin-bottom: 0.5em;">&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"&gt;&lt;/script&gt;
 &lt;link href="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/themes/Hailaxian.min.css" rel="stylesheet" id="DocsJS-theme"&gt;</c-d>
@@ -94,10 +114,10 @@
 				Now we can get started!
 			</t-x>
 			<e-x docsjs-name="Single page documentation?">
-				By being a javascript library, DocsJS inherently encourages either single page documents or few larger docs. However, a lot of the documentation you'll come across consist of many small pages connected by hyperlinks. Below, I've listed the problems I've had with this type of documentation.
+				A lot of current documentation consist of many small pages connected by hyperlinks. However, DocsJS, by being a JS library, encourages few larger docs or even single page docs. Below, I've explained why this is the better approach.
 				<ol>
-					<li>Loading times: Text isn't that heavy so it makes more sense to make one request to load a lot of text instead of many requests primarily loading scripts, styles, etc.</li>
-					<li>Accessibility: If you find loading times annoying, imagine how people with disabilities or people on a slow internet feel about having to click a million links. It's also easier to save one page without a lot of documentation to read offline.</li>
+					<li>Loading times: Text isn't that heavy so it makes more sense to make one request to load a lot of text instead of many requests that primarily load scripts, styles, etc.</li>
+					<li>Accessibility: If you find loading times annoying, imagine how people with disabilities or people on a slow internet feel about having to click a million links. Users can also save a large page for offline reading.</li>
 					<li>Disorganized: Often, the amount of links on a doc can get so insane it gets hard to keep track or even find them.</li>
 					<li>Hard to write: Would you rather write docs in flexible, clean, structured HTML or learn how to use a server side generator.</li>
 				</ol>
@@ -286,34 +306,63 @@
 		</h-d>
 		<t-p>
 			<t-l>Navigation</t-l>
-			<t-x>DocsJS automatically generates a menu which serves as a useful table of contents and navigation. The names used in the menu come from your <pre>&lt;t-l&gt;</pre> tags and clicking on a name in the menu will scroll the doc to the corresponding section or topic. The menu also contains reading options and scroll to top/bottom buttons.</t-x>
-			
-			<e-x>The menu can be opened from the menu button at the top right of each title or by dragging the left sidebar out. These two locations ensure that the user has consistent access to the menu while keeping the layout fluid. Try opening the menu from the title above! The menu bolds the current location and minimizes the sections to match minimized sections and topics in the doc. You can also minimize sections by clicking just to the right of the thin line. (Try clicking between the lines of features and navigation.)<br><br>
-			The menu contains 6 viewing option buttons. The first two decrease or increase the doc's font size. The next two will minimize or maximize everything. The next will invert the doc's colors, and the last will reset everything in the doc to their original state.</e-x>
-			
-			<t-x>There are two other ways to scroll the doc: URL hashes (The # that comes after the url) and <pre>DocsJS.jumpTo()</pre>. They both take the title of the topic or section header you want the doc to scroll to. For example, opening the url <a href="https://hailiax.io/docsjs/#Sidebars" target="_blank" rel="noopener">hailiax.io/docsjs/#Sidebars</a> and/or calling <pre>DocsJS.jumpTo('Sidebars')</pre> will jump to the topic named Sidebars. This <button onclick="DocsJS.jumpTo('Sidebars')" style="font-size: 0.8em;">button</button> has the attribute <pre>onclick="DocsJS.jumpTo('Sidebars')"</pre>. Click it to see the jumpTo function in action!</t-x>
-			
-			<e-x>If the title contains spaces or any special characters, you can't use them as is in a URL: you must encode it first. For example, <a href="https://hailiax.io/docsjs/#Why DocsJS" target="_blank" rel="noopener">hailiax.io/docsjs/#Why DocsJS</a> must become <a href="https://hailiax.io/docsjs/#Why%20DocsJS" target="_blank" rel="noopener">hailiax.io/docsjs/#Why%20DocsJS</a>. You can encode URLs <a href="https://www.urlencoder.org/" target="_blank" rel="noopener">here</a>. Both URLs and jumpTo accept period-separated locators for situations where you may have duplicate titles. They are described in detail in the <a onclick="DocsJS.jumpTo('API Reference')" href="javascript:void(0);">API Reference</a> under Javascript &gt; Callables &gt; DocsJS.jumpTo().</e-x>
+			<t-x>
+				DocsJS generates menus (button at the top right of every topic &amp; left sidebar), navbar (top of page below the accessibility button), and links. What are the links?<br><br>
+				If you scroll from topic to topic, you'll notice that the end of the site's url changes. It probably looks like <pre>#%5B0%2C5%2C0%5D</pre> right now. You can save or share this url; opening this url will automatically scroll the user the topic you were on. However, <a href="https://hailiax.io/docsjs/#%5B0%2C5%2C0%5D" target="_blank" rel="noopener">hailiax.io/docsjs/#%5B0%2C5%2C0%5D</a> is ugly, so you might want to use the title of the topic/header you're on. For example, <a href="https://hailiax.io/docsjs/#Navigation" target="_blank" rel="noopener">hailiax.io/docsjs/#Navigation</a>. Just make sure you <a href="https://www.urlencoder.org/" target="_blank" rel="noopener">encode</a> the titles (space -> %20 etc). You can even make <button onclick="DocsJS.scroll('Sidebars')" style="font-size: 0.8em;">nav buttons</button> with DocsJS!
+			</t-x>
+			<e-x docsjs-name="More on links (short)">
+				URL's hash is decoded, then passed to <pre>DocsJS.scroll();</pre> For example, <pre>hailiax.io/docsjs/#%5B0%2C5%2C0%5D</pre> is decoded to <pre>[0,5,0]</pre> which calls <pre>DocsJS.scroll( [0,5,0] );</pre>. Below are the accepted types.<br><br>
+				<c-d docsjs-lang="javascript">Function &amp; parameter // What it does // URL hash
+DocsJS.scroll( 'Callables' ); // Scrolls to the first topic/header named Callables. // 'Callables' (shorthand no quotes: Callables)
+DocsJS.scroll( ['Javascript','Callables'] ); // Scrolls to the first topic/header named Callables that's inside a topic/section named Javascript. // %5B'Javascript'%2C'Callables'%5D
+DocsJS.scroll( [0,5,2] ); // Scrolls to the 3rd topic inside the 6th section inside the 1st DocsJS-This-Baby div // %5B0%2C5%2C2%5D
+DocsJS.scroll( 3 ); // Scrolls 3 topics down // 3
+DocsJS.scroll( -1 ); // Scrolls 1 topics up // -1
+DocsJS.scroll( 0 ); // Aligns current topic to the top of the screen // 0
+DocsJS.scroll( Infinity ); // Scrolls to the last topic // Infinity
+DocsJS.scroll( -Infinity ); // Scrolls to the first topic // -Infinity
+DocsJS.scroll( true ); // Scrolls to the top // true
+DocsJS.scroll( false ); // Scrolls to the bottom // false</c-d>
+			</e-x>
+			<e-x docsjs-name="More on links (long)">
+				You can encode URLs <a href="https://www.urlencoder.org/" target="_blank" rel="noopener">here</a> or use <pre>encodeURIComponent()</pre><br><br>
+				
+				Whatever is added to the end of the URL is first decoded and then passed to <pre>DocsJS.scroll();</pre>. What does this mean? Let's take <pre>hailiax.io/docsjs/#%5B0%2C5%2C0%5D</pre>. The <pre>%5B0%2C5%2C0%5D</pre> is first taken off the URL and then decoded to <pre>[0,5,0]</pre>. Then, <pre>DocsJS.scroll( [0,5,0] );</pre> is called. <pre>[0,5,0]</pre> means: 1st DocsJS-This-Baby div, 6th section, 1st topic. In addition to taking arrays of numbers, <pre>DocsJS.scroll()</pre> also takes strings, array of strings, numbers, and booleans.<br><br>
+				
+				The array of numbers described above gives each topic and header a unique url. However, it's ugly you so might want to pass strings. <pre>hailiax.io/docsjs/#Browser%20support</pre> is shorthand for <pre>hailiax.io/docsjs/#'Browser%20support'</pre> which then calls <pre>DocsJS.scroll( 'Browser support' );</pre>. Passing a string just makes the doc scroll to the first topic/header that matches the string.<br><br>
+				
+				If you have multiple topics/headers with the same title, you can pass an array of strings like <pre>hailiax.io/docsjs/#%5B%22Features%22%2C%22Navigation%22%5D</pre> which calls <pre>DocsJS.scroll( ["Features","Navigation"] );</pre>. This will scroll the user to the first topic/header named "Navigation" that's inside a section or topic "Features".<br><br>
+				
+				You can also pass numbers to scroll relative to the current topic. For example, <pre>DocsJS.scroll( 3 );</pre> will scroll three topics down and <pre>DocsJS.scroll( -1 );</pre> will scroll one topic up. <pre>DocsJS.scroll( 0 );</pre> will align the current topic to the top of the screen. <pre>DocsJS.scroll( NaN );</pre> doesn't do anything now, but might later. <pre>DocsJS.scroll( Infinity );</pre> will scroll to the last topic/header and <pre>DocsJS.scroll( -Infinity );</pre> will scroll to the first topic/header.<br><br>
+				
+				However, scrolling to the first topic isn't the same thing as scrolling to the top of the page (You can't see Accessibility mode and the navbar from the first topic). Calling <pre>DocsJS.scroll( true );</pre> will scroll to the top of the page and <pre>DocsJS.scroll( false );</pre> will scroll to the bottom of the page.<br><br>
+				
+				How do I make buttons? You can just use the <pre>onclick</pre> attribute on a div/p/button etc. For example, <button onclick="DocsJS.scroll('Sidebars')">sidebars</button> is <pre>&lt;button onclick="DocsJS.scroll('Sidebars')"&gt;sidebars&lt;/button&gt;</pre>
+			</e-x>
+			<e-x docsjs-name="More on menus">
+				The menu is available in two spots for mobile compatibility: a sidebar menu is more efficient, but a mobile device doesn't have space for one. The menu contains 6 reading options. The first two increase or decrease the font size, the next two will minimize or maximize everything, the next will invert the doc's colors, and the last one will reset everything (kinda like reloading the page).<br><br>
+				The names on the menu come from the <pre>&lt;t-l&gt;</pre> tags and clicking on them will first close the menu, then scroll to the chosen topic/header. You can also click on the small margin to the left of title names to minimize/maximize sections/topics in the menu.
+			</e-x>
 		</t-p>
 		<t-p>
 			<t-l>Sidebars</t-l>
 			<t-x>Documentation often contains a menu on the left and examples/code-snippets on the right. This makes the documentation appear cleaner, shorter, and easier to read. However, this doesn't work on mobile devices and its formatting can be difficult. DocsJS' solution: the <pre>&lt;e-g&gt;</pre> (<v-r egArrow></v-r>) and <pre>&lt;e-x&gt;</pre> (<v-r exArrow></v-r>) tags.<br><br>
 			By default, content in these tags are enclosed in an expandable container, preserving a short and clean look. If the reader's screen is large enough, they can move these tags to a sidebar. Dragging out <v-r egArrow></v-r> on a sidebar will move all <pre>&lt;e-g&gt;</pre>s to the sidebar while dragging <v-r exArrow></v-r> will move <pre>&lt;e-x&gt;</pre>s. Sidebars can be adjusted or closed by dragging the edge of the sidebar.</t-x>
-			<e-g>Try moving this example to the right sidebar! Then, move it back</e-g>
+			<e-g>Try moving this example to the right sidebar! Then, move it back.</e-g>
 			<e-x docsjs-name="Design">Why two tags? Two reasons: there are two sidebars so the user can drag both e-x and e-g to the sides (the option to drag a tag to the left will appear after opening the right sidebar) and documentation generally contains examples and extra details. Why the shapes <v-r egArrow></v-r> and <v-r exArrow></v-r>? They're both built off of the caret symbol which is naturally associated with open/closable drawers. The example symbol (<v-r egArrow></v-r>) looks like a backwards E while the more symbol (<v-r exArrow></v-r>) contains dots associated with more details.</e-x>
 		</t-p>
 		<t-p>
 			<t-l>Animations</t-l>
 			<t-x>Animations don't just make your documentation look better, they have important functions like: drawing attention to important details, suggesting how certain features work, and showing context. DocsJS automatically generates animations where needed to improve the functionality and feel of your doc.</t-x>
 
-			<e-x docsjs-name="Where?">Here are some places you can find animations.<br>Opening a menu will animate the menu open and the button to an X for close. Clicking the circular minimize button will animate the section open/closed and will open/close the circle to match. Clicking a title will minimize the topic or header. Clicking a e-x or e-g will rotate the symbol and animate the content open. Changing viewing options on the menu are animated. jumpTo() or clicking on a menu title will animate the scroll position to the chosen area; the duration of this animation depends on the distance between the current location and destination.</e-x>
+			<e-x docsjs-name="Where?">Here are some places you can find animations.<br>Opening a menu will animate the menu open and the button to an X for close. Clicking the circular minimize button will animate the section open/closed and will open/close the circle to match. Clicking a title will minimize the topic or header. Clicking a e-x or e-g will rotate the symbol and animate the content open. Changing viewing options on the menu are animated. scroll() or clicking on a menu title will animate the scroll position to the chosen area; the duration of this animation depends on the distance between the current location and destination.</e-x>
 		</t-p>
 		<t-p>
 			<t-l>Browser support</t-l>
 			<t-x>Wide browser support is important for documentation so DocsJS places huge emphasis on compatibility. DocsJS has been tested with <a href="https://www.browserstack.com" target="_blank" rel="noopener"><img src="BrowserStack.jpg" style="display:inline; height: 0.7em;" alt="Browser Stack logo"></a> on browsers all the way back to IE8+ (Windows XP!), FF11+, Chrome15+, Yandex, and more. DocsJS is fully compatible with all the aforementioned browsers and you can see photo evidence below.</t-x>
 
-			<e-g docsjs-name="Screenshots" id="screenshots">
-				
+			<e-g docsjs-name="Screenshots" id="screenshots" onclick="this.innerHTML = screenshotImages;">
+				<a href="javascript:void(0)" style="padding: 1em;">Click to load screenshots</a>
 			</e-g>
 
 			<t-x style="padding-left:0; padding-right:0;">
@@ -338,7 +387,7 @@
 		</t-p>
 		<t-p>
 			<t-l>Customizable</t-l>
-			<t-x>Almost everything, from the buttons to the theme, is easily customizable. You can make some easy customizations and preview them right on this doc in the section below. If the options below aren't enough, you can check out the <a onClick="DocsJS.jumpTo('API Reference');" href="javascript:void(0);">API Reference</a>.</t-x>
+			<t-x>Almost everything, from the buttons to the theme, is easily customizable. You can make some easy customizations and preview them right on this doc in the section below. If the options below aren't enough, you can check out the <a onClick="DocsJS.scroll('API Reference');" href="javascript:void(0);">API Reference</a>.</t-x>
 		</t-p>
 	</s-c>
 	<s-c>
@@ -511,7 +560,7 @@
 			<t-p docsjs-state="min">
 				<t-l>docsjs-state</t-l>
 				<t-x>Allowed values: min, max<br>Allowed on tags: &lt;s-c&gt;, &lt;h-d&gt;, &lt;t-p&gt;, &lt;e-g&gt;, &lt;e-x&gt;<br>Defaults: min on &lt;e-g&gt;, &lt;e-x&gt;; max on &lt;s-c&gt;, &lt;h-d&gt;, and &lt;t-p&gt;</t-x>
-				<t-x>The value min will make the section, topic, or extraneous minimized initially while max will maximize it initially. This value will change if the user (un)minimizes the tag. If you want to toggle this attribute after the doc has finished loading, do so through javascript with <a onClick="DocsJS.jumpTo('DocsJS.toggle()');" href="javascript:void(0);">DocsJS.toggle()</a>.</t-x>
+				<t-x>The value min will make the section, topic, or extraneous minimized initially while max will maximize it initially. This value will change if the user (un)minimizes the tag. If you want to toggle this attribute after the doc has finished loading, do so through javascript with <a onClick="DocsJS.scroll('DocsJS.toggle()');" href="javascript:void(0);">DocsJS.toggle()</a>.</t-x>
 				<e-g>
 					<c-d docsjs-lang="html">&lt;div docsjs-tag="DocsJS-This-Baby"&gt;
 	&lt;s-c docsjs-state="min"&gt;
@@ -535,7 +584,7 @@
 			<t-p docsjs-state="min">
 				<t-l>docsjs-name</t-l>
 				<t-x>Allowed value type: HTML Content<br>Allowed on tags: &lt;e-g&gt;, &lt;e-x&gt;<br>Defaults: Example on &lt;e-g&gt;; More on &lt;e-x&gt;</t-x>
-				<t-x>This value will be the displayed as the title for your ex or eg. It can be plain text or HTML for a more fancy title. If you have changed this attribute after the doc has finished loading, please call <a onClick="DocsJS.jumpTo('DocsJS.toggle()');" href="javascript:void(0);">DocsJS.refresh()</a> to apply your changes.</t-x>
+				<t-x>This value will be the displayed as the title for your ex or eg. It can be plain text or HTML for a more fancy title. If you have changed this attribute after the doc has finished loading, please call <a onClick="DocsJS.scroll('DocsJS.toggle()');" href="javascript:void(0);">DocsJS.refresh()</a> to apply your changes.</t-x>
 				<e-g>
 					<c-d docsjs-lang="html">&lt;t-p&gt;
 	&lt;t-l&gt;Sample topic&lt;/t-l&gt;
@@ -548,7 +597,7 @@
 			<t-p docsjs-state="min">
 				<t-l>docsjs-tag</t-l>
 				<t-x>Allowed values: DocsJS-This-Baby, sc, hd, tp, tl, tx, eg, ex, vr<br>Allowed on tags: &lt;div&gt;</t-x>
-				<t-x>All custom tags get automatically converted into divs with the matching docsjs-tag attribute. However, if you want to bypass the converting step, you can just create a div with the desired tag and it will work exactly the same way as the custom tag. You must wrap all DocsJS tags inside the superparent, which is DocsJS-This-Baby by default. If you have changed this attribute after the doc has finished loading, please call <a onClick="DocsJS.jumpTo('DocsJS.toggle()');" href="javascript:void(0);">DocsJS.refresh()</a> to apply your changes.</t-x>
+				<t-x>All custom tags get automatically converted into divs with the matching docsjs-tag attribute. However, if you want to bypass the converting step, you can just create a div with the desired tag and it will work exactly the same way as the custom tag. You must wrap all DocsJS tags inside the superparent, which is DocsJS-This-Baby by default. If you have changed this attribute after the doc has finished loading, please call <a onClick="DocsJS.scroll('DocsJS.toggle()');" href="javascript:void(0);">DocsJS.refresh()</a> to apply your changes.</t-x>
 				<e-g>This is what a simple doc will look like after being converted to divs:
 					<c-d docsjs-lang="html">&lt;div docsjs-tag="DocsJS-This-Baby"&gt;
 	&lt;div docsjs-tag="vr" varName&gt;
@@ -582,7 +631,7 @@
 			</t-p>
 			<t-p docsjs-state="min">
 				<t-l>docsjs-editable</t-l>
-				<t-x>Add this tag and set it to true to any &lt;c-d&gt; tag you to be editable and vice versa. The default is controlled by <a onClick="DocsJS.jumpTo('.editable');" href="javascript:void(0);">DocsJS.cd.editable</a>. For example, &lt;c-d docsjs-lang="javascript" docsjs-editable="true"&gt; will be editable and &lt;c-d docsjs-lang="javascript" docsjs-editable="false"&gt; will not</t-x>
+				<t-x>Add this tag and set it to true to any &lt;c-d&gt; tag you to be editable and vice versa. The default is controlled by <a onClick="DocsJS.scroll('.editable');" href="javascript:void(0);">DocsJS.cd.editable</a>. For example, &lt;c-d docsjs-lang="javascript" docsjs-editable="true"&gt; will be editable and &lt;c-d docsjs-lang="javascript" docsjs-editable="false"&gt; will not</t-x>
 			</t-p>
 		</s-c>
 		<s-c docsjs-state="min">
@@ -648,13 +697,13 @@
 				<t-l>Important</t-l>
 				<t-x>While DocsJS tries to give you as much freedom as possible for stylying your doc, there are some requirements for your theme:<br><br>
 				
-				DocsJS only supports <a href="https://www.sitepoint.com/power-em-units-css/" target="_blank" rel="noopener">em units</a>: you must declare a font size in pixels for [docsjs-tag="DocsJS-This-Baby"] and style the rest of your doc in em. DocsJS will scan your styling and save your defined font-size into a javascript varible. If you want to adjust the font-size after your doc has loaded, you must do so through javascript with <a onClick="DocsJS.jumpTo('DocsJS.fontsize.set()');" href="javascript:void(0);">DocsJS.fontsize.set()</a>. Occassionally using other units is fine, but DocsJS can't guarntee that they will scale properly.<br><br>
+				DocsJS only supports <a href="https://www.sitepoint.com/power-em-units-css/" target="_blank" rel="noopener">em units</a>: you must declare a font size in pixels for [docsjs-tag="DocsJS-This-Baby"] and style the rest of your doc in em. DocsJS will scan your styling and save your defined font-size into a javascript varible. If you want to adjust the font-size after your doc has loaded, you must do so through javascript with <a onClick="DocsJS.scroll('DocsJS.fontsize.set()');" href="javascript:void(0);">DocsJS.fontsize.set()</a>. Occassionally using other units is fine, but DocsJS can't guarntee that they will scale properly.<br><br>
 				
 				Padding works well with DocsJS, especially padding-top in tx, eg, and ex. Not only does proper padding make docs easier to read, many DocsJS animations will take padding into account and will be able to create slightly parralax-like effects. Finally, I suggest using a line-height greater than 1em to improve readability. The default theme uses a line-height of 1.4em.<br><br>
 				
 				You must provide styles for the sidebars and menu. The position of sidebars with change automatically between fixed and absolute. I strongly recommend having an indicator of what menu topic the user is currently on with docsjs-state="youarehere" and indiciating where the user is hovering on the menu.<br><br>
 				
-				You can play around with how buttons like the minimize and menu buttons are styled. These are controlled by [docsjs="button-parent, button-child"]. If you want a very different type of button look, you may do so through javascript with <a onClick="DocsJS.jumpTo('DocsJS.buttons');" href="javascript:void(0);">DocsJS.buttons</a>. However, please try to make the button look similar for consistency and accessibility reasons.<br><br>
+				You can play around with how buttons like the minimize and menu buttons are styled. These are controlled by [docsjs="button-parent, button-child"]. If you want a very different type of button look, you may do so through javascript with <a onClick="DocsJS.scroll('DocsJS.buttons');" href="javascript:void(0);">DocsJS.buttons</a>. However, please try to make the button look similar for consistency and accessibility reasons.<br><br>
 				Finally, be creative with your theme! Use easy to read colors and enough contrast so anyone can read your doc. Have fun and I'm sure your theme will look amazing.</t-x>
 			</t-p>
 		</s-c>
@@ -748,7 +797,7 @@ console.log(text);</c-d>
 						None
 					</t-x>
 					<t-x>
-						Refreshes all c-d elements. Calls <a onClick="DocsJS.jumpTo('.cdRefreshed()');" href="javascript:void(0);">DocsJS.events.cdRefreshed()</a> when done.
+						Refreshes all c-d elements. Calls <a onClick="DocsJS.scroll('.cdRefreshed()');" href="javascript:void(0);">DocsJS.events.cdRefreshed()</a> when done.
 					</t-x>
 				</t-p>
 				<t-p docsjs-state="min">
@@ -799,7 +848,7 @@ for (var i = 0; i &lt; docs.length; i++){
 						Arguments.to and Arguments.from are <span style="font-weight: 700;">number</span>s.<br>
 						Arguments.duration is a <span style="font-weight: 700;">number</span> to describe time in miliseconds.<br>
 						Arguments.step is a <span style="font-weight: 700;">function</span> that accepts one numerical argument.<br>
-						Arguments.easing is a <span style="font-weight: 700;">function</span> to manipulate numbers between 0 and 1. Easing functions given in <a onClick="DocsJS.jumpTo('DocsJS.easings');" href="javascript:void(0);">DocsJS.easings</a> are typically used.<br>
+						Arguments.easing is a <span style="font-weight: 700;">function</span> to manipulate numbers between 0 and 1. Easing functions given in <a onClick="DocsJS.scroll('DocsJS.easings');" href="javascript:void(0);">DocsJS.easings</a> are typically used.<br>
 						Arguments.pass is <span style="font-weight: 700;">anything</span>. Pass can be used to clean up code or preserve 'this'. Make pass an array to pass multiple varibles.<br>
 						Arguments.callback is a <span style="font-weight: 700;">function</span> called when the animation is complete.
 					</t-x>
@@ -824,28 +873,25 @@ for (var i = 0; i &lt; docs.length; i++){
 					</e-g>
 				</t-p>
 				<t-p docsjs-state="min">
-					<t-l>DocsJS.jumpTo()</t-l>
+					<t-l>DocsJS.scroll()</t-l>
 					<t-x>
 						<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Parameters</p>
-						DocsJS.jumpTo( Location );
+						DocsJS.scroll( Target );
 						<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Where</p>
-						Location is a <span style="font-weight: 700;">string</span> that is the title of the desired location or the specific period-separated locator.
+						Target is an <span style="font-weight: 700;">String</span>, <span style="font-weight: 700;">Array</span>, <span style="font-weight: 700;">Number</span>, or <span style="font-weight: 700;">Boolean</span>.
 					</t-x>
 					<t-x>
-						Animates window's scroll to the top of the desired topic or section header, including Jump to top and Jump to bottom. Because there may be duplicate titles, passing the specific period-separated locator is preferred to passing the title of a section header or topic.<br><br>
-						What is a period-separated locator? It's a string that basiclly describes a specific location by describing the nesting order. The first number is the number is the superparent the location is in. Since docs normally have just one superparent div, this is just 0 most of the time. (Keep in mind that counting numbers start from 0). The next numbers describe the nesting order. The 3rd section in this doc will have the locator '0.2'. The 5th topic in the 2nd section will be '0.1.4'. The 10th topic in the 2nd section in the 4th topic in the 1st section will be '0.0.3.1.9'.<br><br>
-						If a title and not a period-separated locator is given, DocsJS will look for a section header or topic that matches the title, get its period-separated locator, and then call DocsJS.jumpTo() passing the period-separated locator. If the URL has a hash (https://hailiax.io/docsjs#ThisIsTheHashSinceItComesAfterTheHashTag), DocsJS will call DocsJS.jumpTo() passing the <a href="https://www.w3schools.com/tags/ref_urlencode.asp" target="_blank" rel="noopener">decoded</a> hash and then clear the hash. Cliking on the menu will also call DocsJS.jumpTo() passing a period-separated locator.
+						<c-d docsjs-lang="javascript">DocsJS.scroll( 'Callables' ); // Scrolls to the first topic/header named Callables.
+DocsJS.scroll( ['Javascript','Callables'] ); // Scrolls to the first topic/header named Callables that's inside a topic/section named Javascript.
+DocsJS.scroll( [0,5,2] ); // Scrolls to the 3rd topic inside the 6th section inside the 1st DocsJS-This-Baby div
+DocsJS.scroll( 3 ); // Scrolls 3 topics down
+DocsJS.scroll( -1 ); // Scrolls 1 topics up
+DocsJS.scroll( 0 ); // Aligns current topic to the top of the screen
+DocsJS.scroll( Infinity ); // Scrolls to the last topic
+DocsJS.scroll( -Infinity ); // Scrolls to the first topic
+DocsJS.scroll( true ); // Scrolls to the top
+DocsJS.scroll( false ); // Scrolls to the bottom</c-d>
 					</t-x>
-					<e-g docsjs-name="Examples">
-						Example of an inline navigation button. Clicking on the button will scroll the user to a section or topic titled "Javascript".
-						<c-d docsjs-lang="html">&lt;span onClick="DocsJS.jumpTo('Javascript');" style="color: #505050; text-decoration: underline; cursor: pointer;"&gt;Button One&lt;/span&gt;</c-d>
-						Here's a button that uses the period-separated locator. It will also scroll the user to the "Javascript" section.
-						<c-d docsjs-lang="html">&lt;span onClick="DocsJS.jumpTo('0.5.2');" style="color: #505050; text-decoration: underline; cursor: pointer;"&gt;Button Two&lt;/span&gt;</c-d>
-						You can also make a button that changes the hash of the URL.
-						<c-d docsjs-lang="html">&lt;a style="color: #505050;" href="#Javascript"&gt;Button Three&lt;/a&gt;
-	&lt;a style="color: #505050;" href="#0.5.2"&gt;Button Four&lt;/a&gt;</c-d>
-						Results: <span onClick="DocsJS.jumpTo('Javascript');" style="color: #505050; text-decoration: underline; cursor: pointer;">Button One</span> <span onClick="DocsJS.jumpTo('0.5.2');" style="color: #505050; text-decoration: underline; cursor: pointer;">Button Two</span> <a style="color: #505050;" href="#Javascript">Button Three</a> <a style="color: #505050;" href="#0.5.2">Button Four</a>
-					</e-g>
 				</t-p>
 				<t-p docsjs-state="min">
 					<t-l>DocsJS.rotate()</t-l>
@@ -1020,15 +1066,15 @@ for (var i = 0; i &lt; docs.length; i++){
 						</t-x>
 					</t-p>
 					<t-p docsjs-state="min">
-						<t-l>.jumpTo()</t-l>
+						<t-l>.scroll()</t-l>
 						<t-x>
 							<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Parameters</p>
-							DocsJS.events.jumpTo( Location )
+							DocsJS.events.scroll( Location )
 							<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Where</p>
-							Location is a <span style="font-weight: 700;">string</span> that is one of the following: 'top', 'bottom', or the <a onClick="DocsJS.jumpTo('DocsJS.jumpTo()');" href="javascript:void(0);">period-separated locator</a>.
+							Location is a <span style="font-weight: 700;">string</span>.
 						</t-x>
 						<t-x>
-							This function is called when <a onClick="DocsJS.jumpTo('DocsJS.jumpTo()');" href="javascript:void(0);">DocsJS.jumpTo()</a> is called with a valid location. The function is passed 'top' if the user jumped to the top of the page, bottom if the user jumped to the bottom of the page, or the <a onClick="DocsJS.jumpTo('DocsJS.jumpTo()');" href="javascript:void(0);">period-separated locator</a> for all other locations.
+							This function is called when <a onClick="DocsJS.scroll('DocsJS.scroll()');" href="javascript:void(0);">DocsJS.scroll()</a> is called. It is passed the exact parameter that was passed to <a onClick="DocsJS.scroll('DocsJS.scroll()');" href="javascript:void(0);">DocsJS.scroll()</a>.
 						</t-x>
 					</t-p>
 				</t-p>
@@ -1039,7 +1085,7 @@ for (var i = 0; i &lt; docs.length; i++){
 					</t-x>
 					<t-x>
 						<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Animatable buttons</p>
-						The buttons below contain .html() and .animation() properties. .html() simply returns the HTML string for the button. .animation() is a function called when the button has been pressed. It's passed two parameters, button and now. button is the HTML node of the button pressed and now is a number describing the progress of the animation, between 1 and 0. .animation() will be called as much as possible for <a onClick="DocsJS.jumpTo('.duration');" href="javascript:void(0);">DocsJS.animation.duration</a> miliseconds. now will progress from 0 to 1 in the foward animation and 1 to 0 in the reverse animation.
+						The buttons below contain .html() and .animation() properties. .html() simply returns the HTML string for the button. .animation() is a function called when the button has been pressed. It's passed two parameters, button and now. button is the HTML node of the button pressed and now is a number describing the progress of the animation, between 1 and 0. .animation() will be called as much as possible for <a onClick="DocsJS.scroll('.duration');" href="javascript:void(0);">DocsJS.animation.duration</a> miliseconds. now will progress from 0 to 1 in the foward animation and 1 to 0 in the reverse animation.
 					</t-x>
 					<e-g docsjs-name=".html() example">
 						<c-d docsjs-lang="javascript">DocsJS.buttons.minimize.html = function(){
@@ -1133,7 +1179,7 @@ for (var i = 0; i &lt; docs.length; i++){
 					<t-p docsjs-state="min">
 						<t-l>.gpu()</t-l>
 						<t-x>
-							This button is shown in the group of preferences at the top of the menu. Clicking on this will set <a onClick="DocsJS.jumpTo('.duration');" href="javascript:void(0);">DocsJS.animation.duration</a> to 0 (clicking again will restore the original value) and remove/restore all filters from the superparent (no hardware acceleration).
+							This button is shown in the group of preferences at the top of the menu. Clicking on this will set <a onClick="DocsJS.scroll('.duration');" href="javascript:void(0);">DocsJS.animation.duration</a> to 0 (clicking again will restore the original value) and remove/restore all filters from the superparent (no hardware acceleration).
 						</t-x>
 					</t-p>
 					<t-p docsjs-state="min">
@@ -1155,7 +1201,7 @@ for (var i = 0; i &lt; docs.length; i++){
 							monokai
 						</t-x>
 						<t-x>
-							This determines the theme for c-d. You can preview them at <a onClick="DocsJS.jumpTo('CSS themes');" href="javascript:void(0);">CSS themes</a>.
+							This determines the theme for c-d. You can preview them at <a onClick="DocsJS.scroll('CSS themes');" href="javascript:void(0);">CSS themes</a>.
 						</t-x>
 						<e-x docsjs-state="max" docsjs-name="Themes" style="font-family:'Source Code Pro',monospace; font-size: 0.8em;">ambiance, chaos, chrome, clouds, clouds_midnight, cobalt, crimson_editor, dawn, dreamweaver, eclipse, github, gob, gruvbox, idle_fingers, iplastic, katzenmilch, kr_theme, kuroir, merbivore, merbivore_soft, mono_industrial, monokai, pastel_on_dark, solarized_dark, solarized_light, sqlserver, terminal, textmate, tomorrow, tomorrow_night, tomorrow_night_blue, tomorrow_night_bright, tomorrow_night_eighties, twilight, vibrant_ink, xcode</e-x>
 					</t-p>
@@ -1289,7 +1335,7 @@ for (var i = 0; i &lt; docs.length; i++){
 							Example
 						</t-x>
 						<t-x>
-							This is the default name shown on all eg ebefores. (The box that the user can click on to expand and hide the eg). This sets the default for <a onClick="DocsJS.jumpTo('docsjs-name');" href="javascript:void(0);">docsjs-name</a> on eg elements.
+							This is the default name shown on all eg ebefores. (The box that the user can click on to expand and hide the eg). This sets the default for <a onClick="DocsJS.scroll('docsjs-name');" href="javascript:void(0);">docsjs-name</a> on eg elements.
 						</t-x>
 					</t-p>
 					<t-p docsjs-state="min">
@@ -1317,7 +1363,7 @@ for (var i = 0; i &lt; docs.length; i++){
 							Example
 						</t-x>
 						<t-x>
-							This is the default name shown on all ex ebefores. (The box that the user can click on to expand and hide the ex). This sets the default for <a onClick="DocsJS.jumpTo('docsjs-name');" href="javascript:void(0);">docsjs-name</a> on ex elements.
+							This is the default name shown on all ex ebefores. (The box that the user can click on to expand and hide the ex). This sets the default for <a onClick="DocsJS.scroll('docsjs-name');" href="javascript:void(0);">docsjs-name</a> on ex elements.
 						</t-x>
 					</t-p>
 					<t-p docsjs-state="min">
@@ -1351,7 +1397,7 @@ for (var i = 0; i &lt; docs.length; i++){
 				</t-p>
 				<t-p docsjs-state="min">
 					<t-l>DocsJS.easings</t-l>
-					<t-x>Contains easing functions for <a onClick="DocsJS.jumpTo('DocsJS.animate()');" href="javascript:void(0);">DocsJS.animate()</a>.</t-x>
+					<t-x>Contains easing functions for <a onClick="DocsJS.scroll('DocsJS.animate()');" href="javascript:void(0);">DocsJS.animate()</a>.</t-x>
 					<t-x>
 						<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Values</p>
 							DocsJS.easings.linear<br>
@@ -1388,7 +1434,7 @@ for (var i = 0; i &lt; docs.length; i++){
 				</t-p>
 				<t-p docsjs-state="min">
 					<t-l>DocsJS.window</t-l>
-					<t-x>DocsJS uses the functions here to retreive the client's browser height and width. This ensures consistent browser sizes on old browsers. You can also set them to return a number to change the doc's width and height as shown in the <a onClick="DocsJS.jumpTo('Complete access');" href="javascript:void(0);">complete access</a> example</t-x>
+					<t-x>DocsJS uses the functions here to retreive the client's browser height and width. This ensures consistent browser sizes on old browsers. You can also set them to return a number to change the doc's width and height as shown in the <a onClick="DocsJS.scroll('Complete access');" href="javascript:void(0);">complete access</a> example</t-x>
 					<t-p docsjs-state="min">
 						<t-l>.width()</t-l>
 						<t-x>
@@ -1472,6 +1518,100 @@ for (var i = 0; i &lt; docs.length; i++){
 
 <div class="baseground left" id="baseGround1"></div>
 <div class="baseground right" id="baseGround2"></div>
+
+<style>
+/* CSS Document */
+.changelog p{
+	font-size: 1.1em;
+	text-decoration: none;
+	font-weight: 700;
+}
+.changelog ol{
+	margin: 0;
+	padding-left: 1em;
+	padding-top: 0.5em;
+}
+.changelog li{
+	list-style-type: circle;
+	list-style-position: inside;
+}
+.baseground{
+	position: fixed;
+	height: 100%;
+	top: 0;
+	width: 0;
+	left: 0; right: 0; margin-left: 0; margin-right: auto;
+	background-color: #000000;
+}
+.baseground.right{
+	margin-left: auto; margin-right: 0;
+}
+.bold{
+	font-weight: 700;
+	display: inline;
+}
+iframe{
+	position: relative;
+	width: 100%;
+	height: 30em;
+	max-height: 50vh;
+	margin-top: 1em !important;
+	box-shadow: 1px 1px 15px 2px rgba(0,0,0,0.3);
+	border: none;
+}
+[docsjs-tag="accessibility"] iframe{
+	display: none;
+	visibility: hidden;
+}
+[docsjs-tag="accessibility"] .logoImage{
+	background-color: #303030;
+}
+p{
+	margin: 0;
+}
+#screenshots{
+	position: relative;
+	width: 100%;
+	margin-left: -1em;
+}
+#screenshots div{
+	display: inline-block;
+	position: relative;
+	width: 25%;
+	left: 0;
+}
+#screenshots div img{
+	width: 100%;
+}
+#screenshots div p{
+	height: 1.2em;
+	line-height: 1.2em;
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+	word-break: break-all;
+}
+#jsOptions input{
+	border: none;
+	padding: 0;
+	padding-left: 0.1em;
+	padding-right: 0.1em;
+	border-bottom: 1px #E0E0E0 solid;
+	font-size: 1em;
+}
+.customThemeBtn{
+	display: inline-block;
+	cursor: pointer;
+	width: 50%;
+	text-align: center;
+	font-size: 1.5em;
+	line-height: 1.5em;
+	border: 1px #E0E0E0 solid;
+	box-sizing: border-box;
+	margin-top: -1em;
+	margin-bottom: 0.66667em;
+}
+</style>
 
 </body>
 </html>
