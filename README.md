@@ -11,7 +11,18 @@ Add this to your document `<head>`.
 Add this to your document `<body>`.
 ```html
 <div docsjs-tag="DocsJS-This-Baby">
-	<!-- This is where you write your doc. Learn more at hailiax.io/docsjs/ -->
+	<s-c>
+		<h-d>
+			<t-l>Section header</t-l>
+			<t-x>Header content</t-x>
+		</h-d>
+		<t-p>
+			<t-l>Topic</t-l>
+			<t-x>Learn more at hailiax.io/docsjs/</t-x>
+			<e-g>Example</e-g>
+			<e-x>More</e-x>
+		</t-p>
+	</s-c>
 </div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"></script>
 <script>DocsJS.init();</script>
