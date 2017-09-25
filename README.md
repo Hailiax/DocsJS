@@ -1,4 +1,4 @@
-# DocsJS 1.0.1
+# DocsJS 1.0.2
 See how to use DocsJS at [hailiax.io/docsjs/](https://hailiax.io/docsjs/).<br>
 That site is also an example: it's a doc for DocsJS built with DocsJS containing live DocsJS examples. Doception!
 
@@ -18,7 +18,9 @@ Add this to your document `<body>`.
 ```
 
 ## Full changelog
-### 1.0.1 // 24 Sep 2017
+### 1.0.2 // 24 Sep 2017
+*  DocsJS.jumpTo() replaced with DocsJS.scroll()
+### 1.0.1 // 23 Sep 2017
 *  Bug fixes.
 ### 1.0.0 // Initial // 17 Sep 2017
 *  DocsJS Released!

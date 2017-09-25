@@ -176,7 +176,7 @@ c-d{
 	padding-top: 0; padding-bottom: 0;
 	margin-left: -1.25em;
 	white-space: pre;
-	background-color: rgba(40,40,40,0.02) !important;
+	background-color: rgba(40,40,40,0.01) !important;
 	font-family: 'Source Code Pro', monospace !important;
 }
 .ace_active-line, .ace_gutter-active-line{
@@ -190,7 +190,7 @@ c-d{
 	border-left: 1px #E0E0E0 solid;
 }
 .ace_br1, .ace_br12, .ace_br15{
-	border-radius: 0;
+	border-radius: 0 !important;
 }
 pre{
 	display: inline;

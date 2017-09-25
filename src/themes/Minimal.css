@@ -189,7 +189,7 @@ c-d{
 	box-shadow: none !important;
 }
 .ace_br1, .ace_br12, .ace_br15{
-	border-radius: 0;
+	border-radius: 0 !important;
 }
 pre{
 	display: inline;

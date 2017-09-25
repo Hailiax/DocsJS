@@ -9,6 +9,13 @@ function init(){
 		doc.querySelector('[docsjs-tag="bg"]').setAttribute('style','background-image:url(example/backgrounds/'+Math.round(Math.random()*20)+'.jpg);');
 	});*/
 	
+	// If screen is too small, remove header examples
+	if (DocsJS.window.width() < 500){
+		document.getElementById('JN').style.display = 'none';
+		document.getElementById('SS').style.display = 'none';
+		document.getElementById('ST').style.display = 'none';
+	}
+	
 	// Set up examples where the user edits code to an iframe
 	parse = function(el){
 		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Hailaxian.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.init();</script></body></html>';

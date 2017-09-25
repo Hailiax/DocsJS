@@ -84,14 +84,7 @@ DocsJS.init = function(callback){
 			// Watch events
 			DocsJS.addEvent(window,'scroll',DocsJS.scrolled);
 			DocsJS.addEvent(window,'resize',DocsJS.resized);
-			var hashChange = function(){
-				var location =  decodeURIComponent(window.location.hash.substr(1));
-				window.location.hash = '';
-				if (location !== ''){
-					DocsJS.jumpTo(location);
-				}
-			};
-			DocsJS.addEvent(window,'hashchange',hashChange);
+			DocsJS.addEvent(window,'hashchange',DocsJS.hashchanged);
 
 			DocsJS.scrolled();
 			DocsJS.resized();
@@ -146,9 +139,9 @@ DocsJS.init = function(callback){
 				// Done
 				if (callback === undefined){callback = function(){};}
 				DocsJS.cache.initiated = true;
+				DocsJS.hashchanged();
 				callback();
 				DocsJS.events.ready();
-				window.setTimeout(hashChange,200);
 				console.log('DocsJS: Ace done @',Date.now()-DocsJS.cache.initTime);
 				console.log('DocsJS: end of init',Date.now());
 			},0);
@@ -358,11 +351,11 @@ DocsJS.refresh = function(callback){
 				var sub = 0;
 				for (var i = 0; i < contents.length; i++){
 					if (contents[i].nodeType === 1 && contents[i].parentElement === parent){
-						var newLocation = location + '.' + (i-sub);
-						contents[i].setAttribute('docsjs-location',newLocation);
+						var newLocation = location + ',' + (i-sub);
+						contents[i].setAttribute('docsjs-location','['+newLocation+']');
 						var title = (contents[i].querySelector('[docsjs-tag="t-l"]') || contents[i].querySelector('[docsjs-tag="h-d"] > [docsjs-tag="t-l"]') || undefined);
 						if (title !== undefined){
-							structure += '<div docsjs-tag="menu-item" docsjs-state="max" onclick="'+"if ((event.target || (event.srcElement || event.originalTarget)) === this){if (this.docsjs.state === 'min'){this.docsjs.state = 'max';} else{this.docsjs.state = 'min';}}"+'"><div docsjs-tag="menu-title" role="button" tabindex="0" aria-labelledby="Navigate to '+title.innerText+'" docsjs-state="" docsjs-menu-location="'+newLocation+'" onkeyup="DocsJS.spaceClick(this,event)" onclick="DocsJS._menuClicked(this,'+"'"+newLocation+"'"+');" docsjs-menu-destination="'+contents[i].docsjs.tag+'">'+title.innerText+'</div>'+readStructure(contents[i],newLocation)+'</div>';
+							structure += '<div docsjs-tag="menu-item" docsjs-state="max" onclick="'+"if ((event.target || (event.srcElement || event.originalTarget)) === this){if (this.docsjs.state === 'min'){this.docsjs.state = 'max';} else{this.docsjs.state = 'min';}}"+'"><div docsjs-tag="menu-title" role="button" tabindex="0" aria-labelledby="Navigate to '+title.innerText+'" docsjs-state="" docsjs-menu-location="['+newLocation+']" onkeyup="DocsJS.spaceClick(this,event)" onclick="DocsJS._menuClicked(this,['+newLocation+']);" docsjs-menu-destination="'+contents[i].docsjs.tag+'">'+title.innerText+'</div>'+readStructure(contents[i],newLocation)+'</div>';
 						}
 					} else{
 						sub++;
@@ -374,13 +367,13 @@ DocsJS.refresh = function(callback){
 			}
 		};
 		menu.innerHTML = '<div docsjs-tag="menu-preferences"><div docsjs-tag="menu-preferences-item" docsjs-pref="aA" role="button" tabindex="0" aria-label="Increase Font-size">'+DocsJS.buttons.fontplus()+'</div><div docsjs-tag="menu-preferences-item" docsjs-pref="Aa" role="button" tabindex="0" aria-label="Decrease Font-size">'+DocsJS.buttons.fontminus()+'</div><div docsjs-tag="menu-preferences-item" docsjs-pref="O" role="button" tabindex="0" aria-label="Minimize everything">'+DocsJS.buttons.menuminimized()+'</div>'+/*'<div docsjs-tag="menu-preferences-item" docsjs-pref="CM" role="button" tabindex="0" aria-label="Expand summaries and minimize everything else">'+DocsJS.buttons.partialminimize()+'</div>'+*/'<div docsjs-tag="menu-preferences-item" docsjs-pref="C" role="button" tabindex="0" aria-label="Expand everything">'+DocsJS.buttons.menuminimize()+'</div><div docsjs-tag="menu-preferences-item" docsjs-pref="Iv" role="button" tabindex="0" aria-label="Invert colors">'+DocsJS.buttons.invert()+'</div>'+/*'<div docsjs-tag="menu-preferences-item" docsjs-pref="GPU" role="button" tabindex="0" aria-label="Remove animations">'+DocsJS.buttons.gpu()+'</div>'+*/'<div docsjs-tag="menu-preferences-item" docsjs-pref="Rs">'+DocsJS.buttons.reset()+'</div></div>'+
-			'<div docsjs-tag="menu-item"><div docsjs-tag="menu-title" docsjs-state="" docsjs-menu-location="'+DocsJS.menu.top+'" onclick="DocsJS._menuClicked(this,'+"'"+DocsJS.menu.top+"'"+');" docsjs-menu-destination="'+DocsJS.menu.top+'">'+DocsJS.menu.top+'</div></div>'+
+			'<div docsjs-tag="menu-item"><div docsjs-tag="menu-title" docsjs-state="" onclick="DocsJS._menuClicked(this,true);">'+DocsJS.menu.top+'</div></div>'+
 			readStructure(doc.querySelector('main') || doc, index)+
-			'<div docsjs-tag="menu-item"><div docsjs-tag="menu-title" docsjs-state="" docsjs-menu-location="'+DocsJS.menu.bottom+'" onclick="DocsJS._menuClicked(this,'+"'"+DocsJS.menu.bottom+"'"+');" docsjs-menu-destination="'+DocsJS.menu.bottom+'">'+DocsJS.menu.bottom+'</div></div>';
+			'<div docsjs-tag="menu-item"><div docsjs-tag="menu-title" docsjs-state="" onclick="DocsJS._menuClicked(this,false);">'+DocsJS.menu.bottom+'</div></div>';
 		
 		doc.querySelector('[docsjs-tag="header"]').innerHTML = '';
 		DocsJS.forEach(doc.querySelectorAll('main>s-c'),function(el){
-			try{doc.querySelector('[docsjs-tag="header"]').innerHTML += '<span onclick="DocsJS.jumpTo(\''+el.docsjs.location+'\')">' + el.querySelector('[docsjs-tag="t-l"]').textContent + '</span> ';}catch(e){}
+			try{doc.querySelector('[docsjs-tag="header"]').innerHTML += '<span onclick="DocsJS.scroll('+el.docsjs.location+')">' + el.querySelector('[docsjs-tag="t-l"]').textContent + '</span> ';}catch(e){}
 		});
 	});
 
@@ -673,6 +666,18 @@ DocsJS.refresh = function(callback){
 /////// Events ///////
 //////////////////////
 
+DocsJS.hashchanged = function(){
+	'use strict';
+	if (!DocsJS.cache.hashChanged){
+		var location = decodeURIComponent(window.location.hash.substr(1));
+		if (location !== ''){
+			try{location = JSON.parse(location);}catch(e){}
+			DocsJS.scroll(location);
+		}
+	} else{
+		DocsJS.cache.hashChanged = false;
+	}
+};
 DocsJS.scrolled = function(){
 	'use strict';
 	DocsJS.apply(function(doc){
@@ -726,6 +731,13 @@ DocsJS.scrolled = function(){
 			});
 		}
 	});
+	if (DocsJS.cache.initiated){
+		var hash = encodeURIComponent(document.querySelector('[docsjs-state="youarehere"]').docsjs.menuLocation || DocsJS.window.scrollTop() === 0);
+		if (hash !== window.location.hash.substr(1)){
+			DocsJS.cache.hashChanged = true;
+			window.location.hash = hash;
+		}
+	}
 };
 DocsJS.resized = function(){
 	'use strict';
@@ -819,10 +831,10 @@ DocsJS._menuClicked = function(el, loc){
 	if (el.offsetParent.parentElement.docsjs.tag === 't-p'){
 		el.offsetParent.parentElement.querySelector('[docsjs-tag="button-menu"]').onclick();
 		window.setTimeout(function(){
-			DocsJS.jumpTo(loc);
+			DocsJS.scroll(loc);
 		},DocsJS.animation.duration);
 	} else{
-		DocsJS.jumpTo(loc);
+		DocsJS.scroll(loc);
 	}
 };
 DocsJS.bindPrefs = function(){
@@ -1199,7 +1211,7 @@ DocsJS.spaceClick = function(el, e){
 	'use strict';
 	var keyCode = e.which || e.keyCode;
 	if (keyCode === 32 || keyCode === 13){
-		DocsJS.jumpTo(el.getAttribute('onclick').split("DocsJS.jumpTo('")[1].slice(0,-2));
+		DocsJS.scroll(JSON.parse(el.getAttribute('onclick').split("DocsJS._menuClicked(this,")[1].slice(0,-2)));
 	}
 };
 
@@ -1494,71 +1506,140 @@ DocsJS.animate = function(arg){
 		}
 	}
 };
-DocsJS.jumpTo = function(location){
+DocsJS.scroll = function(targ,callback){
 	'use strict';
-	if (location === DocsJS.menu.top){
-		var scrollTimeT = Math.sqrt(DocsJS.window.scrollTop())/14*DocsJS.animation.duration;
-		DocsJS.animate({
-			from: DocsJS.window.scrollTop(),
-			to: 0,
-			duration: scrollTimeT, easing: DocsJS.easings.easeOutQuart,
-			step: function(now){
-				window.scroll(0,now);
-			}
-		});
-		DocsJS.events.jumpTo('top');
-	} else if (location === DocsJS.menu.bottom){
-		var btm = document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').clientHeight - DocsJS.window.height();
-		var scrollTimeB = Math.sqrt(btm - DocsJS.window.scrollTop())/14*DocsJS.animation.duration;
-		DocsJS.animate({
-			from: DocsJS.window.scrollTop(),
-			to: btm,
-			duration: scrollTimeB, easing: DocsJS.easings.easeOutQuart,
-			step: function(now){
-				window.scroll(0,now);
-			}
-		});
-		DocsJS.events.jumpTo('bottom');
-	} else{
-		try {
-			var loc = location.split('.');
-			var dest = document.querySelectorAll('[docsjs-tag="'+DocsJS.superparent+'"]')[loc[0]].querySelector('main');
-			loc.shift();
-			for (var i = 0; i < loc.length; i++){
-				var children = dest.querySelectorAll('[docsjs-tag="s-c"],[docsjs-tag="t-p"]');
-				var immeditateChildren = [];
-				for (var j = 0; j < children.length; j++){
-					if (children[j].parentElement === dest){
-						immeditateChildren.push(children[j]);
-					}
-				}
-				dest = immeditateChildren[loc[i]];
-			}
-			dest = dest.querySelector('[docsjs-tag="h-d"]') || dest;
-			var scrollTo = dest.getBoundingClientRect().top - document.body.getBoundingClientRect().top - DocsJS.fontsize._value*DocsJS.fontsize._scalar;
-			if (document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').clientHeight - DocsJS.window.height() < scrollTo){
-				scrollTo = Math.min(scrollTo, document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').clientHeight - DocsJS.window.height());
-			}
-			var scrollTime = Math.sqrt(Math.abs(DocsJS.window.scrollTop() - scrollTo))/14*DocsJS.animation.duration;
-			DocsJS.animate({
-				from: DocsJS.window.scrollTop(),
-				to: scrollTo,
-				duration: scrollTime, easing: DocsJS.easings.easeOutQuart,
-				step: function(now){
-					window.scroll(0,now);
-				}
-			});
-			DocsJS.events.jumpTo(loc);
-		} catch(e){
+	if (typeof callback !== 'function'){callback = function(){};}
+	switch (typeof targ){
+		case 'string':
 			var names = document.querySelectorAll('[docsjs-tag="menu-title"]');
 			for (var n = 0; n < names.length; n++){
-				if (names[n].innerText.replace(/(\r\n|\n|\r)/gm,'') === location){
-					DocsJS.jumpTo(names[n].docsjs.menuLocation);
+				if (names[n].innerText.replace(/(\r\n|\n|\r)/gm,'') === targ){
+					DocsJS.scroll(JSON.parse(names[n].docsjs.menuLocation));
 					return;
 				}
 			}
-		}
+			break;
+		case 'number':
+			var top = document.querySelector('[docsjs-state="youarehere"]');
+			if (top.docsjs.menuLocation === undefined){
+				if (DocsJS.window.scrollTop() === 0){
+					window.scrollTo(0,1);
+					DocsJS.scrolled();
+					DocsJS.scroll(targ);
+				} else{
+					window.scrollTo(0,DocsJS.window.scrollTop()-1);
+					DocsJS.scrolled();
+					DocsJS.scroll(targ);
+				}
+			} else if (targ === 0){
+				DocsJS.scroll(JSON.parse(top.docsjs.menuLocation));
+			} else{
+				if (targ > 0){
+					for (var g = 0; g < targ; g++){
+						while (top.nextSibling === null){
+							top = top.parentElement;
+						}
+						top = top.nextSibling.querySelector('[docsjs-tag="menu-title"]');
+						if (top.docsjs.menuLocation === undefined){
+							DocsJS.scroll(g);
+							return;
+						}
+					}
+					DocsJS.scroll(JSON.parse(top.docsjs.menuLocation));
+				} else{
+					for (var l = 0; l > targ; l--){
+						while (top.previousSibling === null){
+							top = top.parentElement;
+						}
+						top = top.previousSibling;
+						var topChildren = top.querySelectorAll('[docsjs-tag="menu-title"]');
+						if (topChildren.length !== 0){
+							top = topChildren[topChildren.length-1];
+						}
+						if (top.docsjs.menuLocation === undefined){
+							DocsJS.scroll(l);
+							return;
+						}
+					}
+					DocsJS.scroll(JSON.parse(top.docsjs.menuLocation));
+				}
+			}
+			break;
+		case 'boolean':
+			if (targ){
+				var scrollTimeT = Math.sqrt(DocsJS.window.scrollTop())/14*DocsJS.animation.duration;
+				DocsJS.animate({
+					from: DocsJS.window.scrollTop(),
+					to: 0,
+					duration: scrollTimeT, easing: DocsJS.easings.easeOutQuart,
+					step: function(now){
+						window.scroll(0,now);
+					},
+					callback: callback
+				});
+			} else{
+				var btm = document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').clientHeight - DocsJS.window.height();
+				var scrollTimeB = Math.sqrt(btm - DocsJS.window.scrollTop())/14*DocsJS.animation.duration;
+				DocsJS.animate({
+					from: DocsJS.window.scrollTop(),
+					to: btm,
+					duration: scrollTimeB, easing: DocsJS.easings.easeOutQuart,
+					step: function(now){
+						window.scroll(0,now);
+					},
+					callback: callback
+				});
+			}
+			break;
+		case 'object':
+			if (typeof targ[0] === 'number'){
+				var dest = document.querySelectorAll('[docsjs-tag="'+DocsJS.superparent+'"]')[targ[0]].querySelector('main');
+				targ.shift();
+				for (var i = 0; i < targ.length; i++){
+					var children = dest.querySelectorAll('[docsjs-tag="s-c"],[docsjs-tag="t-p"]');
+					var immeditateChildren = [];
+					for (var j = 0; j < children.length; j++){
+						if (children[j].parentElement === dest){
+							immeditateChildren.push(children[j]);
+						}
+					}
+					dest = immeditateChildren[targ[i]];
+				}
+				dest = dest.querySelector('[docsjs-tag="h-d"]') || dest;
+				var scrollTo = dest.getBoundingClientRect().top - document.body.getBoundingClientRect().top - DocsJS.fontsize._value*DocsJS.fontsize._scalar;
+				if (document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').clientHeight - DocsJS.window.height() < scrollTo){
+					scrollTo = Math.min(scrollTo, document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').clientHeight - DocsJS.window.height());
+				}
+				var scrollTime = Math.sqrt(Math.abs(DocsJS.window.scrollTop() - scrollTo))/14*DocsJS.animation.duration;
+				DocsJS.animate({
+					from: DocsJS.window.scrollTop(),
+					to: scrollTo,
+					duration: scrollTime, easing: DocsJS.easings.easeOutQuart,
+					step: function(now){
+						window.scroll(0,now);
+					}, callback: callback
+				});
+			} else if (typeof targ[0] === 'string'){
+				var item = document;
+				for (var s = 0; s < targ.length; s++){
+					var titles = item.querySelectorAll('[docsjs-tag="menu-title"]');
+					for (var t = 0; t < titles.length; t++){
+						if (titles[t].innerText.replace(/(\r\n|\n|\r)/gm,'') === targ[s]){
+							item = titles[t].parentElement;
+							t = titles.length;
+						}
+					}
+				}
+				DocsJS.scroll(JSON.parse(item.querySelector('[docsjs-tag="menu-title"]').docsjs.menuLocation));
+			} else{
+				console.error('DocsJS.scroll() Error: passed argument '+targ+' is not a valid type.');
+			}
+			break;
+		default:
+			console.error('DocsJS.scroll() Error: passed argument '+targ+' is not a valid type.');
+			break;
 	}
+	DocsJS.events.scroll(targ);
 };
 DocsJS.toggle = function(el, target){
 	'use strict';
@@ -1771,7 +1852,7 @@ DocsJS.events = {
 	eToggle: function(e){'use strict';if (e === 'HTML Node of ex/eg opened/closed'){}},
 	cdRefreshed: function(e){'use strict';if (e === 'DocsJS.cd.refresh() has been called and finished.'){}},
 	preferenceChanged: function(type){'use strict';if (type === 'The preference changed: Fontsize up || Fontisze down || Minimize all || Minimize half || Minimize none || Invert colors || Lightning || Reset'){}},
-	jumpTo: function(location){'use strict';if (location === 'top || bottom || period-separated location'){}},
+	scroll: function(location){'use strict';if (location === 'top || bottom || period-separated location'){}},
 };
 DocsJS.buttons = {
 	minimize: {
@@ -1899,7 +1980,8 @@ DocsJS.cache = {
 		durtation: 0
 	},
 	initiated: false,
-	initTime: Date.now()
+	initTime: Date.now(),
+	hashChanged: false
 };
 DocsJS.supports = {
 	passive: false,
