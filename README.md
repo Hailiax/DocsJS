@@ -29,6 +29,8 @@ Add this to your document `<body>`.
 ```
 
 ## Full changelog
+### 1.0.3 // 24 Sep 2017
+*  Bug fixes. DocsJS ready for public release!
 ### 1.0.2 // 24 Sep 2017
 *  DocsJS.jumpTo() replaced with DocsJS.scroll()
 ### 1.0.1 // 23 Sep 2017
