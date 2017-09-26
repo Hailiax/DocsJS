@@ -18,7 +18,7 @@ function init(){
 	
 	// Set up examples where the user edits code to an iframe
 	parse = function(el){
-		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Hailaxian.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.init();</script></body></html>';
+		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Hailaxian.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.hashchanged=function(){};DocsJS.init();</script></body></html>';
 		document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = 'data:text/html,'+html;
 	};
 	var bindParse = function(){
@@ -215,6 +215,13 @@ function init(){
 		document.getElementById('ChooseTheme').querySelector('option[selected="selected"]').removeAttribute('selected');
 		var theme = document.getElementById('themeSelect').value;
 		DocsJS.theme = theme;
+		if (theme === 'Minimal'){
+			document.getElementById('logoImage').style.backgroundColor = 'rgba(31,36,41,.95)';
+			document.getElementById('logoImage').style.margin = '1em';
+		} else{
+			document.getElementById('logoImage').style.backgroundColor = '';
+			document.getElementById('logoImage').style.margin = '';
+		}
 		var sheet = DocsJS.origin.split('/');
 		sheet.pop();
 		sheet = sheet.join('/') + '/themes/' + theme + '.css';
@@ -415,7 +422,7 @@ function changeTheme_(){
 	document.getElementById('themeSelect').value = 'Minimal';
 	document.getElementById('ChooseTheme').querySelector('select').onchange();
 	document.getElementById('ST').innerHTML = 'Revert theme.';
-	document.getElementById('ST').style.backgroundColor = '#fff607';
+	//document.getElementById('ST').style.backgroundColor = '#fff607';
 	document.getElementById('ST').href = 'javascript:revertTheme_();';
 }
 function revertTheme_(){
@@ -425,6 +432,6 @@ function revertTheme_(){
 	document.getElementById('themeSelect').value = 'Hailaxian';
 	document.getElementById('ChooseTheme').querySelector('select').onchange();
 	document.getElementById('ST').innerHTML = 'Change theme!';
-	document.getElementById('ST').style.backgroundColor = '';
+	//document.getElementById('ST').style.backgroundColor = '';
 	document.getElementById('ST').href = 'javascript:changeTheme_();';
 }

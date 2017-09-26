@@ -3,7 +3,7 @@
 DocsJS Theme
 Name: Minimal
 Author: Alexander 'Hailiax' Wing
-Updated: 17 Sep 2017
+Updated: 25 Sep 2017
 
 *******/
 
@@ -252,19 +252,19 @@ div[docsjs-tag="column-filler"] div[docsjs-tag="button-child"]{
 	border-color: #FFF;
 	color: #FFF;
 }
+div[docsjs-tag="column-header"] div[docsjs-tag="button-parent"]{
+	font-size: 1.5em;
+	top: 0.4em;
+}
+div[docsjs-tag="column-push-right"]{
+	right: 0;
+	margin-right: 0.8em;
+}
 
 /* Sidebars */
 div[docsjs-tag="column-left"],div[docsjs-tag="column-right"]{
 	height: 100%;
 	top: 0;
-}
-div[docsjs-tag="column-handle"]{
-	position: absolute;
-	top: 0;
-	height: 100%;
-	width: 2em;
-	cursor: pointer;
-	cursor: ew-resize;
 }
 div[docsjs-tag="column-left"] div[docsjs-tag="column-handle"]{
 	left: 100%;
@@ -273,13 +273,15 @@ div[docsjs-tag="column-left"] div[docsjs-tag="column-handle"]{
 div[docsjs-tag="column-right"] div[docsjs-tag="column-handle"]{
 	margin-left: -1em;
 }
-div[docsjs-tag="column-handle-inner"]{
-	position: absolute;
-	height: 100%;
-	width: 0.4em;
-	display: none;
-	left: 0; right: 0; margin-left: auto; margin-right: auto;
-	z-index: 3;
+div[docsjs-tag="column-header"]{
+	position: fixed;
+	background-color: #FFF;
+	background-color: rgba(243,243,244,0.98);
+	z-index: 5;
+	font-size: 1.2em;
+	padding: 0.833333em;
+	text-align: center;
+	box-sizing: border-box;
 }
 div[docsjs-tag="column-filler"]{
 	position: relative;
@@ -304,6 +306,11 @@ div[docsjs-tag="etitle"]{
 }
 div[docsjs-tag="column-content"] e-g,div[docsjs-tag="column-content"] e-x{
 	height: auto;
+}
+
+/* Menu in sidebar */
+div[docsjs-tag="column-left"] div[docsjs-tag="menu"]{
+	margin-top: 3em;
 }
 
 /* Menu */
