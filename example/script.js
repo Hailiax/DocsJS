@@ -114,7 +114,7 @@ function init(){
 					case 'eg.name':
 						newBody += '\tDocsJS.eg.name = \''+el.value+'\';\n';
 						DocsJS.eg.name = el.value;
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="e-g"]'),function(e){
+						DocsJS.forEach(document.querySelectorAll('e-g'),function(e){
 							if (e.docsjs.name === undefined){
 								e = e.previousSibling;
 								e.innerHTML = e.firstChild.outerHTML + el.value;
@@ -124,7 +124,7 @@ function init(){
 					case 'ex.name':
 						newBody += '\tDocsJS.ex.name = \''+el.value+'\';\n';
 						DocsJS.ex.name = el.value;
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="e-x"]'),function(e){
+						DocsJS.forEach(document.querySelectorAll('e-x'),function(e){
 							if (e.docsjs.name === undefined){
 								e = e.previousSibling;
 								e.innerHTML = e.firstChild.outerHTML + el.value;
@@ -180,7 +180,7 @@ function init(){
 						break;
 					case 'eg.name':
 						DocsJS.eg.name = el.placeholder;
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="e-g"]'),function(e){
+						DocsJS.forEach(document.querySelectorAll('e-g'),function(e){
 							if (e.docsjs.name === undefined){
 								e = e.previousSibling;
 								e.innerHTML = e.firstChild.outerHTML + el.placeholder;
@@ -189,7 +189,7 @@ function init(){
 						break;
 					case 'ex.name':
 						DocsJS.ex.name = el.placeholder;
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="e-x"]'),function(e){
+						DocsJS.forEach(document.querySelectorAll('e-x'),function(e){
 							if (e.docsjs.name === undefined){
 								e = e.previousSibling;
 								e.innerHTML = e.firstChild.outerHTML + el.placeholder;
@@ -228,7 +228,7 @@ function init(){
 		var xhr = new XMLHttpRequest();
 		xhr.onreadystatechange = function() {
 			if (this.readyState === 4 && this.status === 200) {
-				DocsJS.cd.getEditor(document.getElementById('ChooseTheme').querySelector('[docsjs-tag="c-d"]')).setValue(xhr.responseText);
+				DocsJS.cd.getEditor(document.getElementById('ChooseTheme').querySelector('c-d')).setValue(xhr.responseText);
 			}
 			updateCustomHead();
 			try{document.getElementsByTagName('head')[0].removeChild(document.getElementById('DocsJS-theme'));}catch(e){}
@@ -253,7 +253,7 @@ function init(){
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (this.readyState === 4 && this.status === 200) {
-			DocsJS.cd.getEditor(document.getElementById('ChooseTheme').querySelector('[docsjs-tag="c-d"]')).setValue(xhr.responseText);
+			DocsJS.cd.getEditor(document.getElementById('ChooseTheme').querySelector('c-d')).setValue(xhr.responseText);
 			DocsJS.cd.refresh();
 		}
 	};
@@ -316,7 +316,7 @@ function init(){
 
 				document.querySelector('[docsjs-tag="column-right"]').style.marginLeft = -1*document.querySelector('[docsjs-tag="column-right"]').clientWidth + (document.querySelector('[docsjs-tag="column-right"]').style.position === 'absolute'? difference : -1*difference) + 'px';
 				document.querySelector('[docsjs-tag="column-left"]').style.marginLeft = difference + 'px';
-				DocsJS.forEach(document.querySelectorAll('main > [docsjs-tag="s-c"]'),function(el){
+				DocsJS.forEach(document.querySelectorAll('main > s-c'),function(el){
 					el.style.marginLeft = parseInt(el.style.marginLeft) + difference + 'px';
 				});
 				document.getElementsByClassName('baseground')[0].style.width = difference + 'px';
@@ -327,7 +327,7 @@ function init(){
 			
 			document.querySelector('[docsjs-tag="column-right"]').style.marginLeft = -1*document.querySelector('[docsjs-tag="column-right"]').clientWidth + (document.querySelector('[docsjs-tag="column-right"]').style.position === 'absolute'? difference : -1*difference) + 'px';
 			document.querySelector('[docsjs-tag="column-left"]').style.marginLeft = difference + 'px';
-			DocsJS.forEach(document.querySelectorAll('main > [docsjs-tag="s-c"]'),function(el){
+			DocsJS.forEach(document.querySelectorAll('main > s-c'),function(el){
 				el.style.marginLeft = parseInt(el.style.marginLeft) + difference + 'px';
 			});
 			document.getElementsByClassName('baseground')[0].style.width = difference + 'px';
