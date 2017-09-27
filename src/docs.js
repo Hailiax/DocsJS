@@ -1951,6 +1951,7 @@ DocsJS.easings = {
 ////// Internal //////
 //////////////////////
 
+Date.now||(Date.now=function(){return(new Date).getTime()});
 DocsJS.cache = {
 	watches:{},
 	extraWidth: 0,
