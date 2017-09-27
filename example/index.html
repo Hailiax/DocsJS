@@ -7,9 +7,9 @@
 <title>DocsJS</title>
 
 <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png?v=8jedNJnRp5">
-<link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png?v=8jedNJnRp5">
+<!--link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png?v=8jedNJnRp5">
 <link rel="icon" type="image/png" sizes="192x192" href="favicons/android-chrome-192x192.png?v=8jedNJnRp5">
-<link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png?v=8jedNJnRp5">
+<link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png?v=8jedNJnRp5"-->
 <link rel="manifest" href="favicons/manifest.json?v=8jedNJnRp6">
 <link rel="mask-icon" href="favicons/safari-pinned-tab.svg?v=8jedNJnRp5" color="#5bbad5">
 <link rel="shortcut icon" href="favicons/favicon.ico?v=8jedNJnRp5">
@@ -62,7 +62,7 @@
 		<div docsjs-tag="button-parent" style="display:inline-block; font-size: 0.8em;"><div style="position: absolute; margin-left: -10%; height: 100%; width: 100%;"><div docsjs-tag="button-child" style="height: 70%; width: 70%; background-color: transparent; -ms-filter: 'progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865474,M12=-0.7071067811865477,M21=0.7071067811865477, M22=0.7071067811865474,SizingMethod='auto expand')';filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865474,M12=-0.7071067811865477,M21=0.7071067811865477,M22=0.7071067811865474,SizingMethod='auto expand');-o-transform: rotate(45deg);-moz-transform: rotate(45deg);-webkit-transform: rotate(45deg);transform: rotate(45deg); -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;*behavior: url(https://raw.github.com/Schepp/box-sizing-polyfill/master/boxsizing.htc); border-radius: 0; border-bottom: none; border-left: none;"></div><div docsjs-tag="button-child" style="margin-left: 20%; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;*behavior: url(https://raw.github.com/Schepp/box-sizing-polyfill/master/boxsizing.htc); border-radius: 100%;"></div><div docsjs-tag="button-child" style="margin-right: 35%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;*behavior: url(https://raw.github.com/Schepp/box-sizing-polyfill/master/boxsizing.htc); border-radius: 100%;"></div></div></div>
 	</v-r>
 	<s-c>
-		<div style="height: 8em; position: relative;" class="logoImage">
+		<div style="height: 8em; position: relative;" class="logoImage" id="logoImage">
 			<img src="logo.png" alt="logo" style="position: absolute; max-height: 110%; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 0; bottom: 0; margin-top: auto; margin-bottom: auto; max-width: 70%;">
 		</div>
 	</s-c>
@@ -70,15 +70,14 @@
 		<h-d>
 			<t-l>Why DocsJS</t-l>
 			<t-x>
-				Woo! I just finished my super-cool project. Now I just gotta document it so people can actually use it... *Googles documentation generator* Hmm, there doesn't seem to be anything simple. Should I make my own? What do I do about browser compatability, accessibility, menus? This will take me just as long as my project itself!<br><br>
-				Enter DocsJS. DocsJS is an open source documentation library lets you focus on just writing in HTML: you won't ever have to touch javascript, command line, etc. Want a quick run down of things you don't have to worry about with DocsJS?
+				DocsJS is an open source documentation library lets you focus on just writing in HTML: you won't ever have to touch javascript, command line, etc. Want a quick run down of things you don't have to worry about with DocsJS?
 				<ol style="margin-bottom: 0;">
-					<li>Compatibility: works on IE8+ (Windows XP wow!), FF11+, Chrome15+, and more.</li>
-					<li>Accessibility: complies with and aims to exceed old and new accessibility standards.</li>
-					<li>Navigation: automatically generates menus, navbar, links, etc. <a href="javascript:DocsJS.scroll('Got 5 minutes?');" id="JN">Jump to next topic.</a></li>
-					<li>Responsiveness: works perfectly on devices of any size. <a href="javascript:shrinkScreen_();" id="SS">Shrink screen!</a></li>
-					<li>Time: DocsJS is designed to make writing docs quick and easy.</li>
-					<li>Aesthetics: DocsJS is modern and easily customizable. <a href="javascript:changeTheme_();" id="ST">Change theme!</a></li>
+					<li>Compatibility: IE8+, FF11+, Chrome15+, etc.</li>
+					<li>Accessibility: complies &amp; exceeds accessibility standards.</li>
+					<li>Navigation: auto-generates menus, links, etc. <a href="javascript:DocsJS.scroll('Got 5 minutes?');" id="JN">Jump to next topic.</a></li>
+					<li>Responsiveness: mobile and desktop equality. <a href="javascript:shrinkScreen_();" id="SS">Shrink screen!</a></li>
+					<li>Time: write quickly with custom tags.</li>
+					<li>Aesthetics: modern and easily customizable. <a href="javascript:changeTheme_();" id="ST">Change theme!</a></li>
 				</ol>
 			</t-x>
 			<e-x docsjs-name="Changelog" class="changelog">
@@ -100,18 +99,30 @@
 		<h-d>
 			<t-l>Got 5 minutes?</t-l>
 			<t-x>
-				Let's get started. First of all, you'll have to add docs.js to your HTML page. I highly, highly recommend using the jsdelivr CDN described below.<br><br>
-				First, add this to the head of your doc (IE doesn't like to load scripts in the body),<br>
+				Let's get started. First of all, you'll have to add docs.js to your HTML page.<br><br>
+				First, add this to the head of your doc,<br>
 				<c-d docsjs-lang="html" style="margin-top: 0.25em; margin-bottom: 0.5em;">&lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"&gt;&lt;/script&gt;
 &lt;link href="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/themes/Hailaxian.min.css" rel="stylesheet" id="DocsJS-theme"&gt;</c-d>
 			
-				and this to the body.<br>
+				and then this to the body.<br>
 				<c-d docsjs-lang="html" style="margin-top: 0.25em;">&lt;div docsjs-tag="DocsJS-This-Baby"&gt;
-	&lt;!-- This is where you write your doc --&gt;
+	&lt;!-- This is where you write your doc. Below is a small example. --&gt;
+	&lt;s-c&gt;
+		&lt;h-d&gt;
+			&lt;t-l&gt;Example header&lt;/t-l&gt;
+			&lt;t-x&gt;Header content&lt;/t-x&gt;
+		&lt;/h-d&gt;
+		&lt;t-p&gt;
+			&lt;t-l&gt;Example topic&lt;/t-l&gt;
+			&lt;t-x&gt;Topic content&lt;/t-x&gt;
+			&lt;e-g&gt;Example&lt;/e-g&gt;
+			&lt;e-x&gt;More&lt;/e-x&gt;
+		&lt;/t-p&gt;
+	&lt;/s-c&gt;
 &lt;/div&gt;
 &lt;script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"&gt;&lt;/script&gt;
 &lt;script&gt;DocsJS.init();&lt;/script&gt;</c-d><br>
-				Now we can get started!
+				DocsJS should now be up and running on your site!
 			</t-x>
 			<e-x docsjs-name="Single page documentation?">
 				A lot of current documentation consist of many small pages connected by hyperlinks. However, DocsJS, by being a JS library, encourages few larger docs or even single page docs. Below, I've explained why this is the better approach.
@@ -148,8 +159,8 @@
 	&lt;!-- This is where you write your doc --&gt;
 	&lt;s-c&gt;
 		&lt;h-d&gt;
-			&lt;t-l&gt;Quick note!!!&lt;/t-l&gt;
-			&lt;t-x&gt;What are those gray bars on the side of the doc? Well you can drag the left one out to open the menu and you can drag the right ones out to move either the e-x or e-g tags to the sides. More on this later!&lt;/t-x&gt;
+			&lt;t-l&gt;Example header&lt;/t-l&gt;
+			&lt;t-x&gt;Every section needs a header&lt;/t-x&gt;
 		&lt;/h-d&gt;
 		&lt;t-p&gt;
 			&lt;t-l&gt;Example topic&lt;/t-l&gt;
@@ -239,8 +250,7 @@
 		&lt;/h-d&gt;
 		&lt;t-p docsjs-state="min"&gt;
 			&lt;t-l&gt;Well, find out here!&lt;/t-l&gt;
-			&lt;t-x&gt;You can drag the bars towards the center. Depending on the symbol you drag, it'll move the e-g or e-x tags to the side. The menu symbol will just create menu on the side. To close the sidebars, just drag them back to the side.&lt;/t-x&gt;
-			&lt;e-x docsjs-state="max"&gt;Try moving this to the sidebar by dragging the matching symbol. (The one with the dots)&lt;/e-x&gt;
+			&lt;t-x&gt;Clicking on the left sidebar will open the menu. Clicking on one of those caret symbols will move the e-x or e-g tags to the sidebar.&lt;/t-x&gt;
 		&lt;/t-p&gt;
 	&lt;/s-c&gt;
 &lt;/div&gt;</c-d>
@@ -347,7 +357,7 @@ DocsJS.scroll( false ); // Scrolls to the bottom // false</c-d>
 		<t-p>
 			<t-l>Sidebars</t-l>
 			<t-x>Documentation often contains a menu on the left and examples/code-snippets on the right. This makes the documentation appear cleaner, shorter, and easier to read. However, this doesn't work on mobile devices and its formatting can be difficult. DocsJS' solution: the <pre>&lt;e-g&gt;</pre> (<v-r egArrow></v-r>) and <pre>&lt;e-x&gt;</pre> (<v-r exArrow></v-r>) tags.<br><br>
-			By default, content in these tags are enclosed in an expandable container, preserving a short and clean look. If the reader's screen is large enough, they can move these tags to a sidebar. Dragging out <v-r egArrow></v-r> on a sidebar will move all <pre>&lt;e-g&gt;</pre>s to the sidebar while dragging <v-r exArrow></v-r> will move <pre>&lt;e-x&gt;</pre>s. Sidebars can be adjusted or closed by dragging the edge of the sidebar.</t-x>
+			By default, content in these tags are enclosed in an expandable container, preserving a short and clean look. If the reader's screen is large enough, they can move these tags to a sidebar. Clicking <v-r egArrow></v-r> on a sidebar will move all <pre>&lt;e-g&gt;</pre>s to the sidebar while cliking <v-r exArrow></v-r> will move <pre>&lt;e-x&gt;</pre>s. Sidebars can be closed or adjusted at the bar at the top of the sidebars.</t-x>
 			<e-g>Try moving this example to the right sidebar! Then, move it back.</e-g>
 			<e-x docsjs-name="Design">Why two tags? Two reasons: there are two sidebars so the user can drag both e-x and e-g to the sides (the option to drag a tag to the left will appear after opening the right sidebar) and documentation generally contains examples and extra details. Why the shapes <v-r egArrow></v-r> and <v-r exArrow></v-r>? They're both built off of the caret symbol which is naturally associated with open/closable drawers. The example symbol (<v-r egArrow></v-r>) looks like a backwards E while the more symbol (<v-r exArrow></v-r>) contains dots associated with more details.</e-x>
 		</t-p>
@@ -453,7 +463,7 @@ DocsJS.scroll( false ); // Scrolls to the bottom // false</c-d>
 		<t-p>
 			<t-l>Javascript options</t-l>
 			<t-x id="jsOptions">
-				Font size: <input type="number" name="fontsize" placeholder="22" style="width:2em;" aria-label="Font size"> px<br>
+				Font size: <input type="number" name="fontsize" placeholder="21" style="width:2em;" aria-label="Font size"> px<br>
 				Max width: <input type="number" name="width.max" placeholder="1280" style="width:3em;" aria-label="Max width"> px<br>
 				Minimum width: <input type="number" name="width.min" placeholder="340" style="width:3em;" aria-label="Minimum width"> px<br>
 				Animation duration: <input type="number" name="animation.duration" placeholder="300" style="width:3em;" aria-label="Animation duration"> ms<br><br>
@@ -595,28 +605,16 @@ DocsJS.scroll( false ); // Scrolls to the bottom // false</c-d>
 				</e-g>
 			</t-p>
 			<t-p docsjs-state="min">
+				<t-l>docsjs-lang</t-l>
+				<t-x>Add this tag to any &lt;c-d&gt; tag you want syntax highlighted. Set it to the language you want it highlighted for. For example &lt;c-d docsjs-lang="html"&gt; will be syntax highlighted for HTML.</t-x>
+			</t-p>
+			<t-p docsjs-state="min">
+				<t-l>docsjs-editable</t-l>
+				<t-x>Add this tag and set it to true to any &lt;c-d&gt; tag you to be editable and vice versa. The default is controlled by <a onClick="DocsJS.scroll('.editable');" href="javascript:void(0);">DocsJS.cd.editable</a>. For example, &lt;c-d docsjs-lang="javascript" docsjs-editable="true"&gt; will be editable and &lt;c-d docsjs-lang="javascript" docsjs-editable="false"&gt; will not</t-x>
+			</t-p>
+			<t-p docsjs-state="min">
 				<t-l>docsjs-tag</t-l>
-				<t-x>Allowed values: DocsJS-This-Baby, sc, hd, tp, tl, tx, eg, ex, vr<br>Allowed on tags: &lt;div&gt;</t-x>
-				<t-x>All custom tags get automatically converted into divs with the matching docsjs-tag attribute. However, if you want to bypass the converting step, you can just create a div with the desired tag and it will work exactly the same way as the custom tag. You must wrap all DocsJS tags inside the superparent, which is DocsJS-This-Baby by default. If you have changed this attribute after the doc has finished loading, please call <a onClick="DocsJS.scroll('DocsJS.toggle()');" href="javascript:void(0);">DocsJS.refresh()</a> to apply your changes.</t-x>
-				<e-g>This is what a simple doc will look like after being converted to divs:
-					<c-d docsjs-lang="html">&lt;div docsjs-tag="DocsJS-This-Baby"&gt;
-	&lt;div docsjs-tag="vr" varName&gt;
-		&lt;p&gt;Varible Content (The varible tag used to be here)&lt;/p&gt;
-	&lt;/div&gt;
-	&lt;div docsjs-tag="sc"&gt;
-		&lt;div docsjs-tag="hd"&gt;
-			&lt;div docsjs-tag="tl"&gt;Sample header&lt;/div&gt;
-			&lt;div docsjs-tag="tx"&gt;Varible Content (The varible tag used to be here)&lt;/div&gt;
-		&lt;/div&gt;
-		&lt;div docsjs-tag="tp"&gt;
-			&lt;div docsjs-tag="tl"&gt;Sample topic&lt;/div&gt;
-			&lt;div docsjs-tag="tx"&gt;Wow! What a moving topic this is.&lt;/div&gt;
-			&lt;div docsjs-tag="eg"&gt;Here's an example of how this topic will change your life.&lt;/div&gt;
-			&lt;div docsjs-tag="ex"&gt;You won't believe what extra details this contains next.&lt;/div&gt;
-		&lt;/div&gt;
-	&lt;/div&gt;
-&lt;/div&gt;</c-d>
-				</e-g>
+				<t-x>This is used for CSS styling. You must wrap all DocsJS tags inside the superparent, which is DocsJS-This-Baby by default. If you have changed this attribute after the doc has finished loading, please call <a onClick="DocsJS.scroll('DocsJS.toggle()');" href="javascript:void(0);">DocsJS.refresh()</a> to apply your changes.</t-x>
 				<e-x docsjs-name="Internal values">
 					This tag has other values used internally by DocsJS and can be styled by you. Unless you know what you're doing, adding a div with these docsjs-tag values will screw up your doc. You can find those values and their purpose under "More tags" in the CSS reference.<br><br>
 				</e-x>
@@ -624,14 +622,6 @@ DocsJS.scroll( false ); // Scrolls to the bottom // false</c-d>
 			<t-p docsjs-state="min">
 				<t-l>docsjs-internal</t-l>
 				<t-x>DocsJS uses many internal tags. Unless you know what you're doing, changing these tags will really screw up your doc. They are: docsjs-extras, docsjs-extra, docsjs-side, docsjs-location, docsjs-pref, docsjs-menu-location, docsjs-menu-destination, docjs-internal.</t-x>
-			</t-p>
-			<t-p docsjs-state="min">
-				<t-l>docsjs-lang</t-l>
-				<t-x>Add this tag to any &lt;c-d&gt; tag you want syntax highlighted. Set it to the language you want it highlighted for. For example &lt;c-d docsjs-lang="html"&gt; will be syntax highlighted for HTML.</t-x>
-			</t-p>
-			<t-p docsjs-state="min">
-				<t-l>docsjs-editable</t-l>
-				<t-x>Add this tag and set it to true to any &lt;c-d&gt; tag you to be editable and vice versa. The default is controlled by <a onClick="DocsJS.scroll('.editable');" href="javascript:void(0);">DocsJS.cd.editable</a>. For example, &lt;c-d docsjs-lang="javascript" docsjs-editable="true"&gt; will be editable and &lt;c-d docsjs-lang="javascript" docsjs-editable="false"&gt; will not</t-x>
 			</t-p>
 		</s-c>
 		<s-c docsjs-state="min">
@@ -641,45 +631,50 @@ DocsJS.scroll( false ); // Scrolls to the bottom // false</c-d>
 			</h-d>
 			<t-p>
 				<t-l>Selectors</t-l>
-				<t-x>To style DocsJS, you'll need to use attribute selectors like [docsjs-tag="s-c"] since custom tags are converted to divs (&lt;s-c&gt; =&gt; &lt;div docsjs-tag="sc"&gt;). You can also style with [docsjs-state="min, max, or youarehere"]. Some other useful selectors to know are the psuedo-classes :first-child and :hover, &gt; (selects immediate children only), + (selects the next sibling), and a regular space which selects all children. The example below shows how you can style sections nested in topics:
-				<c-d docsjs-lang="css">[docsjs-tag="t-p"] &gt; [docsjs-tag="s-c"]{
+				<t-x>To style DocsJS, you'll need to use attribute selectors like [docsjs-tag="button-minimize"]. You can also style with [docsjs-state="min, max, or youarehere"]. Some other useful selectors to know are the psuedo-classes :first-child and :hover, &gt; (selects immediate children only), + (selects the next sibling), and a regular space which selects all children. The example below shows how you can style sections nested in topics, but the best way to pick up styling is to edit the theme under <a href="javascript:DocsJS.scroll('Customize')">Customize</a>:
+				<c-d docsjs-lang="css">t-p &gt; s-c{
 	border-bottom: solid 1em #FFF;
 	margin-top: 0;
 }</c-d></t-x>
 				<e-g docsjs-name="More examples">Here are a few snippets from the default theme:
-				<c-d docsjs-lang="css">[docsjs-tag="t-l"]{
-	/* This styles title tags */
+				<c-d docsjs-lang="css">t-l{
 	position: relative;
-	background-color: rgba(255,255,255,0.85);
+	background-color: #E0E0E0;
+	background-color: rgba(255,255,255,0.8);
 	padding: 0.83333333em;
 	padding-right: 3em;
 	font-size: 1.2em;
 	cursor: pointer;
 }
-[docsjs-tag="t-x"],[docsjs-tag="e-g"],[docsjs-tag="e-x"]{
-	/* This styles tx, eg, and ex tags */
+t-l + div, div[docsjs-tag="menu"] + div{
+	border-top: none !important;
+}
+t-x{
+	border-top: #E0E0E0 solid 1px;
+}
+t-x,e-g,e-x{
 	position: relative;
 	background-color: #FFF;
 	padding: 1em;
 	overflow: hidden;
 }
-[docsjs-tag="t-x"]{
-  /* This gives tx tags a small border at the top... */
-	border-top: #E0E0E0 solid 1px;
+div[docsjs-tag="button-minimize"],div[docsjs-tag="button-menu"]{
+	position: absolute;
+	font-size: 1.6em;
+	height: 1em;
+	width: 1em;
+	border: solid 0.4em transparent;
+	left: 0; right: 0; margin-left: auto; margin-right: 0;
+	top: 0; bottom: 0; margin-top: auto; margin-bottom: auto;
+	cursor: pointer;
 }
-[docsjs-tag="t-l"] + *{
-	/* ...but this makes sure the first element next to the title doesn't have a border at the top so the first tx tag won't have an unfitting border */
-	border-top: none;
-}
-[docsjs-tag="e-x"][docsjs-state="min"],[docsjs-tag="e-g"][docsjs-state="min"]{
-	/* This styles minimized eg and ex */
-	padding-top: 0;
-	padding-bottom: 0;
-	height: 0;
-}
-[docsjs-tag='menu-title'][docsjs-state='youarehere']{
-	/* This bolds the topic the user is currently on in the menu */
-	font-weight: 700;
+div[docsjs-tag="button-menu"]{
+	opacity: 0;
+	-o-transition: opacity 300ms;
+	-ms-transition: opacity 300ms;
+	-moz-transition: opacity 300ms;
+	-webkit-transition: opacity 300ms;
+    transition: opacity 300ms;
 }</c-d>	
 				</e-g>
 			</t-p>
@@ -688,7 +683,7 @@ DocsJS.scroll( false ); // Scrolls to the bottom // false</c-d>
 				<t-x>
 					You may have noticed that the short two letter tags are not the only values for docsjs-tag. Below, you'll find other values for that attribute that you can style with. Select them like [docsjs-tag="ebefore"]. If you're ever confused on what has each tag, just enter inspect element.<br><br>
 					<p class="bold">ebefore</p>: div added before each eg and ex which the user can click on to expand or minimize the eg/ex.<br><br>
-					<p class="bold">column-left, column-right</p>: parent div for the left and right sidebars; <p class="bold">column-content</p>: parent div for eg/ex content in sidebars; <p class="bold">column-filler</p>: div to fill in gaps between column-content, initial column background, and menu sidebar background; <p class="bold">column-handle</p>: area for user to click and drag the sidebars.<br><br>
+					<p class="bold">column-left, column-right</p>: parent div for the left and right sidebars; <p class="bold">column-content</p>: parent div for eg/ex content in sidebars; <p class="bold">column-filler</p>: div to fill in gaps between column-content, initial column background, and menu sidebar background; <p class="bold">column-header</p>: top of header where user can resize or close the sidebar.<br><br>
 					<p class="bold">menu</p>: parent div for menus; <p class="bold">menu-preferences</p>: parent div for menu preferences; <p class="bold">menu-preferences-item</p>: clickable preference buttons; <p class="bold">menu-title</p>: name of section or topic; <p class="bold">menu-item</p>: parent div a group of menu-titles.<br><br>
 					<p class="bold">button-menu</p>: clickable parent div for (un)minimizing menus; <p class="bold">button-minimize</p>: clickable parent div for (un)minimizing sections; <p class="bold">button-ebefore</p>: parent div shown on ebefore; <p class="bold">button-parent</p>: parent div of all buttons; <p class="bold">button-child</p>: child elements of buttons that determine how the button looks like.
 				</t-x>
@@ -984,18 +979,6 @@ DocsJS.scroll( false ); // Scrolls to the bottom</c-d>
 						</t-x>
 					</t-p>
 					<t-p docsjs-state="min">
-						<t-l>.columnResize()</t-l>
-						<t-x>
-							<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Parameters</p>
-							DocsJS.events.columnResize( Side )
-							<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Where</p>
-							Side is a <span style="font-weight: 700;">string</span> that is either 'left' or 'right'.
-						</t-x>
-						<t-x>
-						This function is called when a sidebar has resized (dragged) by the user. The function will be passed 'left' if the left sidebar was resized and 'right' for the right sidebar.
-						</t-x>
-					</t-p>
-					<t-p docsjs-state="min">
 						<t-l>.sectionToggle()</t-l>
 						<t-x>
 							<p style="font-size:1.2em; font-weight: 700; line-height: 1.75em;">Parameters</p>
@@ -1137,7 +1120,13 @@ DocsJS.scroll( false ); // Scrolls to the bottom</c-d>
 					<t-p docsjs-state="min">
 						<t-l>.close()</t-l>
 						<t-x>
-							This button is shown on a panel that appears when the user resizes a sidebar. Resizing the sidebar into the panel will close that sidebar.
+							This button is shown as the button that closes the sidebars.
+						</t-x>
+					</t-p>
+					<t-p docsjs-state="min">
+						<t-l>.ewdrag()</t-l>
+						<t-x>
+							This button is shown as the button that resizes the sidebars.
 						</t-x>
 					</t-p>
 					<t-p docsjs-state="min">
@@ -1498,23 +1487,8 @@ DocsJS.scroll( false ); // Scrolls to the bottom</c-d>
 		</s-c>
 	</s-c>
 </div>
-<script src="../src/ace/ace.js"></script>
-<script>
-	DocsJS.superparent = 'DocsJS-This-Baby';
-	DocsJS.fontsize.set(22);
-	DocsJS.width.max = 1280;
-	DocsJS.width.min = 340;
-	DocsJS.eg.name = 'Example';
-	DocsJS.ex.name = 'More';
-	DocsJS.cd.theme = 'chrome';
-	DocsJS.menu.top = 'Jump to top';
-	DocsJS.menu.bottom = 'Jump to bottom';
-	DocsJS.animation.duration = 300;
-	DocsJS.eg.defaultState = 'min';
-	DocsJS.ex.defaultState = 'min';
-	
-	DocsJS.init(init);
-</script>
+<script src="src/ace/ace.js"></script>
+<script>DocsJS.init(init);</script>
 
 <div class="baseground left" id="baseGround1"></div>
 <div class="baseground right" id="baseGround2"></div>
