@@ -29,6 +29,10 @@ Add this to your document `<body>`.
 ```
 
 ## Full changelog
+### 1.1.0 // Sidebars // 26 Sep 2017
+*  UI for sidebars redesigned
+*  Massive overhaul to scrolling performance
+*  Bug fixes
 ### 1.0.3 // 24 Sep 2017
 *  Bug fixes. DocsJS ready for public release!
 ### 1.0.2 // 24 Sep 2017
