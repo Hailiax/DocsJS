@@ -18,7 +18,7 @@ function init(){
 	
 	// Set up examples where the user edits code to an iframe
 	parse = function(el){
-		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Hailaxian.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+(el.className.split(' ')[0].split('parse')[1]>0?'':'<script>DocsJS.hashchanged=function(){};</script>')+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+(el.className.split(' ')[0].split('parse')[1]>0?'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.hashchanged=function(){};DocsJS.init();</script>':'')+'</body></html>';
+		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Minimal.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+(el.className.split(' ')[0].split('parse')[1]>0?'':'<script>DocsJS.hashchanged=function(){};</script>')+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+(el.className.split(' ')[0].split('parse')[1]>0?'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.hashchanged=function(){};DocsJS.init();</script>':'')+'</body></html>';
 		document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = 'data:text/html,'+html;
 	};
 	var bindParse = function(){
@@ -299,19 +299,16 @@ function init(){
 		document.querySelector('[docsjs-tag="column-left"]').style.marginLeft = '0';
 		document.getElementById('windowScalarPlus').style.color = document.getElementById('windowScalarMinus').style.color = "#000";
 		if (percent < 101 && percent/100*fullWidth > 200){
-			
 			DocsJS.window.width = function(){
 				return fullWidth*percent/100;
 			};
 			document.getElementById('windowScalarPercent').innerHTML = percent + '%';
 			document.getElementById('windowScalarPixels').innerHTML = DocsJS.window.width() + 'px Wide';
-			DocsJS.cache.initiated = false;
 			DocsJS.resized();
-			DocsJS.cache.initiated = true;
 			clearInterval(correctSidebarsTimeout);
 			correctSidebarsTimeout = window.setTimeout(function(){
 				DocsJS.resized();
-				document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').style.width = percent + '%';
+				document.querySelector('docs-js').style.width = percent + '%';
 				var difference = fullWidth*(100-percent)/200;
 
 				document.querySelector('[docsjs-tag="column-right"]').style.marginLeft = -1*document.querySelector('[docsjs-tag="column-right"]').clientWidth + (document.querySelector('[docsjs-tag="column-right"]').style.position === 'absolute'? difference : -1*difference) + 'px';
@@ -322,7 +319,7 @@ function init(){
 				document.getElementsByClassName('baseground')[0].style.width = difference + 'px';
 				document.getElementsByClassName('baseground')[1].style.width = difference + 'px';
 			},1000);
-			document.querySelector('[docsjs-tag="'+DocsJS.superparent+'"]').style.width = percent + '%';
+			document.querySelector('docs-js').style.width = percent + '%';
 			var difference = fullWidth*(100-percent)/200;
 			
 			document.querySelector('[docsjs-tag="column-right"]').style.marginLeft = -1*document.querySelector('[docsjs-tag="column-right"]').clientWidth + (document.querySelector('[docsjs-tag="column-right"]').style.position === 'absolute'? difference : -1*difference) + 'px';
@@ -350,9 +347,7 @@ function init(){
 	document.getElementById('windowScalarMinus').onmousedown = document.getElementById('windowScalarMinus').ontouchstart = function(){
 		clearInterval(windowScalarTimer);
 		windowScalarTimer = window.setInterval(function(){
-			if (parseInt(document.getElementById('windowScalarPercent').innerHTML) === 100){
-				fullWidth = DocsJS.window.width();
-			}
+			fullWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			var percent = parseInt(document.getElementById('windowScalarPercent').innerHTML) - 3;
 			scaleWindow(percent);
 		},15);
@@ -363,9 +358,7 @@ function init(){
 	document.getElementById('windowScalarPlus').onmousedown = document.getElementById('windowScalarPlus').ontouchstart = function(){
 		clearInterval(windowScalarTimer);
 		windowScalarTimer = window.setInterval(function(){
-			if (parseInt(document.getElementById('windowScalarPercent').innerHTML) === 100){
-				fullWidth = DocsJS.window.width();
-			}
+			fullWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 			var percent = parseInt(document.getElementById('windowScalarPercent').innerHTML) + 3;
 			scaleWindow(percent);
 		},15);
