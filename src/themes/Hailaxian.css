@@ -3,7 +3,7 @@
 DocsJS Theme
 Name: Hailaxian
 Author: Alexander 'Hailiax' Wing
-Updated: 25 Sep 2017
+Updated: 27 Sep 2017
 
 *******/
 
@@ -16,7 +16,7 @@ h1,h2,h3,h4,h5,h6{
 	font-size: inherit;
 	font-weight: inherit;
 }
-s-c,t-p,h-d,t-l,t-x,e-g,e-x,c-d{
+s-c,t-p,h-d,t-l,t-x,e-g,e-x,c-d,docs-js,main,nav{
 	display: block;
 }
 v-r{
@@ -36,7 +36,7 @@ body,html{
 	margin: 0;
 	padding: 0;
 }
-div[docsjs-tag="DocsJS-This-Baby"]{
+docs-js{
 	color: #000;
 	line-height: 1.4em;
 	position: absolute;
@@ -84,7 +84,6 @@ t-p > s-c{
 	margin-top: 0;
 }
 t-p > t-p{
-	border-left: solid 1em rgba(255,255,255,0.4);
 	margin-top: 0;
 	box-shadow: none;
 }
@@ -192,7 +191,7 @@ c-d{
 .ace_br1, .ace_br12, .ace_br15{
 	border-radius: 0 !important;
 }
-pre{
+pre,code{
 	display: inline;
 	font-size: 0.8em;
 	font-family: 'Source Code Pro', monospace;
@@ -359,6 +358,29 @@ div[docsjs-tag='menu-item'][docsjs-state='min']:hover{
 div[docsjs-tag='menu-item']:hover{
 	border-left: solid 0.05em #888;
 	cursor: pointer;
+}
+
+/* Markdown styles */
+docs-js[mode="markdown"] t-x{
+	padding-top: 0;
+	padding-bottom: 0;
+}
+docs-js[mode="markdown"] h3{
+	font-weight: 700;
+	font-size: 1.4em;
+}
+docs-js[mode="markdown"] h4{
+	font-weight: 700;
+	font-size: 1.2em;
+}
+docs-js[mode="markdown"] h5{
+	font-weight: 700;
+	font-size: 1em;
+}
+docs-js[mode="markdown"] h6{
+	font-weight: 700;
+	font-size: 1em;
+	color: #6A737D;
 }
 
 /* Base64 bg */

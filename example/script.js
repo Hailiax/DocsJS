@@ -18,7 +18,7 @@ function init(){
 	
 	// Set up examples where the user edits code to an iframe
 	parse = function(el){
-		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Hailaxian.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.hashchanged=function(){};DocsJS.init();</script></body></html>';
+		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Hailaxian.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+(el.className.split(' ')[0].split('parse')[1]>0?'':'<script>DocsJS.hashchanged=function(){};</script>')+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+(el.className.split(' ')[0].split('parse')[1]>0?'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.hashchanged=function(){};DocsJS.init();</script>':'')+'</body></html>';
 		document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = 'data:text/html,'+html;
 	};
 	var bindParse = function(){
