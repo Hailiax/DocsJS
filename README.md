@@ -64,6 +64,8 @@ Here is `some inline code`.
 ```
 
 ## Full changelog
+### 1.2.2 // 2 Oct 2017
+*  Publish to NPM
 ### 1.2.0 // A mark up // 1 Oct 2017
 *  Support for markdown
 *  Sidebars improved
