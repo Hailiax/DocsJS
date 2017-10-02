@@ -18,23 +18,24 @@ function init(){
 	
 	// Set up examples where the user edits code to an iframe
 	parse = function(el){
-		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/Minimal.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+(el.className.split(' ')[0].split('parse')[1]>0?'':'<script>DocsJS.hashchanged=function(){};</script>')+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+(el.className.split(' ')[0].split('parse')[1]>0?'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.hashchanged=function(){};DocsJS.init();</script>':'')+'</body></html>';
-		document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = 'data:text/html,'+html;
+		var iframe = document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0];
+		var num = parseInt(el.className.split(' ')[0].split('parse')[1]);
+		var theme = 'Minimal';
+		if (num === 2){
+			theme = 'Hailaxian';
+		}
+		var html = '<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Example</title><script src="'+DocsJS.origin+'"></script><link href="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/themes/'+theme+'.min.css'+'" rel="stylesheet" id="DocsJS-theme"></head><body>'+(num>0?'':'<script>DocsJS.hashchanged=function(){};DocsJS.doNotLogConvertedMarkdown = true;</script>')+DocsJS.cd.getEditor(el).getValue().replace(/\n/g,'%0A').replace(/\t/g,'&#9')+(num>0?'<script src="'+DocsJS.origin.split('/').splice(0,DocsJS.origin.split('/').length-1).join('/')+'/ace/ace.js'+'"></script><script>DocsJS.hashchanged=function(){};DocsJS.doNotLogConvertedMarkdown = true;DocsJS.init();</script>':'')+'</body></html>';
+		iframe.src = 'data:text/html,'+html;
+		iframe.style.backgroundImage = 'none';
 	};
 	var bindParse = function(){
 		DocsJS.forEach(document.querySelectorAll('.parse'),function(el){
-			var timeout;
-			DocsJS.addEvent(el, 'keydown', function(){
-				clearTimeout(timeout);
+			el.onkeydown = function(){
 				document.getElementsByClassName(el.className.split(' ')[0]+' dest')[0].src = '';
-				window.setTimeout(function(){
-					timeout = window.setTimeout(function(){parse(el);},100);
-				},0);
-			});
-			DocsJS.addEvent(el, 'keyup', function(){
-				timeout = window.setTimeout(function(){parse(el);},100);
-			});
-			parse(el);
+			};
+			el.onkeyup = function(){
+				parse(el);
+			};
 		});
 	};
 	DocsJS.events.cdRefreshed = bindParse;
@@ -43,7 +44,7 @@ function init(){
 	// Update custom body
 	var updateCustomHead = function(){
 		var editor = DocsJS.cd.getEditor(document.getElementById('customizeResultHead'));
-		editor.setValue('<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/docs.min.js"></script>\n'+(DocsJS.theme === null?'<style>\n\t'+DocsJS.cd.getEditor(document.getElementById('customTheme')).getValue().replace(/\n/g,'')+'\n</style>':'<link href="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/themes/'+DocsJS.theme+'.min.css" rel="stylesheet" id="DocsJS-theme">'));
+		editor.setValue('<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsjs@1/src/docs.min.js"></script>\n'+(DocsJS.theme === null?'<style>\n\t'+DocsJS.cd.getEditor(document.getElementById('customTheme')).getValue().replace(/\n/g,'')+'\n</style>':'<link href="https://cdn.jsdelivr.net/npm/docsjs@1/src/themes/'+DocsJS.theme+'.min.css" rel="stylesheet" id="DocsJS-theme">'));
 		DocsJS.cd.refresh();
 	};
 	var updateCustomBody = function(){
@@ -52,7 +53,7 @@ function init(){
 			if (el.checked){
 				switch (el.value){
 					case 'ace':
-						packages += '<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Hailiax/DocsJS@1/src/ace/ace.js"></script>\n';
+						packages += '<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsjs@1/src/ace/ace.js"></script>\n';
 						break;
 					case 'mathjax':
 						packages += '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML"></script>\n';
@@ -60,8 +61,24 @@ function init(){
 				}
 			}
 		});
-		var newBody = '<div docsjs-tag="DocsJS-This-Baby">\n\t<!-- This is where you write your doc -->\n</div>\n'+packages+'<script>\n';
-		if (DocsJS.cd.theme !== DocsJS.aceTheme[DocsJS.theme]){
+		var newBody = '<docs-js';
+		DocsJS.forEach(document.getElementById('htmlOptions').querySelectorAll('input,select'),function(el){
+			switch (el.name){
+				case 'markdown':
+					if (el.value === 'yes'){
+						newBody += ' mode="markdown"';
+					}
+					break;
+				case 'leftsidebar':
+					newBody += ' sidebars="'+el.value+' ';
+					break;
+				case 'rightsidebar':
+					newBody += el.value+'"';
+					break;
+			}
+		});
+		newBody += '>\n\t<!-- This is where you write your doc -->\n</docs-js>\n'+packages+'<script>\n';
+		if (DocsJS.cd.theme !== DocsJS.aceTheme[DocsJS.theme] && DocsJS.cd.theme !== undefined){
 			newBody += '\tDocsJS.cd.theme = \''+DocsJS.cd.theme+'\';\n';
 		}
 		DocsJS.forEach(document.getElementById('jsOptions').querySelectorAll('input,select'),function(el){
@@ -85,22 +102,14 @@ function init(){
 						break;
 					case 'menu.top':
 						newBody += '\tDocsJS.menu.top = \''+el.value+'\';\n';
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="menu-title"][docsjs-menu-location="'+DocsJS.menu.top+'"]'),function(mn){
-							mn.docsjs.menuLocation = el.value;
-							mn.removeAttribute('onclick');
-							mn.setAttribute('onclick',"DocsJS._menuClicked(this,'"+el.value+"');");
-							mn.docsjs.menuDestination = el.value;
+						DocsJS.forEach(document.querySelectorAll('[docsjs-menu-internal="top"]'),function(mn){
 							mn.innerHTML = el.value;
 						});
 						DocsJS.menu.top = el.value;
 						break;
 					case 'menu.bottom':
 						newBody += '\tDocsJS.menu.bottom = \''+el.value+'\';\n';
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="menu-title"][docsjs-menu-location="'+DocsJS.menu.bottom+'"]'),function(mn){
-							mn.docsjs.menuLocation = el.value;
-							mn.removeAttribute('onclick');
-							mn.setAttribute('onclick',"DocsJS._menuClicked(this,'"+el.value+"');");
-							mn.docsjs.menuDestination = el.value;
+						DocsJS.forEach(document.querySelectorAll('[docsjs-menu-internal="btm"]'),function(mn){
 							mn.innerHTML = el.value;
 						});
 						DocsJS.menu.bottom = el.value;
@@ -117,9 +126,10 @@ function init(){
 						DocsJS.forEach(document.querySelectorAll('e-g'),function(e){
 							if (e.docsjs.name === undefined){
 								e = e.previousSibling;
-								e.innerHTML = e.firstChild.outerHTML + el.value;
+								e.innerHTML = (e.firstChild.outerHTML || '') + el.value;
 							}
 						});
+						try{document.querySelector('[docsjs-state="e-g"]').querySelector('[docsjs-tag="column-header"]').childNodes[1].nodeValue = el.value;}catch(e){}
 						break;
 					case 'ex.name':
 						newBody += '\tDocsJS.ex.name = \''+el.value+'\';\n';
@@ -127,9 +137,10 @@ function init(){
 						DocsJS.forEach(document.querySelectorAll('e-x'),function(e){
 							if (e.docsjs.name === undefined){
 								e = e.previousSibling;
-								e.innerHTML = e.firstChild.outerHTML + el.value;
+								e.innerHTML = (e.firstChild.outerHTML || '') + el.value;
 							}
 						});
+						try{document.querySelector('[docsjs-state="e-x"]').querySelector('[docsjs-tag="column-header"]').childNodes[1].nodeValue = el.value;}catch(e){}
 						break;
 					case 'eg.def':
 						if (el.value !== 'min'){
@@ -159,21 +170,13 @@ function init(){
 						DocsJS.animation.duration = parseFloat(el.placeholder);
 						break;
 					case 'menu.top':
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="menu-title"][docsjs-menu-location="'+DocsJS.menu.top+'"]'),function(mn){
-							mn.docsjs.menuLocation = el.placeholder;
-							mn.removeAttribute('onclick');
-							mn.setAttribute('onclick',"DocsJS._menuClicked(this,'"+el.placeholder+"');");
-							mn.docsjs.menuDestination = el.placeholder;
+						DocsJS.forEach(document.querySelectorAll('[docsjs-menu-internal="top"]'),function(mn){
 							mn.innerHTML = el.placeholder;
 						});
 						DocsJS.menu.top = el.placeholder;
 						break;
 					case 'menu.bottom':
-						DocsJS.forEach(document.querySelectorAll('[docsjs-tag="menu-title"][docsjs-menu-location="'+DocsJS.menu.bottom+'"]'),function(mn){
-							mn.docsjs.menuLocation = el.placeholder;
-							mn.removeAttribute('onclick');
-							mn.setAttribute('onclick',"DocsJS._menuClicked(this,'"+el.placeholder+"');");
-							mn.docsjs.menuDestination = el.placeholder;
+						DocsJS.forEach(document.querySelectorAll('[docsjs-menu-internal="btm"]'),function(mn){
 							mn.innerHTML = el.placeholder;
 						});
 						DocsJS.menu.bottom = el.placeholder;
@@ -186,6 +189,7 @@ function init(){
 								e.innerHTML = e.firstChild.outerHTML + el.placeholder;
 							}
 						});
+						try{document.querySelector('[docsjs-state="e-g"]').querySelector('[docsjs-tag="column-header"]').childNodes[1].nodeValue = el.placeholder;}catch(e){}
 						break;
 					case 'ex.name':
 						DocsJS.ex.name = el.placeholder;
@@ -195,6 +199,7 @@ function init(){
 								e.innerHTML = e.firstChild.outerHTML + el.placeholder;
 							}
 						});
+						try{document.querySelector('[docsjs-state="e-x"]').querySelector('[docsjs-tag="column-header"]').childNodes[1].nodeValue = el.placeholder;}catch(e){}
 						break;
 				}
 			}
@@ -210,18 +215,16 @@ function init(){
 		el.onchange = updateCustomBody;
 	});
 	
+	// Setup custom html options
+	DocsJS.forEach(document.getElementById('htmlOptions').querySelectorAll('input,select'),function(el){
+		el.onchange = updateCustomBody;
+	});
+	
 	// Set up choose theme
 	var chooseTheme = function(){
 		document.getElementById('ChooseTheme').querySelector('option[selected="selected"]').removeAttribute('selected');
 		var theme = document.getElementById('themeSelect').value;
 		DocsJS.theme = theme;
-		if (theme === 'Minimal'){
-			document.getElementById('logoImage').style.backgroundColor = 'rgba(31,36,41,.95)';
-			document.getElementById('logoImage').style.margin = '1em';
-		} else{
-			document.getElementById('logoImage').style.backgroundColor = '';
-			document.getElementById('logoImage').style.margin = '';
-		}
 		var sheet = DocsJS.origin.split('/');
 		sheet.pop();
 		sheet = sheet.join('/') + '/themes/' + theme + '.css';
@@ -244,12 +247,50 @@ function init(){
 			}
 			document.getElementById('ChooseTheme').querySelector('option[value="'+theme+'"]').setAttribute('selected','selected');
 			document.getElementById('ChooseTheme').querySelector('select').onchange = chooseTheme;
+			
+			DocsJS.animation.duration = 0;
+			DocsJS.events.preferenceChanged = function(){
+				DocsJS.events.preferenceChanged = function(){
+					DocsJS.events.preferenceChanged = function(){};
+					DocsJS.animation.duration = 300;
+					switch (theme){
+						case 'Minimal':
+							document.getElementById('logoImage').querySelector('img').src = 'example/logoD.png';
+							document.getElementById('github').style.color = '#23B1E9';
+							document.getElementById('github').style.fontWeight = '600';
+							document.getElementById('github').style.fontSize = '1.1em';
+
+							DocsJS.column.stop(1);
+							DocsJS.column.stop(-1);
+							DocsJS.cache.events.columnchoice = 'menu';
+							DocsJS.columnOffsets.left = 0.1;
+							DocsJS.cache.events.oncolumn = -1;
+							DocsJS.column.start(-1);
+							DocsJS.cache.events.columnchoice = 'e-g';
+							DocsJS.columnOffsets.right = 0.1;
+							DocsJS.cache.events.oncolumn = 1;
+							DocsJS.column.start(1);
+							break;
+						case 'Hailaxian':
+							document.getElementById('logoImage').querySelector('img').src = 'example/logo.png';
+							document.getElementById('github').style.color = '#000';
+							document.getElementById('github').style.fontWeight = '400';
+							document.getElementById('github').style.fontSize = '1em';
+
+							DocsJS.column.stop(1);
+							DocsJS.column.stop(-1);
+							break;
+					}
+				};
+				document.querySelector('[docsjs-pref="Rs"]').onclick();
+			};
+			document.querySelector('[docsjs-pref="C"]').onclick();
 		};
 		xhr.open("GET", sheet, true);
 		xhr.send();
 	};
 	document.getElementById('ChooseTheme').querySelector('select').onchange = chooseTheme;
-	document.getElementById('ChooseTheme').querySelector('option[value="Hailaxian"]').setAttribute('selected','selected');
+	document.getElementById('ChooseTheme').querySelector('option[value="Minimal"]').setAttribute('selected','selected');
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function() {
 		if (this.readyState === 4 && this.status === 200) {
@@ -259,7 +300,7 @@ function init(){
 	};
 	var sheet = DocsJS.origin.split('/');
 	sheet.pop();
-	sheet = sheet.join('/') + '/themes/Hailaxian.css';
+	sheet = sheet.join('/') + '/themes/Minimal.css';
 	xhr.open("GET", sheet, true);
 	xhr.send();
 	
@@ -296,6 +337,10 @@ function init(){
 	// Set up shrinking window example
 	var correctSidebarsTimeout;
 	scaleWindow = function(percent){
+		DocsJS.column.stop(-1);
+		DocsJS.column.stop(1);
+		DocsJS.columnOffsets.left = Math.min(0,DocsJS.columnOffsets.left);
+		DocsJS.columnOffsets.right = Math.min(0,DocsJS.columnOffsets.right);
 		document.querySelector('[docsjs-tag="column-left"]').style.marginLeft = '0';
 		document.getElementById('windowScalarPlus').style.color = document.getElementById('windowScalarMinus').style.color = "#000";
 		if (percent < 101 && percent/100*fullWidth > 200){
@@ -410,21 +455,21 @@ function revertScreen_(){
 }
 function changeTheme_(){
 	'use strict';
-	document.getElementById('ChooseTheme').querySelector('option[value="Hailaxian"]').removeAttribute('selected');
-	document.getElementById('ChooseTheme').querySelector('option[value="Minimal"]').setAttribute('selected','selected');
-	document.getElementById('themeSelect').value = 'Minimal';
-	document.getElementById('ChooseTheme').querySelector('select').onchange();
-	document.getElementById('ST').innerHTML = 'Revert theme.';
-	//document.getElementById('ST').style.backgroundColor = '#fff607';
-	document.getElementById('ST').href = 'javascript:revertTheme_();';
-}
-function revertTheme_(){
-	'use strict';
 	document.getElementById('ChooseTheme').querySelector('option[value="Minimal"]').removeAttribute('selected');
 	document.getElementById('ChooseTheme').querySelector('option[value="Hailaxian"]').setAttribute('selected','selected');
 	document.getElementById('themeSelect').value = 'Hailaxian';
 	document.getElementById('ChooseTheme').querySelector('select').onchange();
-	document.getElementById('ST').innerHTML = 'Change theme!';
+	document.getElementById('ST').innerHTML = 'Revert theme.';
 	//document.getElementById('ST').style.backgroundColor = '';
+	document.getElementById('ST').href = 'javascript:revertTheme_();';
+}
+function revertTheme_(){
+	'use strict';
+	document.getElementById('ChooseTheme').querySelector('option[value="Hailaxian"]').removeAttribute('selected');
+	document.getElementById('ChooseTheme').querySelector('option[value="Minimal"]').setAttribute('selected','selected');
+	document.getElementById('themeSelect').value = 'Minimal';
+	document.getElementById('ChooseTheme').querySelector('select').onchange();
+	document.getElementById('ST').innerHTML = 'Change theme!';
+	//document.getElementById('ST').style.backgroundColor = '#fff607';
 	document.getElementById('ST').href = 'javascript:changeTheme_();';
 }

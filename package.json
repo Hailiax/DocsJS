@@ -1,0 +1,42 @@
+{
+  "name": "docsjs",
+  "version": "1.2.1",
+  "description": "HTML/Markdown-only documentation generator",
+  "main": "src/docs.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hailiax/DocsJS.git"
+  },
+  "files": [
+    "package.json",
+    "LICENSE",
+    "README.md",
+    "src/docs.js",
+    "src/docs.min.js"
+  ],
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "keywords": [
+    "docsjs",
+    "documentation-generator",
+    "easy-to-use",
+    "html",
+    "accessibility",
+    "customizable",
+    "markdown-to-html",
+    "markdown-parser",
+    "markdown-converter"
+  ],
+  "author": "hailiax",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hailiax/DocsJS/issues"
+  },
+  "homepage": "https://hailiax.io/docsjs/"
+}

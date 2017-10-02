@@ -3,7 +3,7 @@
 DocsJS Theme
 Name: Hailaxian
 Author: Alexander 'Hailiax' Wing
-Updated: 27 Sep 2017
+Updated: 1 Oct 2017
 
 *******/
 
@@ -175,14 +175,14 @@ c-d{
 	padding-top: 0; padding-bottom: 0;
 	margin-left: -1.25em;
 	white-space: pre;
-	background-color: rgba(40,40,40,0.01) !important;
+	background-color: transparent!important;
 	font-family: 'Source Code Pro', monospace !important;
 }
 .ace_active-line, .ace_gutter-active-line{
 	background-color: rgba(40,40,40,0.04) !important;
 }
 .ace_gutter{
-	background-color: rgba(40,40,40,0.02) !important;
+	background-color: transparent!important;
 }
 .ace_scroll-left{
 	box-shadow: none !important;
@@ -306,7 +306,7 @@ div[docsjs-tag="column-content"] e-g,div[docsjs-tag="column-content"] e-x{
 }
 
 /* Menu in sidebar */
-div[docsjs-tag="column-left"] div[docsjs-tag="menu"]{
+div[docsjs-tag="column-left"] div[docsjs-tag="menu"], div[docsjs-tag="column-right"] div[docsjs-tag="menu"]{
 	background-color: transparent;
 	border-bottom: none;
 	margin-top: 3em;
