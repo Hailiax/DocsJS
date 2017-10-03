@@ -398,7 +398,6 @@ div[docsjs-tag='menu-item']{
 div[docsjs-tag='menu-item'][docsjs-state='min']{
 	max-height: 1.8em;
 	border-bottom: solid 0.05em #E0E0E0;
-	border-top: solid 0.05em #E0E0E0;
 }
 div[docsjs-tag='menu-item'][docsjs-state='min'] > div[docsjs-tag='menu-title']:first-child:before{
 	content: "> ";
@@ -406,7 +405,6 @@ div[docsjs-tag='menu-item'][docsjs-state='min'] > div[docsjs-tag='menu-title']:f
 div[docsjs-tag='menu-item'][docsjs-state='min']:hover{
 	border-left: solid 0.05em #888;
 	border-bottom: solid 0.05em #888;
-	border-top: solid 0.05em #888;
 }
 div[docsjs-tag='menu-item']:hover{
 	border-left: solid 0.05em #888;

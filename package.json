@@ -1,6 +1,6 @@
 {
   "name": "docsjs",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "HTML/Markdown-only documentation generator",
   "main": "src/docs.js",
   "scripts": {
@@ -14,13 +14,11 @@
     "package.json",
     "LICENSE",
     "README.md",
-    "src/docs.js",
-    "src/docs.min.js"
+    "src"
   ],
   "directories": {
-    "doc": "docs",
-    "example": "examples",
-    "test": "test"
+    "doc": "examples",
+    "example": "examples"
   },
   "keywords": [
     "docsjs",
