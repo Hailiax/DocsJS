@@ -1,6 +1,6 @@
 {
   "name": "docsjs",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "HTML/Markdown-only documentation generator",
   "main": "src/docs.js",
   "scripts": {
@@ -10,12 +10,6 @@
     "type": "git",
     "url": "git+https://github.com/Hailiax/DocsJS.git"
   },
-  "files": [
-    "package.json",
-    "LICENSE",
-    "README.md",
-    "src"
-  ],
   "directories": {
     "doc": "examples",
     "example": "examples"
