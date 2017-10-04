@@ -112,10 +112,10 @@ button[docsjs-tag="accessibility-button"]{
 	position: relative;
 	width: 100%;
 	font-weight: 600;
+	line-height:0.82352941em;
 	background-color: #1F2429;
 	border: none;
-	padding-top: 0.375em;
-	padding-bottom: 0.375em;
+	padding: 0.6em;
 	font-size: 1.7em;
 	color: #FFF;
 	cursor: pointer;

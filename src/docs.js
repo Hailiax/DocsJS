@@ -899,11 +899,12 @@ DocsJS.resized = function(){
 	});
 	DocsJS.cache.extraWidth = 0;
 	var minWidth = 100;
-	if (DocsJS.window.width() > DocsJS.width.max + 200){
+	var fullWidth = DocsJS.window.width();
+	if (fullWidth > DocsJS.width.max + 200){
 		DocsJS.fontsize._scalar = 1;
 		DocsJS.apply(function(doc){
 			doc.style.fontSize = DocsJS.fontsize._value+'px';
-			var width = (DocsJS.window.width() - DocsJS.width.max)/2;
+			var width = (fullWidth - DocsJS.width.max)/2;
 			DocsJS.cache.extraWidth = width-100;
 			minWidth = (width-200)*-1;
 			lc.style.width = width+DocsJS.columnOffsets.left+'px';
@@ -927,18 +928,18 @@ DocsJS.resized = function(){
 		if (DocsJS.columnOffsets.left < minWidth){
 			DocsJS.columnOffsets.left = minWidth;
 		}
-	} else if (DocsJS.window.width() > DocsJS.width.min + 200){
+	} else if (fullWidth > DocsJS.width.min + 200){
 		DocsJS.fontsize._scalar = 1;
-		if (DocsJS.column.state[0] === 'none' && DocsJS.window.width()-DocsJS.width.min < 400){
+		if (DocsJS.column.state[0] === 'none' && fullWidth-DocsJS.width.min < 400){
 			DocsJS.columnOffsets.left = -25.8765;
-		} else if (DocsJS.window.width()-DocsJS.width.min > 400){
+		} else if (fullWidth-DocsJS.width.min > 400){
 			if (DocsJS.columnOffsets.left === -25.8765){
 				DocsJS.columnOffsets.left = 0;
 			}
 		}
-		if (DocsJS.column.state[1] === 'none' && DocsJS.window.width()-DocsJS.width.min < 400){
+		if (DocsJS.column.state[1] === 'none' && fullWidth-DocsJS.width.min < 400){
 			DocsJS.columnOffsets.right = -25.8765;
-		} else if (DocsJS.window.width()-DocsJS.width.min > 400){
+		} else if (fullWidth-DocsJS.width.min > 400){
 			if (DocsJS.columnOffsets.right === -25.8765){
 				DocsJS.columnOffsets.right = 0;
 			} 
@@ -955,7 +956,7 @@ DocsJS.resized = function(){
 			rc.style.width = 100+DocsJS.columnOffsets.right+'px';
 			rc.style.marginLeft = -1*100-DocsJS.columnOffsets.right+'px';
 			DocsJS.forEach(doc.querySelectorAll('main > s-c'),function(el){
-				el.style.width = DocsJS.window.width()-200-DocsJS.columnOffsets.left-DocsJS.columnOffsets.right+'px';
+				el.style.width = fullWidth-200-DocsJS.columnOffsets.left-DocsJS.columnOffsets.right+'px';
 				el.style.marginLeft = 100+DocsJS.columnOffsets.left+'px';
 			});
 		});
@@ -967,8 +968,10 @@ DocsJS.resized = function(){
 		}
 	} else{
 		DocsJS.apply(function(doc){
-			DocsJS.fontsize._scalar = Math.sqrt(DocsJS.window.width()/(DocsJS.width.min+200));
+			DocsJS.fontsize._scalar = Math.sqrt(fullWidth/(DocsJS.width.min+200));
 			doc.style.fontSize = DocsJS.fontsize._value*DocsJS.fontsize._scalar+'px';
+			DocsJS.column.stop(1);
+			DocsJS.column.stop(-1);
 			lc.style.width = rc.style.width = rc.style.marginLeft = '0';
 			DocsJS.forEach(doc.querySelectorAll('main > s-c'),function(el){
 				el.style.width = '100%';
@@ -1338,7 +1341,7 @@ DocsJS.toggleRecommendedAccessibility = function(el){
 			});
 		},1000);
 	});
-	DocsJS.cd.refresh();
+	window.setTimeout(DocsJS.cd.refresh,0);
 	DocsJS.resized = function(){};
 };
 DocsJS.toggleExtendedAccessibility = function(){
@@ -1418,7 +1421,7 @@ DocsJS.column = {
 			
 			DocsJS.cache.events.columnchoice = 0;
 			DocsJS.cache.events.oncolumn = 0;
-			DocsJS.cd.refresh();
+			window.setTimeout(DocsJS.cd.refresh,0);
 			DocsJS.resized();
 		}
 	},
@@ -1441,17 +1444,17 @@ DocsJS.column = {
 					});
 				}
 				doc.querySelector('[docsjs-tag="column-left"]').style.position = 'fixed';
-				doc.querySelector('[docsjs-tag="column-left"]').innerHTML = DocsJS.column.choice(-1);
-				DocsJS.column.state[0] = 'none';
 				DocsJS.forEach(doc.querySelectorAll('s-c e-g,s-c e-x'),function(el){
 					if (el.docsjs.state === 'min'){
 						el.style.height = el.style.paddingTop = el.style.paddingBottom = el.style.borderTopWidth = el.style.borderBottomWidth = '0px';
 					}
 				});
 				doc.querySelector('[docsjs-tag="column-left"]').docsjs.state = "none";
+				if (DocsJS.column.state[0] !== 'menu'){window.setTimeout(DocsJS.cd.refresh,0);}
+				DocsJS.column.state[0] = 'none';
+				doc.querySelector('[docsjs-tag="column-left"]').innerHTML = DocsJS.column.choice(-1);
 				DocsJS.columnOffsets[(n > 0?'right':'left')] = 0;
 				DocsJS.resized();
-				DocsJS.cd.refresh();
 			} else if (DocsJS.column.state[1] !== 'none'){
 				if (DocsJS.column.state[1] !== 'menu'){
 					var nodesR = [];
@@ -1468,20 +1471,21 @@ DocsJS.column = {
 					});
 				}
 				doc.querySelector('[docsjs-tag="column-right"]').style.position = 'fixed';
-				doc.querySelector('[docsjs-tag="column-right"]').innerHTML = DocsJS.column.choice(1);
-				DocsJS.column.state[1] = 'none';
-				if (DocsJS.column.state[0] === 'none'){
-					doc.querySelector('[docsjs-tag="column-left"]').innerHTML = DocsJS.column.choice(-1);
-				}
 				DocsJS.forEach(doc.querySelectorAll('s-c e-g,s-c e-x'),function(el){
 					if (el.docsjs.state === 'min'){
 						el.style.height = el.style.paddingTop = el.style.paddingBottom = el.style.borderTopWidth = el.style.borderBottomWidth = '0px';
 					}
 				});
 				doc.querySelector('[docsjs-tag="column-right"]').docsjs.state = "none";
+				if (DocsJS.column.state[1] !== 'menu'){window.setTimeout(DocsJS.cd.refresh,0);}
+				DocsJS.column.state[1] = 'none';
+				doc.querySelector('[docsjs-tag="column-right"]').innerHTML = DocsJS.column.choice(1);
+				if (DocsJS.column.state[0] === 'none'){
+					doc.querySelector('[docsjs-tag="column-left"]').innerHTML = DocsJS.column.choice(-1);
+				}
 				DocsJS.columnOffsets[(n > 0?'right':'left')] = 0;
 				DocsJS.resized();
-				DocsJS.cd.refresh();
+				DocsJS.cache.events.oncolumn = 0;
 			}
 		});
 	},
@@ -1945,10 +1949,6 @@ DocsJS.cd = {
 		if (typeof ace !== 'undefined' && DocsJS.supports.ace){
 			DocsJS.apply(function(doc){
 				var editors = [];
-				for (var i = 0; i < DocsJS.cache.aceEditors.length; i++){
-					var editor = DocsJS.cache.aceEditors[i];
-					editor.destroy();
-				}
 				DocsJS.forEach(doc.querySelectorAll('c-d'),function(el, index){
 					if (el.docsjs.internal !== undefined){
 						el.innerHTML = DocsJS.cache.aceEditors[el.docsjs.internal].getValue().replace(/[\u00A0-\u9999<>\&]/gim, function(i) {
@@ -1959,6 +1959,11 @@ DocsJS.cd = {
 						el.setAttribute('docsjs-internal',index);
 					}
 				});
+				for (var i = 0; i < DocsJS.cache.aceEditors.length; i++){
+					var editor = DocsJS.cache.aceEditors[i];
+					editor.destroy();
+				}
+				var fontSize = parseInt(DocsJS.getStyle(document.querySelector('docs-js'),'font-size'));
 				DocsJS.forEach(doc.querySelectorAll('c-d'),function(el){
 					var editor = ace.edit(el);
 					el.style.fontSize = '0.8em';
@@ -1970,7 +1975,7 @@ DocsJS.cd = {
 						editor.setReadOnly(true);
 						editor.renderer.setShowGutter(false);
 						editor.setHighlightActiveLine(false);
-						editor.renderer.setPadding(parseInt(DocsJS.getStyle(document.querySelector('docs-js'),'font-size')));
+						editor.renderer.setPadding(fontSize);
 						editor.renderer.$cursorLayer.element.style.display = "none";
 						editor.setShowPrintMargin(false);
 						el.querySelector('textarea').setAttribute('aria-hidden','true');

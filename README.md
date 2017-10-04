@@ -1,4 +1,4 @@
-# DocsJS 1.2.6
+# DocsJS 1.2.7
 [![Latest NPM release](https://img.shields.io/npm/v/docsjs.svg?style=flat-square)](https://www.npmjs.com/package/docsjs)
 [![NPM downloads per month](https://img.shields.io/npm/dm/docsjs.svg?style=flat-square)](https://www.npmjs.com/package/docsjs)
 [![jsDelivr downloads per month](https://data.jsdelivr.com/v1/package/npm/docsjs/badge)](https://www.jsdelivr.com/package/npm/docsjs)
@@ -64,6 +64,8 @@ Here is `some inline code`.
 ```
 
 ## Full changelog
+### 1.2.7 // 3 Oct 2017
+*  Minor improvements
 ### 1.2.6 // 2 Oct 2017
 *  Fix jsDelivr issue
 *  Update favicon
