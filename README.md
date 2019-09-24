@@ -1,5 +1,5 @@
 # Project paused.
-There are some pretty big flaws (especially with large docs). None of these make DocsJS unusable but it could be a lot better. I will probably rewrite DocsJS soon!
+There are quite a few flaws! None of these make DocsJS unusable but it could be a lot better. I might rewrite DocsJS sometime!
 
 # DocsJS 1.2.7
 [![Latest NPM release](https://img.shields.io/npm/v/docsjs.svg?style=flat-square)](https://www.npmjs.com/package/docsjs)
